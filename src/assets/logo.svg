@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="50" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Medical Cross -->
+  <path d="M20 10h10v30h-10z" fill="#3498db"/>
+  <path d="M10 20h30v10h-30z" fill="#3498db"/>
+  
+  <!-- Text -->
+  <text x="60" y="32" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    MedicalHub
+  </text>
+  
+  <!-- Decorative Elements -->
+  <circle cx="180" cy="25" r="5" fill="#3498db"/>
+  <circle cx="190" cy="25" r="3" fill="#3498db"/>
+</svg> 

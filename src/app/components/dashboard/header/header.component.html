@@ -1,0 +1,70 @@
+<header class="dashboard-header">
+  <div class="header-left">
+    <button class="menu-toggle" (click)="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search...">
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="notifications">
+      <button class="notifications-button" (click)="toggleNotifications()">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+      </button>
+
+      <div class="notifications-dropdown" *ngIf="showNotifications">
+        <div class="notifications-header">
+          <h3>Notifications</h3>
+          <button class="mark-read" (click)="markAllAsRead()">Mark all as read</button>
+        </div>
+        <div class="notifications-list">
+          <div *ngFor="let notification of notifications" 
+               class="notification-item"
+               [class.unread]="!notification.read">
+            <i [class]="notification.icon"></i>
+            <div class="notification-content">
+              <p>{{ notification.message }}</p>
+              <span class="notification-time">{{ notification.time }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="user-profile">
+      <button class="user-menu-button" (click)="toggleUserMenu()">
+        <i class="fas fa-user-circle"></i>
+        <span class="user-name">{{ userName }}</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+
+      <div class="user-menu-dropdown" *ngIf="showUserMenu">
+        <div class="user-info">
+          <i class="fas fa-user-circle"></i>
+          <div>
+            <h4>{{ userName }}</h4>
+            <span>{{ userRole }}</span>
+          </div>
+        </div>
+        <div class="menu-items">
+          <a routerLink="/dashboard/profile">
+            <i class="fas fa-user"></i>
+            Profile
+          </a>
+          <a routerLink="/dashboard/settings">
+            <i class="fas fa-cog"></i>
+            Settings
+          </a>
+          <button (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header> 
