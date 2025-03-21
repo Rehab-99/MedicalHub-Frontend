@@ -1,1 +1,19 @@
-<p>doctors works!</p>
+<div class="doctors-page">
+    <h2>Doctors</h2>
+    <div class="doctors-container">
+      <div *ngFor="let doctor of doctors" class="doctor-card">
+        <!-- Doctor Photo -->
+        <div class="doctor-photo">
+          <img [src]="doctor.photo" alt="{{ doctor.name }}" />
+        </div>
+        <!-- Doctor Details -->
+        <div class="doctor-details">
+          <div class="doctor-name">{{ doctor.name }}</div>
+          <div class="doctor-specialization">{{ doctor.specialization }}</div>
+          <div class="doctor-rating">
+            <i *ngFor="let star of getStars(doctor.rating)" class="fas fa-star"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

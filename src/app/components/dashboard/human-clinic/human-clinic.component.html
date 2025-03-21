@@ -1,1 +1,16 @@
-<p>human-clinic works!</p>
+<div class="clinics-page">
+    <h2>Clinics</h2>
+    <div class="clinics-container">
+      <div *ngFor="let clinic of clinics" class="clinic-card">
+        <!-- Clinic Photo -->
+        <div class="clinic-photo">
+          <img [src]="clinic.photo" alt="{{ clinic.name }}" />
+        </div>
+        <!-- Clinic Details -->
+        <div class="clinic-details">
+          <div class="clinic-name">{{ clinic.name }}</div>
+          <div class="clinic-address">{{ clinic.address }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
