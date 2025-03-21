@@ -1,1 +1,16 @@
-<p>vet-clinic works!</p>
+<div class="vet-clinics-page">
+    <h2>Vet Clinics</h2>
+    <div class="vet-clinics-container">
+      <div *ngFor="let clinic of vetClinics" class="vet-clinic-card">
+        <!-- Vet Clinic Photo -->
+        <div class="vet-clinic-photo">
+          <img [src]="clinic.photo" alt="{{ clinic.name }}" />
+        </div>
+        <!-- Vet Clinic Details -->
+        <div class="vet-clinic-details">
+          <div class="vet-clinic-name">{{ clinic.name }}</div>
+          <div class="vet-clinic-address">{{ clinic.address }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
