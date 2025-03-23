@@ -12,9 +12,21 @@ import { AppointmentsComponent } from './components/dashboard/appointments/appoi
 import { ConsultationsComponent } from './components/dashboard/consultations/consultations.component';
 import { UsersComponent } from './components/dashboard/users/users.component';
 import { SettingsComponent } from './components/dashboard/settings/settings.component';
-import { AddDoctorComponent } from './components/dashboard/add-doctor/add-doctor.component';
+import { AdminLoginComponent } from './components/auth/admin-login/admin-login.component';
+import { UserLoginComponent } from './components/auth/user-login/user-login.component';
+import { AuthGuard } from './guards/auth.guard';
+import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
+  {
+    path: 'admin/login',
+    component: AdminLoginComponent,
+    canActivate: [LoginGuard]
+  },
+  {
+    path: 'login',
+    component: UserLoginComponent
+  },
   {
     path: '',
     redirectTo: 'dashboard',
@@ -23,6 +35,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
