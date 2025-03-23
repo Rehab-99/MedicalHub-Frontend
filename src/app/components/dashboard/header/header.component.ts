@@ -10,6 +10,12 @@ interface Notification {
   read: boolean;
 }
 
+interface AdminData {
+  name: string;
+  email: string;
+  role: string;
+}
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -22,13 +28,17 @@ export class HeaderComponent implements OnInit {
   unreadCount = 0;
   showNotifications = false;
   showUserMenu = false;
-  userName = 'John Doe';
-  userRole = 'Administrator';
-  userAvatar = 'assets/images/avatar.png';
+  adminData: AdminData | null = null;
 
   constructor(private router: Router) {}
 
   ngOnInit() {
+    // Get admin data from localStorage
+    const adminDataStr = localStorage.getItem('adminData');
+    if (adminDataStr) {
+      this.adminData = JSON.parse(adminDataStr);
+    }
+
     // Initialize mock notifications
     this.notifications = [
       {
@@ -83,8 +93,10 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    // Implement logout logic
-    this.router.navigate(['/login']);
+    // Clear admin data from localStorage
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminData');
+    this.router.navigate(['/admin/login']);
   }
 
   // Close dropdowns when clicking outside

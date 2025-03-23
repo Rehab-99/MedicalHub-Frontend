@@ -1,16 +1,12 @@
-<header class="dashboard-header">
+<header class="header">
   <div class="header-left">
-    <button class="menu-toggle" (click)="toggleSidebar()">
+    <button class="menu-button" (click)="toggleSidebar()">
       <i class="fas fa-bars"></i>
     </button>
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input type="text" placeholder="Search...">
-    </div>
   </div>
 
   <div class="header-right">
-    <div class="notifications">
+    <div class="notifications-container">
       <button class="notifications-button" (click)="toggleNotifications()">
         <i class="fas fa-bell"></i>
         <span class="notification-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
@@ -19,7 +15,7 @@
       <div class="notifications-dropdown" *ngIf="showNotifications">
         <div class="notifications-header">
           <h3>Notifications</h3>
-          <button class="mark-read" (click)="markAllAsRead()">Mark all as read</button>
+          <button (click)="markAllAsRead()">Mark all as read</button>
         </div>
         <div class="notifications-list">
           <div *ngFor="let notification of notifications" 
@@ -28,33 +24,28 @@
             <i [class]="notification.icon"></i>
             <div class="notification-content">
               <p>{{ notification.message }}</p>
-              <span class="notification-time">{{ notification.time }}</span>
+              <span>{{ notification.time }}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="user-profile">
+    <div class="user-menu-container">
       <button class="user-menu-button" (click)="toggleUserMenu()">
-        <i class="fas fa-user-circle"></i>
-        <span class="user-name">{{ userName }}</span>
-        <i class="fas fa-chevron-down"></i>
+        <i class="fas fa-user-shield"></i>
+        <span class="admin-name">{{ adminData?.name }}</span>
       </button>
 
       <div class="user-menu-dropdown" *ngIf="showUserMenu">
         <div class="user-info">
-          <i class="fas fa-user-circle"></i>
-          <div>
-            <h4>{{ userName }}</h4>
-            <span>{{ userRole }}</span>
+          <i class="fas fa-user-shield"></i>
+          <div class="user-details">
+            <span class="user-name">{{ adminData?.name }}</span>
+            <span class="user-role">{{ adminData?.role }}</span>
           </div>
         </div>
         <div class="menu-items">
-          <a routerLink="/dashboard/profile">
-            <i class="fas fa-user"></i>
-            Profile
-          </a>
           <a routerLink="/dashboard/settings">
             <i class="fas fa-cog"></i>
             Settings
