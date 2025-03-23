@@ -14,8 +14,10 @@ import { UsersComponent } from './components/dashboard/users/users.component';
 import { SettingsComponent } from './components/dashboard/settings/settings.component';
 import { AddDoctorComponent } from './components/dashboard/add-doctor/add-doctor.component';
 import { EditDoctorComponent } from './components/dashboard/edit-doctor/edit-doctor.component';
-import { EditClinicComponent } from './components/edit-clinic/edit-clinic.component';
+import { EditClinicComponent } from './components/dashboard/edit-clinic/edit-clinic.component';
 import { AddClinicComponent } from './components/dashboard/add-clinic/add-clinic.component';
+import { AddVetClinicComponent } from './components/dashboard/add-vet-clinic/add-vet-clinic.component';
+import { EditVetClinicComponent } from './components/dashboard/edit-vet-clinic/edit-vet-clinic.component';
 
 export const routes: Routes = [
   {
@@ -51,6 +53,10 @@ export const routes: Routes = [
         path: 'vet-clinic',
         component: VetClinicComponent
       },
+      { path: 'add-vet-clinic',
+         component: AddVetClinicComponent }, // Add route for AddVetClinicComponent
+      { path: 'edit-vet-clinic/:id', component:
+         EditVetClinicComponent },
       {
         path: 'vet-pharmacy',
         component: VetPharmacyComponent
