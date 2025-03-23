@@ -38,7 +38,7 @@ export class DoctorsComponent {
 
   // Navigate to the "Add Doctor" page
   navigateToAddDoctor() {
-    this.router.navigate(['/add-doctor']);
+    this.router.navigate(['/dashboard/add-doctor']);
   }
 
   // Edit a doctor

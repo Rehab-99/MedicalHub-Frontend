@@ -25,11 +25,11 @@ export class AddDoctorComponent {
   onSubmit() {
     // Add logic to save the doctor (e.g., send to a service or backend)
     console.log('Doctor added:', this.doctor);
-    this.router.navigate(['/doctors']); // Navigate back to the doctors list
+    this.router.navigate(['/dashboard/doctors']); // Navigate back to the doctors list
   }
 
   // Handle cancel button
   onCancel() {
-    this.router.navigate(['/doctors']); // Navigate back to the doctors list
+    this.router.navigate(['/dashboard/doctors']); // Navigate back to the doctors list
   }
 }
