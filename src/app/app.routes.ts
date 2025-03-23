@@ -13,6 +13,9 @@ import { ConsultationsComponent } from './components/dashboard/consultations/con
 import { UsersComponent } from './components/dashboard/users/users.component';
 import { SettingsComponent } from './components/dashboard/settings/settings.component';
 import { AddDoctorComponent } from './components/dashboard/add-doctor/add-doctor.component';
+import { EditDoctorComponent } from './components/dashboard/edit-doctor/edit-doctor.component';
+import { EditClinicComponent } from './components/edit-clinic/edit-clinic.component';
+import { AddClinicComponent } from './components/dashboard/add-clinic/add-clinic.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +39,10 @@ export const routes: Routes = [
         path: 'human-clinic',
         component: HumanClinicComponent
       },
+      { path: 'add-clinic', 
+        component: AddClinicComponent }, 
+      { path: 'edit-clinic/:id', 
+        component: EditClinicComponent },
       {
         path: 'human-blog',
         component: HumanBlogComponent
@@ -58,6 +65,9 @@ export const routes: Routes = [
       },
       { path: 'add-doctor', 
         component: AddDoctorComponent },
+
+        { path: 'edit-doctor/:id',
+           component: EditDoctorComponent }, 
       {
         path: 'appointments',
         component: AppointmentsComponent
