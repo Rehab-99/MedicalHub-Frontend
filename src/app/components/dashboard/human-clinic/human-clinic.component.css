@@ -1,12 +1,26 @@
-.clinics-page {
+
+  .human-clinics-page {
     padding: 24px;
   }
   
-  .clinics-page h2 {
+  .human-clinics-page h2 {
     font-size: 24px;
     font-weight: 600;
-    color: var(--text-primary); /* Use your primary text color */
     margin-bottom: 24px;
+  }
+  
+  .add-clinic-button {
+    padding: 8px 16px;
+    margin-bottom: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+  }
+  
+  .add-clinic-button:hover {
+    background-color: var(--primary-dark);
   }
   
   .clinics-container {
@@ -16,12 +30,12 @@
   }
   
   .clinic-card {
-    background: var(--background-light); /* Use your light background color */
+    background: var(--background-light);
     border-radius: 12px;
     padding: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: var(--text-primary); /* Use your primary text color */
-    border: 1px solid var(--primary-light); /* Use your primary light color for the border */
+    color: var(--text-primary);
+    border: 1px solid var(--primary-light);
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -34,14 +48,13 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
-  /* Clinic Photo */
   .clinic-photo {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
     margin-bottom: 16px;
-    border: 3px solid var(--primary-color); /* Use your primary color for the photo border */
+    border: 3px solid var(--primary-color);
   }
   
   .clinic-photo img {
@@ -50,7 +63,6 @@
     object-fit: cover;
   }
   
-  /* Clinic Details */
   .clinic-details {
     width: 100%;
   }
@@ -59,12 +71,42 @@
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 8px;
-    color: var(--text-primary); /* Use your primary text color */
   }
   
   .clinic-address {
     font-size: 14px;
-    color: var(--text-secondary); /* Use your secondary text color */
+    color: var(--text-secondary);
+  }
+  
+  .clinic-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  
+  .edit-button, .delete-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .edit-button {
+    background-color: var(--success);
+    color: white;
+  }
+  
+  .edit-button:hover {
+    background-color: #28a745;
+  }
+  
+  .delete-button {
+    background-color: var(--danger);
+    color: white;
+  }
+  
+  .delete-button:hover {
+    background-color: #dc3545;
   }
   
   /* Responsive Design */

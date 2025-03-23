@@ -12,6 +12,12 @@ import { AppointmentsComponent } from './components/dashboard/appointments/appoi
 import { ConsultationsComponent } from './components/dashboard/consultations/consultations.component';
 import { UsersComponent } from './components/dashboard/users/users.component';
 import { SettingsComponent } from './components/dashboard/settings/settings.component';
+import { AddDoctorComponent } from './components/dashboard/add-doctor/add-doctor.component';
+import { EditDoctorComponent } from './components/dashboard/edit-doctor/edit-doctor.component';
+import { EditClinicComponent } from './components/dashboard/edit-clinic/edit-clinic.component';
+import { AddClinicComponent } from './components/dashboard/add-clinic/add-clinic.component';
+import { AddVetClinicComponent } from './components/dashboard/add-vet-clinic/add-vet-clinic.component';
+import { EditVetClinicComponent } from './components/dashboard/edit-vet-clinic/edit-vet-clinic.component';
 import { AdminLoginComponent } from './components/auth/admin-login/admin-login.component';
 import { UserLoginComponent } from './components/auth/user-login/user-login.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -49,6 +55,10 @@ export const routes: Routes = [
         path: 'human-clinic',
         component: HumanClinicComponent
       },
+      { path: 'add-clinic', 
+        component: AddClinicComponent }, 
+      { path: 'edit-clinic/:id', 
+        component: EditClinicComponent },
       {
         path: 'human-blog',
         component: HumanBlogComponent
@@ -57,6 +67,10 @@ export const routes: Routes = [
         path: 'vet-clinic',
         component: VetClinicComponent
       },
+      { path: 'add-vet-clinic',
+         component: AddVetClinicComponent }, // Add route for AddVetClinicComponent
+      { path: 'edit-vet-clinic/:id', component:
+         EditVetClinicComponent },
       {
         path: 'vet-pharmacy',
         component: VetPharmacyComponent
@@ -71,6 +85,9 @@ export const routes: Routes = [
       },
       { path: 'add-doctor', 
         component: AddDoctorComponent },
+
+        { path: 'edit-doctor/:id',
+           component: EditDoctorComponent }, 
       {
         path: 'appointments',
         component: AppointmentsComponent
