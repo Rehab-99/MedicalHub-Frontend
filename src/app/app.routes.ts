@@ -12,6 +12,7 @@ import { AppointmentsComponent } from './components/dashboard/appointments/appoi
 import { ConsultationsComponent } from './components/dashboard/consultations/consultations.component';
 import { UsersComponent } from './components/dashboard/users/users.component';
 import { SettingsComponent } from './components/dashboard/settings/settings.component';
+import { AddDoctorComponent } from './components/dashboard/add-doctor/add-doctor.component';
 
 export const routes: Routes = [
   {
@@ -55,6 +56,8 @@ export const routes: Routes = [
         path: 'doctors',
         component: DoctorsComponent
       },
+      { path: 'add-doctor', 
+        component: AddDoctorComponent },
       {
         path: 'appointments',
         component: AppointmentsComponent

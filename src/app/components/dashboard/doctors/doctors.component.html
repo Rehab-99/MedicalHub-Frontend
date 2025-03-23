@@ -1,19 +1,26 @@
 <div class="doctors-page">
-    <h2>Doctors</h2>
-    <div class="doctors-container">
-      <div *ngFor="let doctor of doctors" class="doctor-card">
-        <!-- Doctor Photo -->
-        <div class="doctor-photo">
-          <img [src]="doctor.photo" alt="{{ doctor.name }}" />
+  <h2>Doctors</h2>
+  <!-- Add Doctor Button -->
+  <button class="add-doctor-button" (click)="navigateToAddDoctor()">Add Doctor</button>
+  <div class="doctors-container">
+    <div *ngFor="let doctor of doctors" class="doctor-card">
+      <!-- Doctor Photo -->
+      <div class="doctor-photo">
+        <img [src]="doctor.photo" alt="{{ doctor.name }}" />
+      </div>
+      <!-- Doctor Details -->
+      <div class="doctor-details">
+        <div class="doctor-name">{{ doctor.name }}</div>
+        <div class="doctor-specialization">{{ doctor.specialization }}</div>
+        <div class="doctor-rating">
+          <i *ngFor="let star of getStars(doctor.rating)" class="fas fa-star"></i>
         </div>
-        <!-- Doctor Details -->
-        <div class="doctor-details">
-          <div class="doctor-name">{{ doctor.name }}</div>
-          <div class="doctor-specialization">{{ doctor.specialization }}</div>
-          <div class="doctor-rating">
-            <i *ngFor="let star of getStars(doctor.rating)" class="fas fa-star"></i>
-          </div>
-        </div>
+      </div>
+      <!-- Edit and Delete Buttons -->
+      <div class="doctor-actions">
+        <button class="edit-button" (click)="editDoctor(doctor)">Edit</button>
+        <button class="delete-button" (click)="deleteDoctor(doctor)">Delete</button>
       </div>
     </div>
   </div>
+</div>
