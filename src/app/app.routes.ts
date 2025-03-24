@@ -25,6 +25,69 @@ import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
   {
+    path: '',
+    loadComponent: () => import('./components/main-website/main-website-layout/main-website-layout.component').then(m => m.MainWebsiteLayoutComponent),
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { 
+        path: 'home',
+        loadComponent: () => import('./components/main-website/home/home.component').then(m => m.HomeComponent)
+      },
+      {
+        path: 'about',
+        loadComponent: () => import('./components/main-website/about/about-page/about-page.component').then(m => m.AboutPageComponent)
+      },
+      {
+        path: 'services',
+        children: [
+          { 
+            path: '',
+            loadComponent: () => import('./components/main-website/services/services-list/services-list.component').then(m => m.ServicesListComponent)
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./components/main-website/services/service-detail/service-detail.component').then(m => m.ServiceDetailComponent)
+          }
+        ]
+      },
+      {
+        path: 'doctors',
+        children: [
+          { 
+            path: '',
+            loadComponent: () => import('./components/main-website/doctors/doctor-list/doctor-list.component').then(m => m.DoctorListComponent)
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./components/main-website/doctors/doctor-detail/doctor-detail.component').then(m => m.DoctorDetailComponent)
+          }
+        ]
+      },
+      {
+        path: 'blog',
+        children: [
+          { 
+            path: '',
+            loadComponent: () => import('./components/main-website/blog/blog-list/blog-list.component').then(m => m.BlogListComponent)
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('./components/main-website/blog/blog-detail/blog-detail.component').then(m => m.BlogDetailComponent)
+          }
+        ]
+      },
+      {
+        path: 'contact',
+        loadComponent: () => import('./components/main-website/contact/contact-page/contact-page.component').then(m => m.ContactPageComponent)
+      },
+      {
+        path: 'appointment',
+        loadComponent: () => import('./components/main-website/appointments/appointment-form/appointment-form.component').then(m => m.AppointmentFormComponent)
+      }
+    ]
+  },
+
+  {
     path: 'admin/login',
     component: AdminLoginComponent,
     canActivate: [LoginGuard]
@@ -33,11 +96,11 @@ export const routes: Routes = [
     path: 'login',
     component: UserLoginComponent
   },
-  {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  },
+  // {
+  //   path: '',
+  //   redirectTo: 'dashboard',
+  //   pathMatch: 'full'
+  // },
   {
     path: 'dashboard',
     component: DashboardLayoutComponent,
