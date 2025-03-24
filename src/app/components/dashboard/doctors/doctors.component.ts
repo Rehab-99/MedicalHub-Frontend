@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Import CommonModule
+import Swal from 'sweetalert2'; // Import SweetAlert2
+
 
 @Component({
   selector: 'app-doctors',
@@ -43,13 +45,29 @@ export class DoctorsComponent {
 
   // Edit a doctor
   editDoctor(doctor: any) {
-    this.router.navigate(['/edit-doctor', doctor.id]); // Pass the doctor ID to the edit page
+    this.router.navigate(['/dashboard/edit-doctor', doctor.id]); // Pass the doctor ID to the edit page
   }
 
   // Delete a doctor
   deleteDoctor(doctor: any) {
-    this.doctors = this.doctors.filter(d => d.id !== doctor.id); // Remove the doctor from the list
-    console.log('Doctor deleted:', doctor.name);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `You are about to delete ${doctor.name}. This action cannot be undone!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.doctors = this.doctors.filter(d => d.id !== doctor.id); // Remove the doctor from the list
+        Swal.fire(
+          'Deleted!',
+          `${doctor.name} has been deleted.`,
+          'success'
+        );
+      }
+    });
   }
 
   // Get stars for rating

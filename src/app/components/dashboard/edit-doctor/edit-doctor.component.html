@@ -1,0 +1,23 @@
+<div class="edit-doctor-page">
+    <h2>Edit Doctor</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" [(ngModel)]="doctor.name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="specialization">Specialization</label>
+        <input type="text" id="specialization" [(ngModel)]="doctor.specialization" name="specialization" required />
+      </div>
+      <div class="form-group">
+        <label for="rating">Rating</label>
+        <input type="number" id="rating" [(ngModel)]="doctor.rating" name="rating" min="1" max="5" step="0.1" required />
+      </div>
+      <div class="form-group">
+        <label for="photo">Photo URL</label>
+        <input type="url" id="photo" [(ngModel)]="doctor.photo" name="photo" required />
+      </div>
+      <button type="submit">Update Doctor</button>
+      <button type="button" (click)="onCancel()">Cancel</button>
+    </form>
+  </div>
