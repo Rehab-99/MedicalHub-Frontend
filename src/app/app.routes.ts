@@ -69,8 +69,8 @@ export const routes: Routes = [
         path: 'doctors',
         component: DoctorsComponent
       },
-      { path: 'add-doctor', 
-        component: AddDoctorComponent },
+      // { path: 'add-doctor', 
+      //   component: AddDoctorComponent },
       {
         path: 'appointments',
         component: AppointmentsComponent
