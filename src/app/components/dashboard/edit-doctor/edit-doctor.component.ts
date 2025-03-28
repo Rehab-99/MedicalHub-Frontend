@@ -1,80 +1,107 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Import CommonModule
-import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
+import { CommonModule } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import Swal from 'sweetalert2';
+import { DoctorService } from '../../../services/doctor.service';
+import { ClinicService } from '../../../services/clinic.service'; // ✅ Import ClinicService
 
 @Component({
   selector: 'app-edit-doctor',
-  standalone: true, // Mark the component as standalone
-  imports: [CommonModule, FormsModule], // Add CommonModule and FormsModule here
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './edit-doctor.component.html',
   styleUrls: ['./edit-doctor.component.css']
 })
 export class EditDoctorComponent implements OnInit {
-  doctor = {
-    id: 0,
+  @ViewChild('doctorForm') doctorForm!: NgForm;
+  doctorId: number | null = null;
+  doctor: any = {
     name: '',
+    email: '',
+    clinic_id: null,
     specialization: '',
-    rating: 0,
-    photo: ''
+    bio: '',
+    address: '',
+    phone: '',
+    role: '',
+    image: ''
   };
+  clinics: any[] = []; // ✅ Holds clinics data
 
   constructor(
-    private route: ActivatedRoute, // To access route parameters
-    private router: Router // For navigation
+    private doctorService: DoctorService,
+    private clinicService: ClinicService, // ✅ Use existing ClinicService
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    // Get the doctor ID from the route parameters
-    const doctorId = +this.route.snapshot.paramMap.get('id')!;
-    // Fetch the doctor's details (for now, we'll use a mock function)
-    this.fetchDoctorDetails(doctorId);
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.doctorId = +id;
+        this.getDoctor();
+      }
+    });
+
+    this.getClinics(); // ✅ Fetch clinics on init
   }
 
-  // Mock function to fetch doctor details (replace with actual API call)
-  fetchDoctorDetails(doctorId: number) {
-    const mockDoctors = [
-      {
-        id: 1,
-        name: 'Dr. John Doe',
-        specialization: 'Cardiologist',
-        rating: 4.5,
-        photo: 'https://via.placeholder.com/100'
-      },
-      {
-        id: 2,
-        name: 'Dr. Jane Smith',
-        specialization: 'Dermatologist',
-        rating: 4.8,
-        photo: 'https://via.placeholder.com/100'
-      },
-      {
-        id: 3,
-        name: 'Dr. Emily Johnson',
-        specialization: 'Pediatrician',
-        rating: 4.7,
-        photo: 'https://via.placeholder.com/100'
-      }
-    ];
-
-    const doctor = mockDoctors.find(d => d.id === doctorId);
-    if (doctor) {
-      this.doctor = doctor;
-    } else {
-      console.error('Doctor not found');
-      this.router.navigate(['/dashboard/doctors']); // Redirect if doctor not found
+  getDoctor() {
+    if (this.doctorId) {
+      this.doctorService.getDoctorById(this.doctorId).subscribe(
+        (response) => {
+          this.doctor = response.data;
+        },
+        (error) => {
+          console.error('Error fetching doctor:', error);
+          Swal.fire('Error', 'Failed to load doctor details.', 'error');
+        }
+      );
     }
   }
 
-  // Handle form submission
-  onSubmit() {
-    // Add logic to update the doctor (e.g., send to a service or backend)
-    console.log('Doctor updated:', this.doctor);
-    this.router.navigate(['/dashboard/doctors']); // Navigate back to the doctors list
+  getClinics() {
+    this.clinicService.getClinics().subscribe(
+      (response) => {
+        this.clinics = response.data; // ✅ Assign fetched clinics
+      },
+      (error) => {
+        console.error('Error fetching clinics:', error);
+        Swal.fire('Error', 'Failed to load clinic list.', 'error');
+      }
+    );
   }
 
-  // Handle cancel button
+  onSubmit() {
+    if (!this.doctorForm.valid) {
+      Swal.fire('Error', 'Please fill all required fields.', 'error');
+      return;
+    }
+  
+    if (this.doctorId) {
+      this.doctorService.updateDoctor(this.doctorId, this.doctor).subscribe(
+        () => {
+          Swal.fire({
+            title: 'Updated!',
+            text: 'Doctor updated successfully!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            this.router.navigate(['/dashboard/doctors']);
+          });
+        },
+        (error) => {
+          console.error('Error updating doctor:', error);
+          Swal.fire('Error', 'Failed to update doctor. Please try again.', 'error');
+        }
+      );
+    }
+  }
+  
+
   onCancel() {
-    this.router.navigate(['/dashboard/doctors']); // Navigate back to the doctors list
+    this.router.navigate(['/dashboard/doctors']);
   }
 }

@@ -1,13 +1,18 @@
 <div class="doctors-page">
   <h2>Doctors</h2>
+  
   <!-- Add Doctor Button -->
   <button class="add-doctor-button" (click)="navigateToAddDoctor()">Add Doctor</button>
-  <div class="doctors-container">
+
+  <!-- Display doctors -->
+  <div class="doctors-container" *ngIf="doctors.length > 0; else noDoctors">
     <div *ngFor="let doctor of doctors" class="doctor-card">
+      
       <!-- Doctor Photo -->
       <div class="doctor-photo">
-        <img [src]="doctor.photo" alt="{{ doctor.name }}" />
+        <img [src]="doctor.photo || 'https://via.placeholder.com/100'" alt="{{ doctor.name }}" />
       </div>
+
       <!-- Doctor Details -->
       <div class="doctor-details">
         <div class="doctor-name">{{ doctor.name }}</div>
@@ -16,6 +21,7 @@
           <i *ngFor="let star of getStars(doctor.rating)" class="fas fa-star"></i>
         </div>
       </div>
+
       <!-- Edit and Delete Buttons -->
       <div class="doctor-actions">
         <button class="edit-button" (click)="editDoctor(doctor)">Edit</button>
@@ -23,4 +29,9 @@
       </div>
     </div>
   </div>
+
+  <!-- No doctors found -->
+  <ng-template #noDoctors>
+    <p class="no-doctors">No doctors available.</p>
+  </ng-template>
 </div>

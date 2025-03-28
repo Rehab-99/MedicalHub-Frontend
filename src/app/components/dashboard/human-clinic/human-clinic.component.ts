@@ -1,56 +1,48 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // Correct import for Angular Router
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { ClinicService } from '../../../services/clinic.service';
 
 @Component({
   selector: 'app-human-clinic',
-  standalone: true, // Mark the component as standalone
-  imports: [CommonModule], // Add CommonModule here
+  standalone: true,
+  imports: [CommonModule], 
   templateUrl: './human-clinic.component.html',
-  styleUrls: ['./human-clinic.component.css'] // Use styleUrls instead of styleUrl
+  styleUrls: ['./human-clinic.component.css']
 })
-export class HumanClinicComponent {
-  clinics = [
-    {
-      id: 1, // Add an ID for each clinic
-      name: 'City Health Clinic',
-      photo: 'https://via.placeholder.com/100', // Placeholder image URL
-      address: '123 Main St, City, Country'
-    },
-    {
-      id: 2, // Add an ID for each clinic
-      name: 'Green Valley Clinic',
-      photo: 'https://via.placeholder.com/100', // Placeholder image URL
-      address: '456 Elm St, Town, Country'
-    },
-    {
-      id: 3, // Add an ID for each clinic
-      name: 'Sunrise Medical Center',
-      photo: 'https://via.placeholder.com/100', // Placeholder image URL
-      address: '789 Oak St, Village, Country'
-    },
-    {
-      id: 4, // Add an ID for each clinic
-      name: 'Golden Care Clinic',
-      photo: 'https://via.placeholder.com/100', // Placeholder image URL
-      address: '101 Pine St, Hamlet, Country'
-    }
-  ];
+export class HumanClinicComponent implements OnInit {
+  clinics: any[] = []; // Empty array initially
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private clinicService: ClinicService) {}
 
-  // Navigate to the "Add Clinic" page
+  ngOnInit(): void {
+    this.loadClinics();
+  }
+
+  // Fetch clinics from Laravel API
+  loadClinics() {
+    this.clinicService.getClinics().subscribe(
+      (response) => {
+        this.clinics = response.data; // Assuming API returns { data: [...] }
+      },
+      (error) => {
+        console.error('Error fetching clinics:', error);
+      }
+    );
+  }
+
+  // Navigate to add clinic page
   navigateToAddClinic() {
     this.router.navigate(['/dashboard/add-clinic']);
   }
 
-  // Edit a clinic
+  // Navigate to edit page with clinic ID
   editClinic(clinic: any) {
-    this.router.navigate(['/dashboard/edit-clinic', clinic.id]); // Pass the clinic ID to the edit page
+    this.router.navigate(['/dashboard/edit-clinic', clinic.id]);
   }
 
-  // Delete a clinic
+  // Delete clinic
   deleteClinic(clinic: any) {
     Swal.fire({
       title: 'Are you sure?',
@@ -62,11 +54,14 @@ export class HumanClinicComponent {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.clinics = this.clinics.filter(c => c.id !== clinic.id); // Remove the clinic from the list
-        Swal.fire(
-          'Deleted!',
-          `${clinic.name} has been deleted.`,
-          'success'
+        this.clinicService.deleteClinic(clinic.id).subscribe(
+          () => {
+            this.clinics = this.clinics.filter(c => c.id !== clinic.id);
+            Swal.fire('Deleted!', `${clinic.name} has been deleted.`, 'success');
+          },
+          (error) => {
+            console.error('Error deleting clinic:', error);
+          }
         );
       }
     });

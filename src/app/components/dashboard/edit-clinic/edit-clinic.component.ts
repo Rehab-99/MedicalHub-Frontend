@@ -1,76 +1,71 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Import CommonModule
-import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // ✅ Import FormsModule
+import { ClinicService } from '../../../services/clinic.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-edit-clinic',
-  standalone: true, // Mark the component as standalone
-  imports: [CommonModule, FormsModule], // Add CommonModule and FormsModule here
+  standalone: true, // ✅ Make it a standalone component
+  imports: [CommonModule, FormsModule], // ✅ Add FormsModule here
   templateUrl: './edit-clinic.component.html',
   styleUrls: ['./edit-clinic.component.css']
 })
 export class EditClinicComponent implements OnInit {
-  clinic = {
-    id: 0,
-    name: '',
-    photo: '',
-    address: ''
-  };
+  clinic = { id: 0, name: '', description: '' };
 
   constructor(
-    private route: ActivatedRoute, // To access route parameters
-    private router: Router // For navigation
+    private route: ActivatedRoute,
+    private router: Router,
+    private clinicService: ClinicService
   ) {}
 
   ngOnInit() {
-    // Get the clinic ID from the route parameters
-    const clinicId = +this.route.snapshot.paramMap.get('id')!;
-    // Fetch the clinic's details (for now, we'll use a mock function)
-    this.fetchClinicDetails(clinicId);
+    this.route.paramMap.subscribe((params) => {
+      const clinicId = Number(params.get('id'));
+      if (!clinicId) return;
+      this.fetchClinicDetails(clinicId);
+    });
   }
 
-  // Mock function to fetch clinic details (replace with actual API call)
   fetchClinicDetails(clinicId: number) {
-    const mockClinics = [
-      {
-        id: 1,
-        name: 'City Health Clinic',
-        photo: 'https://via.placeholder.com/100',
-        address: '123 Main St, City, Country'
+    this.clinicService.getClinicById(clinicId).subscribe(
+      (response) => {
+        console.log('API Response:', response); // Debugging
+        this.clinic = response.data ? response.data : response; // Adjust based on API response
       },
-      {
-        id: 2,
-        name: 'Green Valley Clinic',
-        photo: 'https://via.placeholder.com/100',
-        address: '456 Elm St, Town, Country'
-      },
-      {
-        id: 3,
-        name: 'Sunrise Medical Center',
-        photo: 'https://via.placeholder.com/100',
-        address: '789 Oak St, Village, Country'
+      (error) => {
+        console.error('Error fetching clinic details:', error);
       }
-    ];
-
-    const clinic = mockClinics.find(c => c.id === clinicId);
-    if (clinic) {
-      this.clinic = clinic;
-    } else {
-      console.error('Clinic not found');
-      this.router.navigate(['/dashboard/clinics']); // Redirect if clinic not found
-    }
+    );
   }
+  
 
-  // Handle form submission
+  
+
   onSubmit() {
-    // Add logic to update the clinic (e.g., send to a service or backend)
-    console.log('Clinic updated:', this.clinic);
-    this.router.navigate(['/dashboard/human-clinic']); // Navigate back to the clinics list
+    this.clinicService.updateClinic(this.clinic.id, this.clinic).subscribe(
+      () => {
+        Swal.fire({
+          title: 'Updated!',
+          text: 'Clinic updated successfully!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/dashboard/human-clinic']);
+        });
+      },
+      (error) => {
+        console.error('Error updating clinic:', error);
+        Swal.fire('Error', 'Failed to update clinic. Please try again.', 'error');
+      }
+    );
   }
+  
 
-  // Handle cancel button
   onCancel() {
-    this.router.navigate(['/dashboard/human-clinic']); // Navigate back to the clinics list
+    this.router.navigate(['/dashboard/human-clinic']);
   }
 }

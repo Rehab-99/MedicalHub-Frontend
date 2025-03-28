@@ -22,71 +22,50 @@ import { AdminLoginComponent } from './components/auth/admin-login/admin-login.c
 import { UserLoginComponent } from './components/auth/user-login/user-login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
+import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
+import { AboutPageComponent } from './components/main-website/about/about-page/about-page.component';
+import { ServicesListComponent } from './components/main-website/services/services-list/services-list.component';
+import { ServiceDetailComponent } from './components/main-website/services/service-detail/service-detail.component';
+import { DoctorListComponent } from './components/main-website/doctors/doctor-list/doctor-list.component';
+import { DoctorDetailComponent } from './components/main-website/doctors/doctor-detail/doctor-detail.component';
+import { BlogListComponent } from './components/main-website/blog/blog-list/blog-list.component';
+import { BlogDetailComponent } from './components/main-website/blog/blog-detail/blog-detail.component';
+import { ContactPageComponent } from './components/main-website/contact/contact-page/contact-page.component';
+import { AppointmentFormComponent } from './components/main-website/appointments/appointment-form/appointment-form.component';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./components/main-website/main-website-layout/main-website-layout.component').then(m => m.MainWebsiteLayoutComponent),
+    component: MainWebsiteLayoutComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'about', component: AboutPageComponent },
       { 
-        path: 'home',
-        loadComponent: () => import('./components/main-website/home/home.component').then(m => m.HomeComponent)
-      },
-      {
-        path: 'about',
-        loadComponent: () => import('./components/main-website/about/about-page/about-page.component').then(m => m.AboutPageComponent)
-      },
-      {
         path: 'services',
         children: [
-          { 
-            path: '',
-            loadComponent: () => import('./components/main-website/services/services-list/services-list.component').then(m => m.ServicesListComponent)
-          },
-          {
-            path: ':id',
-            loadComponent: () => import('./components/main-website/services/service-detail/service-detail.component').then(m => m.ServiceDetailComponent)
-          }
+          { path: '', component: ServicesListComponent },
+          { path: ':id', component: ServiceDetailComponent }
         ]
       },
-      {
+      { 
         path: 'doctors',
         children: [
-          { 
-            path: '',
-            loadComponent: () => import('./components/main-website/doctors/doctor-list/doctor-list.component').then(m => m.DoctorListComponent)
-          },
-          {
-            path: ':id',
-            loadComponent: () => import('./components/main-website/doctors/doctor-detail/doctor-detail.component').then(m => m.DoctorDetailComponent)
-          }
+          { path: '', component: DoctorListComponent },
+          { path: ':id', component: DoctorDetailComponent }
         ]
       },
-      {
+      { 
         path: 'blog',
         children: [
-          { 
-            path: '',
-            loadComponent: () => import('./components/main-website/blog/blog-list/blog-list.component').then(m => m.BlogListComponent)
-          },
-          {
-            path: ':id',
-            loadComponent: () => import('./components/main-website/blog/blog-detail/blog-detail.component').then(m => m.BlogDetailComponent)
-          }
+          { path: '', component: BlogListComponent },
+          { path: ':id', component: BlogDetailComponent }
         ]
       },
-      {
-        path: 'contact',
-        loadComponent: () => import('./components/main-website/contact/contact-page/contact-page.component').then(m => m.ContactPageComponent)
-      },
-      {
-        path: 'appointment',
-        loadComponent: () => import('./components/main-website/appointments/appointment-form/appointment-form.component').then(m => m.AppointmentFormComponent)
-      }
+      { path: 'contact', component: ContactPageComponent },
+      { path: 'appointment', component: AppointmentFormComponent }
     ]
   },
-
   {
     path: 'admin/login',
     component: AdminLoginComponent,

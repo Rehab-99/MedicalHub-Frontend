@@ -1,23 +1,35 @@
 <div class="human-clinics-page">
   <h2>Human Clinics</h2>
+
   <!-- Add Clinic Button -->
   <button class="add-clinic-button" (click)="navigateToAddClinic()">Add Clinic</button>
-  <div class="clinics-container">
+
+  <!-- Clinics List -->
+  <div *ngIf="clinics.length > 0; else noClinics" class="clinics-container">
     <div *ngFor="let clinic of clinics" class="clinic-card">
+      
       <!-- Clinic Photo -->
       <div class="clinic-photo">
-        <img [src]="clinic.photo" alt="{{ clinic.name }}" />
+        <img [src]="clinic.photo || 'assets/default-clinic.png'" alt="{{ clinic.name }}" />
       </div>
+
       <!-- Clinic Details -->
       <div class="clinic-details">
-        <div class="clinic-name">{{ clinic.name }}</div>
-        <div class="clinic-address">{{ clinic.address }}</div>
+        <h3 class="clinic-name">{{ clinic.name }}</h3>
+        <p class="clinic-address">{{ clinic.description }}</p>
       </div>
-      <!-- Edit and Delete Buttons -->
+
+      <!-- Actions -->
       <div class="clinic-actions">
         <button class="edit-button" (click)="editClinic(clinic)">Edit</button>
         <button class="delete-button" (click)="deleteClinic(clinic)">Delete</button>
       </div>
+      
     </div>
   </div>
+
+  <!-- No Clinics Message -->
+  <ng-template #noClinics>
+    <p class="no-clinics">No clinics available. Add a new clinic!</p>
+  </ng-template>
 </div>

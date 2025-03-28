@@ -1,54 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Import CommonModule
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import { CommonModule } from '@angular/common';
 
+import Swal from 'sweetalert2';
+import { DoctorService } from '../../../services/doctor.service';
 
 @Component({
   selector: 'app-doctors',
-  standalone: true, // Mark the component as standalone
-  imports: [CommonModule], // Add CommonModule here
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './doctors.component.html',
   styleUrls: ['./doctors.component.css']
 })
-export class DoctorsComponent {
-  doctors = [
-    {
-      id: 1,
-      name: 'Dr. John Doe',
-      specialization: 'Cardiologist',
-      rating: 4.5,
-      photo: 'https://via.placeholder.com/100'
-    },
-    {
-      id: 2,
-      name: 'Dr. Jane Smith',
-      specialization: 'Dermatologist',
-      rating: 4.8,
-      photo: 'https://via.placeholder.com/100'
-    },
-    {
-      id: 3,
-      name: 'Dr. Emily Johnson',
-      specialization: 'Pediatrician',
-      rating: 4.7,
-      photo: 'https://via.placeholder.com/100'
-    }
-  ];
+export class DoctorsComponent implements OnInit {
+  doctors: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private doctorService: DoctorService) {}
 
-  // Navigate to the "Add Doctor" page
+  ngOnInit() {
+    this.fetchDoctors();
+  }
+
+  fetchDoctors() {
+    this.doctorService.getDoctors().subscribe(
+      (response) => {
+        console.log('Fetched Doctors:', response); // Debugging
+        this.doctors = response.data || response; // Adjust if API returns { data: [...] }
+      },
+      (error) => {
+        console.error('Error fetching doctors:', error);
+        Swal.fire('Error', 'Failed to fetch doctors. Please try again.', 'error');
+      }
+    );
+  }
+  
+
   navigateToAddDoctor() {
     this.router.navigate(['/dashboard/add-doctor']);
   }
 
-  // Edit a doctor
   editDoctor(doctor: any) {
-    this.router.navigate(['/dashboard/edit-doctor', doctor.id]); // Pass the doctor ID to the edit page
+    this.router.navigate(['/dashboard/edit-doctor', doctor.id]);
   }
 
-  // Delete a doctor
   deleteDoctor(doctor: any) {
     Swal.fire({
       title: 'Are you sure?',
@@ -60,20 +54,28 @@ export class DoctorsComponent {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.doctors = this.doctors.filter(d => d.id !== doctor.id); // Remove the doctor from the list
-        Swal.fire(
-          'Deleted!',
-          `${doctor.name} has been deleted.`,
-          'success'
+        this.doctorService.deleteDoctor(doctor.id).subscribe(
+          () => {
+            this.doctors = this.doctors.filter(d => d.id !== doctor.id); // Remove from UI
+            Swal.fire('Deleted!', `${doctor.name} has been deleted.`, 'success');
+          },
+          (error) => {
+            console.error('Error deleting doctor:', error);
+            Swal.fire('Error', 'Failed to delete doctor. Please try again.', 'error');
+          }
         );
       }
     });
   }
 
-  // Get stars for rating
   getStars(rating: number): number[] {
+    if (!rating || rating < 0) return []; // Prevent invalid ratings
+  
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 !== 0 ? 1 : 0;
-    return new Array(fullStars + halfStar).fill(0);
+    const totalStars = fullStars + halfStar;
+  
+    return Array.from({ length: Math.min(totalStars, 5) }); // Ensure max 5 stars
   }
+  
 }

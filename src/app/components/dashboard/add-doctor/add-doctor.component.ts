@@ -1,35 +1,56 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Import CommonModule
-import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+import Swal from 'sweetalert2';
+import { DoctorService } from '../../../services/doctor.service';
 
 @Component({
   selector: 'app-add-doctor',
-  standalone: true, // Mark the component as standalone
-  imports: [CommonModule, FormsModule], // Add CommonModule and FormsModule here
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './add-doctor.component.html',
   styleUrls: ['./add-doctor.component.css']
 })
 export class AddDoctorComponent {
   doctor = {
-    id: 0,
     name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    clinic_id: null,
     specialization: '',
-    rating: 0,
-    photo: ''
+    bio: '',
+    clinic_address: '',
+    role: 'human',
+    address: '',
+    phone: '',
+    image: ''
   };
 
-  constructor(private router: Router) {}
+  constructor(private doctorService: DoctorService, private router: Router) {}
 
-  // Handle form submission
   onSubmit() {
-    // Add logic to save the doctor (e.g., send to a service or backend)
-    console.log('Doctor added:', this.doctor);
-    this.router.navigate(['/dashboard/doctors']); // Navigate back to the doctors list
+    this.doctorService.addDoctor(this.doctor).subscribe(
+      (response) => {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Doctor added successfully!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/dashboard/doctors']);
+        });
+      },
+      (error) => {
+        console.error('Error adding doctor:', error);
+        Swal.fire('Error', 'Failed to add doctor. Please try again.', 'error');
+      }
+    );
   }
 
-  // Handle cancel button
   onCancel() {
-    this.router.navigate(['/dashboard/doctors']); // Navigate back to the doctors list
+    this.router.navigate(['/dashboard/doctors']);
   }
 }
