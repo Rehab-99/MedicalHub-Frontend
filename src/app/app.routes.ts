@@ -20,6 +20,8 @@ import { AddVetClinicComponent } from './components/dashboard/add-vet-clinic/add
 import { EditVetClinicComponent } from './components/dashboard/edit-vet-clinic/edit-vet-clinic.component';
 import { AdminLoginComponent } from './components/auth/admin-login/admin-login.component';
 import { UserLoginComponent } from './components/auth/user-login/user-login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 
@@ -32,6 +34,10 @@ export const routes: Routes = [
   {
     path: 'login',
     component: UserLoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: '',

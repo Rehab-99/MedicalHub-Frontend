@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-user-login',
@@ -13,79 +14,75 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class UserLoginComponent {
   loginForm: FormGroup;
-  registerForm: FormGroup;
-  isLoginMode = true;
   errorMessage = '';
-  successMessage = '';
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private route: ActivatedRoute // ✅ لالتقاط التوكن بعد تسجيل الدخول عبر Google
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
-    this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]]
-    }, { validator: this.passwordMatchValidator });
+    // ✅ التحقق عند تحميل الصفحة إذا كان هناك توكن في الرابط بعد تسجيل الدخول عبر Google
+    this.route.queryParams.subscribe(params => {
+      const token = params['token'];
+      if (token) {
+        localStorage.setItem('userToken', token);
+        this.getUserData(); // ✅ جلب بيانات المستخدم بعد تسجيل الدخول
+      }
+    });
   }
 
-  passwordMatchValidator(g: FormGroup) {
-    return g.get('password')?.value === g.get('confirmPassword')?.value
-      ? null
-      : { mismatch: true };
-  }
-
-  toggleMode() {
-    this.isLoginMode = !this.isLoginMode;
-    this.errorMessage = '';
-    this.successMessage = '';
-  }
-
+  /**
+   * تسجيل الدخول العادي عبر البريد وكلمة المرور
+   */
   onSubmit() {
-    if (this.isLoginMode) {
+    if (this.loginForm.valid) {
       this.login();
-    } else {
-      this.register();
     }
   }
 
   login() {
-    if (this.loginForm.valid) {
-      this.http.post('http://127.0.0.1:8000/api/user/login', this.loginForm.value)
-        .subscribe({
-          next: (response: any) => {
-            localStorage.setItem('userToken', response.token);
-            localStorage.setItem('userData', JSON.stringify(response.user));
-            this.router.navigate(['/']);
-          },
-          error: (error) => {
-            this.errorMessage = error.error.message || 'An error occurred during login';
-          }
-        });
-    }
+    this.http.post('http://127.0.0.1:8000/api/user/login', this.loginForm.value)
+      .subscribe({
+        next: (response: any) => {
+          localStorage.setItem('userToken', response.token);
+          localStorage.setItem('userData', JSON.stringify(response.user));
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          this.errorMessage = error.error.message || 'حدث خطأ أثناء تسجيل الدخول';
+        }
+      });
   }
 
-  register() {
-    if (this.registerForm.valid) {
-      const { confirmPassword, ...registerData } = this.registerForm.value;
-      this.http.post('http://127.0.0.1:8000/api/user/register', registerData)
-        .subscribe({
-          next: (response) => {
-            this.successMessage = 'Registration successful! Please login.';
-            this.isLoginMode = true;
-            this.loginForm.reset();
-          },
-          error: (error) => {
-            this.errorMessage = error.error.message || 'An error occurred during registration';
-          }
-        });
-    }
+  /**
+   * تسجيل الدخول عبر Google
+   */
+  socialLogin(provider: string) {
+    window.location.href = `http://127.0.0.1:8000/auth/${provider}/redirect`;
   }
-} 
+  
+
+  /**
+   * جلب بيانات المستخدم بعد تسجيل الدخول عبر Google
+   */
+  getUserData() {
+    this.http.get('http://127.0.0.1:8000/api/user', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('userToken')}` }
+    }).subscribe({
+      next: (response: any) => {
+        localStorage.setItem('userData', JSON.stringify(response));
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        this.errorMessage = 'فشل في جلب بيانات المستخدم!';
+      }
+    });
+  }
+}
