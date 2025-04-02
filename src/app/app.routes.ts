@@ -20,6 +20,10 @@ import { AddVetClinicComponent } from './components/dashboard/add-vet-clinic/add
 import { EditVetClinicComponent } from './components/dashboard/edit-vet-clinic/edit-vet-clinic.component';
 import { AdminLoginComponent } from './components/auth/admin-login/admin-login.component';
 import { UserLoginComponent } from './components/auth/user-login/user-login.component';
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { UpdatePasswordComponent } from './components/auth/update-password/update-password.component';
+
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
@@ -75,11 +79,23 @@ export const routes: Routes = [
     path: 'login',
     component: UserLoginComponent
   },
-  // {
-  //   path: '',
-  //   redirectTo: 'dashboard',
-  //   pathMatch: 'full'
-  // },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
+    path: 'password/update',
+    component: UpdatePasswordComponent
+  },
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
   {
     path: 'dashboard',
     component: DashboardLayoutComponent,
