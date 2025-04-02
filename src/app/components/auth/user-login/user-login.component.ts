@@ -1,39 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-user-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './user-login.component.html',
   styleUrls: ['./user-login.component.css']
 })
-export class UserLoginComponent {
+export class UserLoginComponent implements OnInit {
   loginForm: FormGroup;
+  isLoading = false;
+  showSuccess = false;
+  showError = false;
   errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     private router: Router,
     private authService: AuthService,
-    private route: ActivatedRoute // ✅ لالتقاط التوكن بعد تسجيل الدخول عبر Google
+    private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required]]
     });
+  }
 
-    // ✅ التحقق عند تحميل الصفحة إذا كان هناك توكن في الرابط بعد تسجيل الدخول عبر Google
+  ngOnInit(): void {
+    // Check for token in URL after Google login
     this.route.queryParams.subscribe(params => {
       const token = params['token'];
       if (token) {
-        localStorage.setItem('userToken', token);
-        this.getUserData(); // ✅ جلب بيانات المستخدم بعد تسجيل الدخول
+        this.authService.setToken(token);
+        this.handleGoogleCallback();
       }
     });
   }
@@ -43,46 +46,57 @@ export class UserLoginComponent {
    */
   onSubmit() {
     if (this.loginForm.valid) {
-      this.login();
-    }
-  }
+      this.isLoading = true;
+      this.showError = false;
 
-  login() {
-    this.http.post('http://127.0.0.1:8000/api/user/login', this.loginForm.value)
-      .subscribe({
+      this.authService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
-          localStorage.setItem('userToken', response.token);
-          localStorage.setItem('userData', JSON.stringify(response.user));
-          this.router.navigate(['/']);
+          this.isLoading = false;
+          this.authService.setToken(response.token);
+          this.authService.setUser(response.user);
+          this.router.navigate(['/dashboard']);
         },
         error: (error) => {
-          this.errorMessage = error.error.message || 'حدث خطأ أثناء تسجيل الدخول';
+          this.isLoading = false;
+          this.showError = true;
+          this.errorMessage = error.error.message || 'An error occurred during login.';
         }
       });
+    }
   }
 
   /**
    * تسجيل الدخول عبر Google
    */
-  socialLogin(provider: string) {
-    window.location.href = `http://127.0.0.1:8000/auth/${provider}/redirect`;
+  loginWithGoogle() {
+    this.isLoading = true;
+    this.showError = false;
+    this.authService.loginWithGoogle();
   }
-  
+
+  /**
+   * تسجيل الدخول عبر Facebook
+   */
+  loginWithFacebook() {
+    this.authService.loginWithFacebook();
+  }
 
   /**
    * جلب بيانات المستخدم بعد تسجيل الدخول عبر Google
    */
-  getUserData() {
-    this.http.get('http://127.0.0.1:8000/api/user', {
-      headers: { Authorization: `Bearer ${localStorage.getItem('userToken')}` }
-    }).subscribe({
+  handleGoogleCallback() {
+    this.authService.getUserData().subscribe({
       next: (response: any) => {
-        localStorage.setItem('userData', JSON.stringify(response));
-        this.router.navigate(['/']);
+        this.authService.setUser(response);
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => {
-        this.errorMessage = 'فشل في جلب بيانات المستخدم!';
+        this.showError = true;
+        this.errorMessage = 'Failed to get user data!';
       }
     });
   }
+
+  get email() { return this.loginForm.get('email'); }
+  get password() { return this.loginForm.get('password'); }
 }

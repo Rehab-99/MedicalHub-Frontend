@@ -151,52 +151,49 @@
 /* Social Buttons */
 .social-buttons {
   display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
-.social-buttons button {
-  flex: 1;
+.social-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   padding: 12px;
-  border: 2px solid transparent;
-  border-radius: 12px;
-  background: white;
+  border-radius: 8px;
+  border: none;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
-.social-buttons button i {
-  font-size: 20px;
-  margin-right: 10px;
+.social-btn i {
+  font-size: 18px;
 }
 
-.social-buttons .google-btn {
-  border-color: #DB4437;
-  color: #DB4437;
+.social-btn.google {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
 }
 
-.social-buttons .google-btn:hover {
-  background: #DB4437;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(219, 68, 55, 0.2);
+.social-btn.google:hover {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.social-buttons .facebook-btn {
-  background: #1877f2;
-  color: white;
+.social-btn.facebook {
+  background-color: #1877f2;
+  color: #fff;
 }
 
-.social-buttons .facebook-btn:hover {
-  background: #166fe5;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(24, 119, 242, 0.2);
+.social-btn.facebook:hover {
+  background-color: #166fe5;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* Divider */
@@ -319,20 +316,36 @@
   color: #7f8c8d;
 }
 
-.auth-footer a {
+.auth-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.auth-links a {
   color: #3498db;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
+  font-size: 14px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  background: rgba(52, 152, 219, 0.1);
 }
 
-.auth-footer a:hover {
+.auth-links a:hover {
   color: #2980b9;
   text-decoration: none;
   transform: translateX(3px);
+  background: rgba(52, 152, 219, 0.2);
 }
 
-/* Responsive Design */
+.separator {
+  color: #bdc3c7;
+  font-weight: 300;
+}
+
 @media (max-width: 768px) {
   .auth-card {
     flex-direction: column;
@@ -365,6 +378,20 @@
 
   .auth-form h1 {
     font-size: 28px;
+  }
+
+  .auth-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .separator {
+    display: none;
+  }
+
+  .auth-links a {
+    width: 100%;
+    text-align: center;
   }
 }
 
