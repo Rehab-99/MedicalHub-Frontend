@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardLayoutComponent } from './components/dashboard/dashboard-layout/dashboard-layout.component';
-import { HomeComponent } from './components/dashboard/home/home.component';
+import { HomeComponent as DashboardHomeComponent } from './components/dashboard/home/home.component';
 import { HumanPharmacyComponent } from './components/dashboard/human-pharmacy/human-pharmacy.component';
 import { HumanClinicComponent } from './components/dashboard/human-clinic/human-clinic.component';
 import { HumanBlogComponent } from './components/dashboard/human-blog/human-blog.component';
@@ -40,44 +40,16 @@ import { AppointmentFormComponent } from './components/main-website/appointments
 export const routes: Routes = [
   {
     path: '',
-    component: MainWebsiteLayoutComponent,
-    children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', component: HomeComponent },
-      { path: 'about', component: AboutPageComponent },
-      { 
-        path: 'services',
-        children: [
-          { path: '', component: ServicesListComponent },
-          { path: ':id', component: ServiceDetailComponent }
-        ]
-      },
-      { 
-        path: 'doctors',
-        children: [
-          { path: '', component: DoctorListComponent },
-          { path: ':id', component: DoctorDetailComponent }
-        ]
-      },
-      { 
-        path: 'blog',
-        children: [
-          { path: '', component: BlogListComponent },
-          { path: ':id', component: BlogDetailComponent }
-        ]
-      },
-      { path: 'contact', component: ContactPageComponent },
-      { path: 'appointment', component: AppointmentFormComponent }
-    ]
+    component: MainWebsiteLayoutComponent
+  },
+  {
+    path: 'login',
+    component: UserLoginComponent
   },
   {
     path: 'admin/login',
     component: AdminLoginComponent,
     canActivate: [LoginGuard]
-  },
-  {
-    path: 'login',
-    component: UserLoginComponent
   },
   {
     path: 'reset-password',
@@ -92,18 +64,13 @@ export const routes: Routes = [
     component: UpdatePasswordComponent
   },
   {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  },
-  {
     path: 'dashboard',
     component: DashboardLayoutComponent,
     canActivate: [AuthGuard],
     children: [
       {
         path: '',
-        component: HomeComponent
+        component: DashboardHomeComponent
       },
       {
         path: 'human-pharmacy',
@@ -126,7 +93,7 @@ export const routes: Routes = [
         component: VetClinicComponent
       },
       { path: 'add-vet-clinic',
-         component: AddVetClinicComponent }, // Add route for AddVetClinicComponent
+         component: AddVetClinicComponent },
       { path: 'edit-vet-clinic/:id', component:
          EditVetClinicComponent },
       {
@@ -143,9 +110,8 @@ export const routes: Routes = [
       },
       { path: 'add-doctor', 
         component: AddDoctorComponent },
-
-        { path: 'edit-doctor/:id',
-           component: EditDoctorComponent }, 
+      { path: 'edit-doctor/:id',
+         component: EditDoctorComponent }, 
       {
         path: 'appointments',
         component: AppointmentsComponent
