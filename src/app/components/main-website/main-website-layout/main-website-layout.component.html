@@ -31,6 +31,11 @@
     </div>
 </nav>
 
+<!-- Scroll to Top Button -->
+<button class="scroll-to-top" (click)="scrollToTop()" [class.visible]="isScrollButtonVisible">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
 <!-- Hero Section -->
 <div class="hero-section">
     <div class="hero-content">
@@ -52,16 +57,47 @@
 <!-- Health Department Section -->
 <section class="health-department">
     <div class="container">
-        <div class="section-header">
-            <h2>Health Department</h2>
-            <div class="title-line"></div>
+        <div class="who-we-are-section">
+            <div class="who-we-are">
+                <h2>Who We Are</h2>
+                <h3>Pioneering In Health.</h3>
+                <div class="blue-line"></div>
+                <p>Where you are at the heart of our mission. We hope you will consider us as your medical home—the place where you feel safe, comfortable and cared for. As a multi-specialty medical group.</p>
+                <button class="more-about-btn">More About Us</button>
+            </div>
+            <div class="who-we-are-image">
+                <div class="image-placeholder">594x426</div>
+            </div>
         </div>
-        <div class="department-buttons">
-            <button class="dept-btn">General Medicine</button>
-            <button class="dept-btn">Cardiology</button>
-            <button class="dept-btn">Dental Care</button>
-            <button class="dept-btn">Eye Care</button>
-            <button class="dept-btn">Neurology</button>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <h4>Medical Treatment</h4>
+                <p>Whether you're taking your first steps, just finding your stride.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-ambulance"></i>
+                </div>
+                <h4>Emergency Help</h4>
+                <p>Whether you're taking your first steps, just finding your stride.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h4>Qualified Doctors</h4>
+                <p>Whether you're taking your first steps, just finding your stride.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-hospital-user"></i>
+                </div>
+                <h4>Medical Professionals</h4>
+                <p>Whether you're taking your first steps, just finding your stride.</p>
+            </div>
         </div>
     </div>
 </section>

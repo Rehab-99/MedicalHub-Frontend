@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { UserLoginComponent } from './components/auth/user-login/user-login.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { RegisterComponent } from './components/auth/register/register.component';
+import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
 import { routes } from './app.routes';
 
 @NgModule({
@@ -15,7 +16,8 @@ import { routes } from './app.routes';
     AppComponent,
     UserLoginComponent,
     ResetPasswordComponent,
-    RegisterComponent
+    RegisterComponent,
+    MainWebsiteLayoutComponent
   ],
   imports: [
     BrowserModule,
