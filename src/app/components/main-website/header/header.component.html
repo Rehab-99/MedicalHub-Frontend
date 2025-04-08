@@ -1,1 +1,26 @@
-<p>header works!</p>
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <a routerLink="/">
+                <i class="fas fa-heartbeat logo-icon"></i>
+                <span class="logo-text">MedicalHub</span>
+            </a>
+        </div>
+
+        <div class="nav-links">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            <a routerLink="/doctors" routerLinkActive="active">Doctors</a>
+            <a routerLink="/department" routerLinkActive="active">Department</a>
+            <a routerLink="/blog" routerLinkActive="active">Blog</a>
+            <a routerLink="/Pharmacy" routerLinkActive="active">Pharmacy</a>
+            <a routerLink="/login" routerLinkActive="active" class="login-btn">Login</a>
+        </div>
+
+        <button class="menu-toggle" (click)="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</nav>

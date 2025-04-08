@@ -1,35 +1,9 @@
 <!-- Navigation Bar -->
-<nav class="navbar">
-    <button class="menu-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
-    
-    <div class="social-icons">
-        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
-        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="social-icon"><i class="fab fa-skype"></i></a>
-        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-        <button class="search-icon"><i class="fas fa-search"></i></button>
-    </div>
+<app-header></app-header>
 
-    <div class="nav-links">
-        <a routerLink="/login" routerLinkActive="active">Login</a>
-        <a routerLink="/contact" routerLinkActive="active">Contact</a>
-        <a routerLink="/shop" routerLinkActive="active">Shop</a>
-        <a routerLink="/blog" routerLinkActive="active">Blog</a>
-        <a routerLink="/department" routerLinkActive="active">Department</a>
-        <a routerLink="/doctors" routerLinkActive="active">Doctors</a>
-        <a routerLink="/pages" routerLinkActive="active">Pages</a>
-        <a routerLink="/about" routerLinkActive="active">About us</a>
-        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-    </div>
+<!-- Main Content -->
 
-    <div class="ad-space">
-        <i class="fas fa-heartbeat logo-icon"></i>
-        <span class="logo-text">MedicalHub</span>
-    </div>
-</nav>
+
 
 <!-- Scroll to Top Button -->
 <button class="scroll-to-top" (click)="scrollToTop()" [class.visible]="isScrollButtonVisible">
@@ -280,3 +254,6 @@
         </div>
     </div>
 </section>
+
+<!-- Footer Component -->
+<app-footer></app-footer>

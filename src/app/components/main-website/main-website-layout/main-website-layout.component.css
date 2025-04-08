@@ -91,24 +91,6 @@ body {
     padding: 20px;
 }
 
-/* Navigation */
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background: #0052FF;
-    color: white;
-    padding: 10px;
-}
-
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
-}
-
 /* Sections */
 section {
     min-height: 100vh;
@@ -135,143 +117,6 @@ input, select {
     .content-grid {
         grid-template-columns: 1fr;
     }
-}
-
-/* Navigation Bar */
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 2rem;
-    background-color: #0052FF;
-    color: white;
-}
-
-.menu-toggle {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.social-icons {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.social-icon {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-.social-icon:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.search-icon {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.nav-links {
-    display: flex;
-    gap: 2rem;
-    margin-left: auto;
-}
-
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    transition: opacity 0.3s;
-}
-
-.nav-links a:hover {
-    opacity: 0.8;
-}
-
-.nav-links a.active {
-    background-color: #333;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-}
-
-.ad-space {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    gap: 10px;
-    background-color: #0052FF;
-    border-radius: 8px;
-    margin: 0 20px;
-}
-
-.logo-icon {
-    font-size: 2rem;
-    color: white;
-    animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-.logo-text {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-    /* text-transform: uppercase; */
-    letter-spacing: 1px;
-}
-
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    25% { transform: scale(1.1); }
-    50% { transform: scale(1); }
-    75% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-/* General Styles */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.section-header h2 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 1rem;
-}
-
-.title-line {
-    width: 50px;
-    height: 4px;
-    background-color: #0052FF;
-    margin: 0 auto;
 }
 
 /* Hero Section */
@@ -523,13 +368,6 @@ input, select {
 .neurology-department {
     background-color: #f8f9fa;
     padding: 4rem 0;
-}
-
-.content-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
 }
 
 .service-list {
@@ -792,14 +630,6 @@ input, select {
         height: 400px;
         right: 0;
     }
-
-    .nav-links {
-        display: none;
-    }
-
-    .ad-space {
-        display: none;
-    }
 }
 
 @media (max-width: 768px) {
@@ -824,34 +654,6 @@ input, select {
     }
 
     .hero-subtitle {
-        font-size: 1rem;
-    }
-
-    .ad-space {
-        padding: 8px;
-        margin: 0 10px;
-    }
-    
-    .logo-icon {
-        font-size: 1.5rem;
-    }
-    
-    .logo-text {
-        font-size: 1.2rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .ad-space {
-        padding: 6px;
-        margin: 0 5px;
-    }
-    
-    .logo-icon {
-        font-size: 1.2rem;
-    }
-    
-    .logo-text {
         font-size: 1rem;
     }
 }
