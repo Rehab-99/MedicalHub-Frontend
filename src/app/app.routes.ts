@@ -37,6 +37,8 @@ import { BlogDetailComponent } from './components/main-website/blog/blog-detail/
 import { ContactPageComponent } from './components/main-website/contact/contact-page/contact-page.component';
 import { AppointmentFormComponent } from './components/main-website/appointments/appointment-form/appointment-form.component';
 import { ProfileComponent } from './components/main-website/profile/profile.component';
+import { VetComponent } from './components/main-website/doctors/vet/vet.component';
+import { HumanComponent } from './components/main-website/doctors/human/human.component';
 
 export const routes: Routes = [
   {
@@ -52,6 +54,10 @@ export const routes: Routes = [
     component: AdminLoginComponent,
     canActivate: [LoginGuard]
   },
+  { path: 'doctors/vet',
+     component: VetComponent },
+    { path: 'doctors/human',
+       component: HumanComponent },
   {
     path: 'reset-password',
     component: ResetPasswordComponent

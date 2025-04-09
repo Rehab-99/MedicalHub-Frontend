@@ -25,7 +25,12 @@ export class HeaderComponent {
       this.user = user;
     });
   }
+  isDoctorsDropdownOpen = false;
 
+  toggleDoctorsDropdown() {
+    this.isDoctorsDropdownOpen = !this.isDoctorsDropdownOpen;
+  }
+  
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     const menuToggle = document.querySelector('.menu-toggle');

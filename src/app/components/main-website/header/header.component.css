@@ -194,6 +194,51 @@
     animation: slideDown 0.3s ease;
     border: 1px solid rgba(52, 152, 219, 0.1);
 }
+/* Doctors Dropdown */
+.nav-links .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-toggle {
+    cursor: pointer;
+    padding: 8px 12px;
+    display: inline-block;
+    color: #007B8A; /* soft medical blue */
+    text-decoration: none;
+  }
+  
+  .dropdown-toggle i {
+    margin-left: 5px;
+    font-size: 0.8rem;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    min-width: 180px;
+    z-index: 1000;
+    border-radius: 5px;
+    padding: 0;
+  }
+  
+  .dropdown-menu a {
+    display: block;
+    padding: 10px 16px;
+    color: #007B8A;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  
+  .dropdown-menu a:hover {
+    background-color: #e6f4f4;
+    color: #005f6b;
+  }
+  
 
 @keyframes slideDown {
     from {

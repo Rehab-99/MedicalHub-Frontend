@@ -126,7 +126,7 @@ input, select {
     align-items: center;
     justify-content: space-between;
     padding: 4rem 6rem;
-    background-color: #0052FF;
+    background-color: #2980b9;
     min-height: 80vh;
     color: white;
     position: relative;
@@ -170,7 +170,7 @@ input, select {
 
 .btn-appointment {
     background-color: white;
-    color: #0052FF;
+    color: #2980b9;
 }
 
 .btn-services {
@@ -434,7 +434,7 @@ input, select {
 
 /* We Care About You Section */
 .we-care {
-    background-color: #0052FF;
+    background-color: #2980b9;
     color: white;
     padding: 4rem 0;
 }
@@ -481,7 +481,7 @@ input, select {
 
 .btn-submit {
     width: 100%;
-    background-color: #0052FF;
+    background-color: #2980b9;
     color: white;
     border: none;
     padding: 1rem;

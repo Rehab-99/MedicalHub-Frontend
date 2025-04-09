@@ -10,7 +10,15 @@
 
         <div class="nav-links">
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-            <a routerLink="/doctors" routerLinkActive="active">Doctors</a>
+            <div class="dropdown">
+              <a class="dropdown-toggle" (click)="toggleDoctorsDropdown()">
+                Doctors <i class="fas fa-chevron-down"></i>
+              </a>
+              <div class="dropdown-menu" *ngIf="isDoctorsDropdownOpen">
+                <a routerLink="/doctors/vet" routerLinkActive="active" (click)="toggleDoctorsDropdown()">Vet Doctors</a>
+                <a routerLink="/doctors/human" routerLinkActive="active" (click)="toggleDoctorsDropdown()">Human Doctors</a>
+              </div>
+            </div>
             <a routerLink="/department" routerLinkActive="active">Department</a>
             <a routerLink="/blog" routerLinkActive="active">Blog</a>
             <a routerLink="/Pharmacy" routerLinkActive="active">Pharmacy</a>
