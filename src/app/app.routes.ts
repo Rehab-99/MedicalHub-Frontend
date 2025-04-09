@@ -36,6 +36,7 @@ import { BlogListComponent } from './components/main-website/blog/blog-list/blog
 import { BlogDetailComponent } from './components/main-website/blog/blog-detail/blog-detail.component';
 import { ContactPageComponent } from './components/main-website/contact/contact-page/contact-page.component';
 import { AppointmentFormComponent } from './components/main-website/appointments/appointment-form/appointment-form.component';
+import { ProfileComponent } from './components/main-website/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -129,5 +130,9 @@ export const routes: Routes = [
         component: SettingsComponent
       }
     ]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
   }
 ];
