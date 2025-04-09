@@ -14,7 +14,26 @@
             <a routerLink="/department" routerLinkActive="active">Department</a>
             <a routerLink="/blog" routerLinkActive="active">Blog</a>
             <a routerLink="/Pharmacy" routerLinkActive="active">Pharmacy</a>
-            <a routerLink="/login" routerLinkActive="active" class="login-btn">Login</a>
+            <a routerLink="/login" routerLinkActive="active" class="login-btn" *ngIf="!isLoggedIn">Login</a>
+            <div class="user-menu" *ngIf="isLoggedIn">
+              <div class="user-profile" (click)="toggleUserMenu()">
+                <img *ngIf="user?.image" [src]="user.image" alt="User Profile" class="profile-image">
+                <i *ngIf="!user?.image" class="fas fa-user-circle profile-icon"></i>
+              </div>
+              <div class="dropdown-menu" *ngIf="isUserMenuOpen">
+                <div class="user-info">
+                  <span class="user-name">{{ user?.name || 'User' }}</span>
+                </div>
+                <a routerLink="/profile" class="dropdown-item">
+                  <i class="fas fa-user"></i>
+                  Profile
+                </a>
+                <a (click)="logout()" class="dropdown-item">
+                  <i class="fas fa-sign-out-alt"></i>
+                  Logout
+                </a>
+              </div>
+            </div>
         </div>
 
         <button class="menu-toggle" (click)="toggleMenu()">

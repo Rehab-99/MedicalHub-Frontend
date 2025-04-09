@@ -136,6 +136,116 @@
     gap: 0.5rem;
 }
 
+.user-menu {
+    position: relative;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.user-profile {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.user-profile:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #3498db;
+    transition: all 0.3s ease;
+}
+
+.profile-image:hover {
+    transform: scale(1.05);
+}
+
+.profile-icon {
+    font-size: 40px;
+    color: #3498db;
+    transition: all 0.3s ease;
+}
+
+.profile-icon:hover {
+    transform: scale(1.05);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 10px 0;
+    z-index: 1000;
+    margin-top: 10px;
+    animation: slideDown 0.3s ease;
+    border: 1px solid rgba(52, 152, 219, 0.1);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.user-info {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.user-name {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 15px;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    color: #2c3e50;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #3498db;
+}
+
+.dropdown-item i {
+    margin-right: 8px;
+    color: #3498db;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover i {
+    transform: translateX(5px);
+}
+
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;

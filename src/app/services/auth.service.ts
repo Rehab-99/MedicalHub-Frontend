@@ -11,6 +11,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+  public isLoggedIn$ = new BehaviorSubject<boolean>(false);
   loading = false;
   error = '';
 
@@ -59,6 +60,7 @@ export class AuthService {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('user', JSON.stringify(user));
       this.currentUserSubject.next(user);
+      this.isLoggedIn$.next(true);
     }
   }
 
@@ -68,7 +70,7 @@ export class AuthService {
       localStorage.removeItem('user');
     }
     this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
+    this.isLoggedIn$.next(false);
   }
 
   isAuthenticated(): boolean {

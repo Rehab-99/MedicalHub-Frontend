@@ -54,7 +54,7 @@ export class UserLoginComponent implements OnInit {
           this.isLoading = false;
           this.authService.setToken(response.token);
           this.authService.setUser(response.user);
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/']);
         },
         error: (error) => {
           this.isLoading = false;
@@ -88,7 +88,7 @@ export class UserLoginComponent implements OnInit {
     this.authService.getUserData().subscribe({
       next: (response: any) => {
         this.authService.setUser(response);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/']);
       },
       error: (error) => {
         this.showError = true;
