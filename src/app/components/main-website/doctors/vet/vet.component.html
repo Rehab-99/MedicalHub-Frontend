@@ -1,1 +1,30 @@
-<p>vet works!</p>
+<app-header></app-header>
+
+<div class="main-content">
+  <div *ngIf="vets.length > 0; else noVets" class="vets-grid">
+    <div *ngFor="let vet of vets; trackBy: trackVet" class="vet-card">
+      <div class="vet-image">
+        <img *ngIf="vet.image" [src]="vet.image" alt="{{ vet.name }}" class="image-placeholder">
+        <div *ngIf="!vet.image" class="image-placeholder">No Image</div>
+      </div>
+      <div class="vet-info">
+        <h3>{{ vet.name }}</h3>
+        <p><strong>Specialization:</strong> {{ vet.specialization }}</p>
+        <p><strong>Clinic:</strong> {{ vet.clinic?.name }}</p>
+        <p><strong>Role:</strong> {{ vet.role }}</p>
+        <p><strong>Phone:</strong> {{ vet.phone }}</p>
+        <p><strong>Address:</strong> {{ vet.address }}</p>
+        <div class="card-buttons">
+            <button class="btn-appointment" (click)="bookAppointment(vet)">Book Appointment</button>
+            <button class="btn-chat" (click)="chatWithDoctor(vet)">Chat</button>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #noVets>
+    <p>No veterinary doctors found.</p>
+  </ng-template>
+</div>
+
+<app-footer></app-footer>

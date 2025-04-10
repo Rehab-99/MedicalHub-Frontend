@@ -1,0 +1,18 @@
+<app-header></app-header>
+<div class="main-content">
+    <h2 class="section-title">Our Clinics</h2>
+    <div class="clinics-grid">
+      <div class="clinic-card" *ngFor="let clinic of clinics" (click)="goToClinicDoctors(clinic.id)">
+        <div class="clinic-image">
+          <img *ngIf="clinic.image" [src]="clinic.image" alt="{{ clinic.name }}" />
+          <div *ngIf="!clinic.image" class="image-placeholder">No Image</div>
+        </div>
+        <div class="clinic-info">
+          <h3>{{ clinic.name }}</h3>
+          <p>{{ clinic.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+  

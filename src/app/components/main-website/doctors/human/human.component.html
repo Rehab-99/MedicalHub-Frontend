@@ -1,15 +1,23 @@
-<!-- <div *ngIf="doctors.length > 0; else noDoctors">
+<app-header></app-header>
+
+<div class="main-content">
+  <div *ngIf="doctors.length > 0; else noDoctors" class="doctors-grid">
     <div *ngFor="let doc of doctors; trackBy: trackDoctor" class="doctor-card">
+      <div class="doctor-image">
+        <img *ngIf="doc.image" [src]="doc.image" alt="{{ doc.name }}" class="image-placeholder">
+        <div *ngIf="!doc.image" class="image-placeholder">No Image</div>
+      </div>
       <div class="doctor-info">
-        <img *ngIf="doc.image" [src]="doc.image" alt="{{ doc.name }}" class="doctor-image">
-        <div class="doctor-details">
-          <h3>{{ doc.name }}</h3>
-          <p><strong>Specialization:</strong> {{ doc.specialization }}</p>
-          <p><strong>Clinic:</strong> {{ doc.clinic?.name }}</p>
-          <p><strong>Role:</strong> {{ doc.role }}</p>
-          <p><strong>Phone:</strong> {{ doc.phone }}</p>
-          <p><strong>Address:</strong> {{ doc.address }}</p>
-        </div>
+        <h3>{{ doc.name }}</h3>
+        <p><strong>Specialization:</strong> {{ doc.specialization }}</p>
+        <p><strong>Clinic:</strong> {{ doc.clinic?.name }}</p>
+        <p><strong>Role:</strong> {{ doc.role }}</p>
+        <p><strong>Phone:</strong> {{ doc.phone }}</p>
+        <p><strong>Address:</strong> {{ doc.address }}</p>
+        <div class="card-buttons">
+            <button class="btn-appointment" (click)="bookAppointment(doc)">Book Appointment</button>
+            <button class="btn-chat" (click)="chatWithDoctor(doc)">Chat</button>
+          </div>
       </div>
     </div>
   </div>
@@ -17,4 +25,6 @@
   <ng-template #noDoctors>
     <p>No human doctors found.</p>
   </ng-template>
-   -->
+</div>
+
+<app-footer></app-footer>

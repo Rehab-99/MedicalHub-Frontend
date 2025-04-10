@@ -39,6 +39,8 @@ import { AppointmentFormComponent } from './components/main-website/appointments
 import { ProfileComponent } from './components/main-website/profile/profile.component';
 import { VetComponent } from './components/main-website/doctors/vet/vet.component';
 import { HumanComponent } from './components/main-website/doctors/human/human.component';
+import { ClinicsComponent } from './components/main-website/clinics/clinics.component';
+import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors/clinic-doctors.component';
 
 export const routes: Routes = [
   {
@@ -58,6 +60,10 @@ export const routes: Routes = [
      component: VetComponent },
     { path: 'doctors/human',
        component: HumanComponent },
+       { path: 'clinics',
+        component: ClinicsComponent },
+        { path: 'clinic-doctors',
+          component: ClinicDoctorsComponent },
   {
     path: 'reset-password',
     component: ResetPasswordComponent

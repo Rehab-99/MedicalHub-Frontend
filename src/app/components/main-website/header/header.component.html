@@ -20,6 +20,9 @@
               </div>
             </div>
             <a routerLink="/department" routerLinkActive="active">Department</a>
+            <a routerLink="/clinics" routerLinkActive="active" (click)="$event.stopPropagation()">Clinics</a>
+
+
             <a routerLink="/blog" routerLinkActive="active">Blog</a>
             <a routerLink="/Pharmacy" routerLinkActive="active">Pharmacy</a>
             <a routerLink="/login" routerLinkActive="active" class="login-btn" *ngIf="!isLoggedIn">Login</a>
