@@ -21,10 +21,12 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     if (isPlatformBrowser(this.platformId)) {
-      // Initialize user from localStorage if exists
+      // Initialize user and login state from localStorage
       const user = localStorage.getItem('user');
-      if (user) {
+      const token = localStorage.getItem('token');
+      if (user && token) {
         this.currentUserSubject.next(JSON.parse(user));
+        this.isLoggedIn$.next(true);
       }
     }
   }
@@ -68,9 +70,11 @@ export class AuthService {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('lastEmail'); // Also remove the last used email
     }
     this.currentUserSubject.next(null);
     this.isLoggedIn$.next(false);
+    this.router.navigate(['/login']);
   }
 
   isAuthenticated(): boolean {

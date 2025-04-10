@@ -24,8 +24,11 @@ export class UserLoginComponent implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute
   ) {
+    // Get the last used email from localStorage
+    const lastEmail = localStorage.getItem('lastEmail') || '';
+    
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: [lastEmail, [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
     });
   }
@@ -48,6 +51,9 @@ export class UserLoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.showError = false;
+
+      // Store the email in localStorage before making the login request
+      localStorage.setItem('lastEmail', this.loginForm.value.email);
 
       this.authService.login(this.loginForm.value).subscribe({
         next: (response: any) => {

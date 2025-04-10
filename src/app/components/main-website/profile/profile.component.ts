@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
@@ -88,17 +88,26 @@ export class ProfileComponent implements OnInit {
         formData.append('image', this.selectedImage);
       }
 
-      this.http.post(`${environment.apiUrl}/user/profile`, formData).subscribe({
+      // Get token from AuthService
+      const token = this.authService.getToken();
+      
+      // Create headers with token
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      });
+
+      this.http.post(`${environment.apiUrl}/user/update`, formData, { headers }).subscribe({
         next: (response: any) => {
           this.isLoading = false;
           this.showSuccess = true;
           this.authService.setUser(response.user);
+          this.imagePreview = response.user.image;
           this.selectedImage = null;
         },
         error: (error) => {
           this.isLoading = false;
           this.showError = true;
-          this.errorMessage = error.error.message || 'An error occurred while updating profile.';
+          this.errorMessage = error.error.message || 'حدث خطأ أثناء تحديث الملف الشخصي.';
         }
       });
     }
