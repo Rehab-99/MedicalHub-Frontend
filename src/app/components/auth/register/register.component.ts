@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +20,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -50,10 +52,18 @@ export class RegisterComponent {
 
       this.http.post('http://127.0.0.1:8000/api/user/register', registerData)
         .subscribe({
-          next: (response) => {
+          next: (response: any) => {
             console.log('✅ Success:', response);
+            // Store the email in localStorage for auto-fill in login form
+            localStorage.setItem('lastEmail', registerData.email);
+            // Show success message
             this.successMessage = 'Registration successful! You can now log in.';
+            // Clear the form
             this.registerForm.reset();
+            // Redirect to login page after a short delay
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
           },
           error: (error) => {
             console.error('❌ Error:', error);
