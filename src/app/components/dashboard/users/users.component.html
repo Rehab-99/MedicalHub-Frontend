@@ -1,1 +1,74 @@
-<p>users works!</p>
+<div class="users-container">
+  <div class="users-header">
+    <div class="header-left">
+      <i class="fas fa-users"></i>
+      <h2>Users List</h2>
+    </div>
+    <div class="users-count">
+      <i class="fas fa-user-friends"></i>
+      <span class="count-badge">{{ users.length }}</span>
+      <span>Total Users</span>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="loading-container">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading users...</p>
+    </div>
+  } @else if (error) {
+    <div class="error-container">
+      <i class="fas fa-exclamation-circle"></i>
+      <p class="error-message">{{ error }}</p>
+    </div>
+  } @else {
+    <div class="table-container">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th><i class="fas fa-user"></i> Name</th>
+            <th><i class="fas fa-envelope"></i> Email</th>
+            <th><i class="fas fa-user-tag"></i> Role</th>
+            <th><i class="fas fa-sign-in-alt"></i> Registration Method</th>
+            <th><i class="fas fa-calendar-alt"></i> Registration Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.id) {
+            <tr>
+              <td>
+                <i class="fas fa-user-circle"></i>
+                {{ user.name }}
+              </td>
+              <td>
+                <i class="fas fa-envelope"></i>
+                {{ user.email }}
+              </td>
+              <td>
+                <span class="role-badge" [ngClass]="{'admin': user.role === 'admin'}">
+                  <i class="fas" [class]="user.role === 'admin' ? 'fa-crown' : 'fa-user-shield'"></i>
+                  {{ user.role }}
+                </span>
+              </td>
+              <td>
+                <span class="provider-badge" [ngClass]="{
+                  'google': user.provider === 'google',
+                  'facebook': user.provider === 'facebook',
+                  'normal': !user.provider
+                }">
+                  <i class="fab" [class]="user.provider === 'google' ? 'fa-google' : 
+                    (user.provider === 'facebook' ? 'fa-facebook' : 'fa-user')"></i>
+                  {{ user.provider || 'Normal' }}
+                </span>
+              </td>
+              <td>
+                <i class="fas fa-calendar"></i>
+                {{ formatDate(user.created_at) }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
