@@ -3,6 +3,8 @@
     color: #fff;
     padding: 4rem 2rem 2rem;
     margin-top: 4rem;
+    width: 100%;
+    clear: both;
 }
 
 .footer-content {
@@ -118,4 +120,15 @@
     .footer-content {
         grid-template-columns: 1fr;
     }
+}
+
+/* Fixing potential overflow or visibility issues when rendered inside the doctor’s card */
+.footer-wrapper {
+    overflow: hidden; /* Ensures no content overflows */
+    width: 100%;
+}
+
+.footer {
+    position: relative;
+    z-index: 10;
 }

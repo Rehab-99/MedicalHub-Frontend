@@ -1,6 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Color Variables */
+
+/* Add this to your styles.css */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+html{
+  overflow-y: scroll; 
+}
+app-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 :root {
   /* Primary Colors */
   --primary-color: #4361ee;

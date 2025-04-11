@@ -15,15 +15,17 @@
         <p><strong>Phone:</strong> {{ doc.phone }}</p>
         <p><strong>Address:</strong> {{ doc.address }}</p>
         <div class="card-buttons">
-            <button class="btn-appointment" (click)="bookAppointment(doc)">Book Appointment</button>
-            <button class="btn-chat" (click)="chatWithDoctor(doc)">Chat</button>
-          </div>
+          <button class="btn-appointment" (click)="bookAppointment(doc)">Book Appointment</button>
+          <button class="btn-chat" (click)="chatWithDoctor(doc)">Chat</button>
+        </div>
       </div>
     </div>
   </div>
   
   <ng-template #noDoctors>
-    <p>No human doctors found.</p>
+    <div class="no-doctors">
+      <p>No human doctors found.</p>
+    </div>
   </ng-template>
 </div>
 
