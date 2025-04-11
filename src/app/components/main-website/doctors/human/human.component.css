@@ -93,7 +93,11 @@ html, body {
     background-color: #2980b9;
     transform: translateY(-2px);
   }
-  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
   .btn-chat {
     background-color: #ffffff;
     color: #3498db;

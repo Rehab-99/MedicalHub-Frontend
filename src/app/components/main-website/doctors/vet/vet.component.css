@@ -139,7 +139,11 @@ html, body {
     color: #ffffff;
     transform: translateY(-2px);
   }
-  
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
   
   /* Responsive Layout */
   @media (max-width: 768px) {
