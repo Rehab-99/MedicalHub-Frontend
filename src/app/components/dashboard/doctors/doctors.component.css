@@ -1,20 +1,19 @@
 .doctors-page {
   padding: 24px;
   background-color: var(--background-light);
+  text-align: center; /* Center the content horizontally */
 }
 
 .doctors-page h2 {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 24px;
-  text-align: center;
-  letter-spacing: 1px;
 }
 
 .add-doctor-button {
   padding: 10px 20px;
-  margin-bottom: 20px;
+  margin: 0 auto 20px; /* Center the button with auto margin on left and right */
   border: none;
   border-radius: 30px;
   background-color: var(--primary-color);
@@ -22,6 +21,7 @@
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
+  display: block; /* Make the button a block element to take full width available */
   transition: background-color 0.3s ease;
 }
 
@@ -31,32 +31,31 @@
 
 .doctors-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
 }
 
 .doctor-card {
   background: var(--background-light);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Re-added shadow */
   color: var(--text-primary);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: linear-gradient(145deg, #f0f0f0, #ffffff);
 }
 
 .doctor-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); /* Enhanced hover shadow */
 }
 
 .doctor-photo {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 16px;
@@ -74,29 +73,16 @@
 }
 
 .doctor-name {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   margin-bottom: 8px;
   color: var(--text-primary);
-  letter-spacing: 1px;
 }
 
 .doctor-specialization {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--text-secondary);
   margin-bottom: 12px;
-}
-
-.doctor-rating {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  color: var(--secondary-color);
-}
-
-.doctor-rating i {
-  font-size: 18px;
 }
 
 .doctor-footer {
@@ -143,16 +129,4 @@
   font-size: 18px;
   color: var(--text-secondary);
   text-align: center;
-}
-
-@media (max-width: 768px) {
-  .doctors-container {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  }
-}
-
-@media (max-width: 480px) {
-  .doctors-container {
-    grid-template-columns: 1fr;
-  }
 }
