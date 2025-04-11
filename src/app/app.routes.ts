@@ -42,12 +42,19 @@ import { VetComponent } from './components/main-website/doctors/vet/vet.componen
 import { HumanComponent } from './components/main-website/doctors/human/human.component';
 import { ClinicsComponent } from './components/main-website/clinics/clinics.component';
 import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors/clinic-doctors.component';
+import { ShoppingCartComponent } from './components/main-website/shopping-cart/shopping-cart.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: MainWebsiteLayoutComponent
   },
+  {
+    path: 'cart', 
+    component: ShoppingCartComponent,
+  }
+  ,
+ 
   {
     path: 'login',
     component: UserLoginComponent
