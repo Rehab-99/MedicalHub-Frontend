@@ -1,0 +1,87 @@
+<div class="sidebar">
+  <!-- Doctors -->
+  <div class="sidebar-item">
+    <a routerLink="/dashboard/doctors" routerLinkActive="active" class="item-content">
+      <i class="fas fa-user-md"></i>
+      <span>Doctors</span>
+    </a>
+  </div>
+
+  <!-- Patients -->
+  <div class="sidebar-item">
+    <a routerLink="/dashboard/patients" routerLinkActive="active" class="item-content">
+      <i class="fas fa-users"></i>
+      <span>Patients</span>
+    </a>
+  </div>
+
+  <!-- Consultations -->
+  <div class="sidebar-item">
+    <a routerLink="/dashboard/consultations" routerLinkActive="active" class="item-content">
+      <i class="fas fa-stethoscope"></i>
+      <span>Consultations</span>
+    </a>
+  </div>
+
+  <!-- Categories Dropdown -->
+  <div class="sidebar-item" (click)="toggleSubmenu('categories')" [class.active]="activeSubmenu === 'categories'">
+    <div class="item-content">
+      <i class="fas fa-tags"></i>
+      <span>Categories</span>
+      <i class="fas" [class.fa-chevron-down]="activeSubmenu === 'categories'" [class.fa-chevron-right]="activeSubmenu !== 'categories'"></i>
+    </div>
+    <div class="submenu" [class.expanded]="activeSubmenu === 'categories'">
+      <a routerLink="/dashboard/human-categories" routerLinkActive="active" class="submenu-item">
+        <i class="fas fa-user"></i>
+        <span>Human Category</span>
+      </a>
+      <a routerLink="/dashboard/vet-categories" routerLinkActive="active" class="submenu-item">
+        <i class="fas fa-paw"></i>
+        <span>Vet Category</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Products Dropdown -->
+  <div class="sidebar-item" (click)="toggleSubmenu('products')" [class.active]="activeSubmenu === 'products'">
+    <div class="item-content">
+      <i class="fas fa-box"></i>
+      <span>Products</span>
+      <i class="fas" [class.fa-chevron-down]="activeSubmenu === 'products'" [class.fa-chevron-right]="activeSubmenu !== 'products'"></i>
+    </div>
+    <div class="submenu" [class.expanded]="activeSubmenu === 'products'">
+      <a routerLink="/dashboard/human-products" routerLinkActive="active" class="submenu-item">
+        <i class="fas fa-user"></i>
+        <span>Human Products</span>
+      </a>
+      <a routerLink="/dashboard/vet-products" routerLinkActive="active" class="submenu-item">
+        <i class="fas fa-paw"></i>
+        <span>Vet Products</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Pharmacy -->
+  <div class="sidebar-item">
+    <a routerLink="/dashboard/pharmacy" routerLinkActive="active" class="item-content">
+      <i class="fas fa-pills"></i>
+      <span>Pharmacy</span>
+    </a>
+  </div>
+
+  <!-- Clinics -->
+  <div class="sidebar-item">
+    <a routerLink="/dashboard/clinics" routerLinkActive="active" class="item-content">
+      <i class="fas fa-clinic-medical"></i>
+      <span>Clinics</span>
+    </a>
+  </div>
+
+  <!-- Blog -->
+  <div class="sidebar-item">
+    <a routerLink="/dashboard/blog" routerLinkActive="active" class="item-content">
+      <i class="fas fa-blog"></i>
+      <span>Blog</span>
+    </a>
+  </div>
+</div> 

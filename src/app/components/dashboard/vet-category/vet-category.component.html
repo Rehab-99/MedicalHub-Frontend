@@ -1,0 +1,29 @@
+<div class="category-page">
+  <h2>Vet Categories</h2>
+  <button class="add-category-button" (click)="navigateToAddCategory()">Add Category</button>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading">Loading...</div>
+  <!-- Debug Info -->
+   <div class="debug-info" *ngIf="!loading">
+    <p>Total Categories: {{ categories.length }}</p>
+  </div>
+
+  <!-- No Categories Message -->
+  <div *ngIf="!loading && categories.length === 0">No categories found.</div>
+
+  <!-- Categories Grid -->
+  <div *ngIf="!loading && categories.length > 0" class="categories-grid">
+    <div class="category-card" *ngFor="let category of categories">
+      <div class="category-image">
+        <img [src]="'http://127.0.0.1:8000/storage/' + category.image" alt="{{ category.name }}">
+      </div>
+      <h3 class="category-title">{{ category.name }}</h3>
+      <p class="category-description">{{ category.description }}</p>
+      <div class="category-actions">
+        <button class="edit-button" (click)="editCategory(category)">Edit</button>
+        <button class="delete-button" (click)="deleteCategory(category)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

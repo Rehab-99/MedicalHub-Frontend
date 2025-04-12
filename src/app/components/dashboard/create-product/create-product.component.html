@@ -1,0 +1,102 @@
+<div class="create-product-page">
+  <h2>Create New Product</h2>
+
+  <form (ngSubmit)="onSubmit()" class="product-form">
+    <div class="form-group">
+      <label for="name">Product Name *</label>
+      <input 
+        type="text" 
+        id="name" 
+        name="name" 
+        [(ngModel)]="product.name" 
+        class="form-control"
+        [class.is-invalid]="submitted && !product.name"
+      >
+      <div class="validation-error" *ngIf="submitted && !product.name">
+        Product name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea 
+        id="description" 
+        name="description" 
+        [(ngModel)]="product.description" 
+        class="form-control"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price *</label>
+      <input 
+        type="number" 
+        id="price" 
+        name="price" 
+        [(ngModel)]="product.price" 
+        class="form-control"
+        [class.is-invalid]="submitted && !product.price"
+      >
+      <div class="validation-error" *ngIf="submitted && !product.price">
+        Price is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="stock">Stock *</label>
+      <input 
+        type="number" 
+        id="stock" 
+        name="stock" 
+        [(ngModel)]="product.stock" 
+        class="form-control"
+        [class.is-invalid]="submitted && !product.stock"
+      >
+      <div class="validation-error" *ngIf="submitted && !product.stock">
+        Stock is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category *</label>
+      <select 
+        id="category" 
+        name="category_id" 
+        [(ngModel)]="product.category_id" 
+        class="form-control"
+        [class.is-invalid]="submitted && !product.category_id"
+      >
+        <option value="">Select a category</option>
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+      <div class="validation-error" *ngIf="submitted && !product.category_id">
+        Category is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="image">Product Image</label>
+      <input 
+        type="file" 
+        id="image" 
+        name="image" 
+        (change)="onFileSelected($event)" 
+        class="form-control"
+        accept="image/*"
+      >
+      <div class="image-preview" *ngIf="imagePreview">
+        <img [src]="imagePreview" alt="Product preview" class="preview-image">
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="cancel-button" (click)="cancel()">Cancel</button>
+      <button type="submit" class="submit-button" [disabled]="loading">
+        {{ loading ? 'Creating...' : 'Create Product' }}
+      </button>
+    </div>
+  </form>
+</div> 

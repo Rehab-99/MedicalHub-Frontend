@@ -1,0 +1,112 @@
+<div class="add-product-page">
+  <div class="page-header">
+    <h1>Add New Product</h1>
+  </div>
+
+  <div class="form-container">
+    <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+      <div class="form-group">
+        <label for="name">Product Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          [(ngModel)]="product.name"
+          class="form-control"
+          [class.is-invalid]="submitted && !product.name"
+          required
+        />
+        <div class="invalid-feedback" *ngIf="submitted && !product.name">
+          Product name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="product.description"
+          class="form-control"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input
+          type="number"
+          id="price"
+          name="price"
+          [(ngModel)]="product.price"
+          class="form-control"
+          [class.is-invalid]="submitted && !product.price"
+          required
+        />
+        <div class="invalid-feedback" *ngIf="submitted && !product.price">
+          Price is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="stock">Stock</label>
+        <input
+          type="number"
+          id="stock"
+          name="stock"
+          [(ngModel)]="product.stock"
+          class="form-control"
+          [class.is-invalid]="submitted && !product.stock"
+          required
+        />
+        <div class="invalid-feedback" *ngIf="submitted && !product.stock">
+          Stock is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select
+          id="category"
+          name="category_id"
+          [(ngModel)]="product.category_id"
+          class="form-control"
+          [class.is-invalid]="submitted && !product.category_id"
+          required
+        >
+          <option value="">Select a category</option>
+          <option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+        <div class="invalid-feedback" *ngIf="submitted && !product.category_id">
+          Category is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Product Image</label>
+        <input
+          type="file"
+          id="image"
+          name="image"
+          (change)="onFileSelected($event)"
+          class="form-control"
+          accept="image/*"
+        />
+        <div class="image-preview" *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Product preview" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="loading">
+          {{ loading ? 'Creating...' : 'Create Product' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div> 

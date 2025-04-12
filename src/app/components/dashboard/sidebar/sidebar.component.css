@@ -1,0 +1,247 @@
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--primary-dark) 0%, var(--background-dark) 100%);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logo {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo i {
+  font-size: 28px;
+  color: var(--secondary-light);
+  animation: pulse 2s infinite;
+}
+
+.logo span {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-light);
+  letter-spacing: 0.5px;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.logo img {
+  width: 160px;
+  height: auto;
+  transition: all 0.3s ease;
+}
+
+.menu {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 0;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+
+.menu-item:hover {
+  background: rgba(var(--primary-light), 0.1);
+  border-left: 3px solid var(--primary-light);
+}
+
+.menu-item.active {
+  background: var(--primary-color);
+  border-left: 3px solid var(--secondary-light);
+  color: var(--text-light);
+}
+
+.menu-item i {
+  width: 24px;
+  margin-right: 12px;
+  font-size: 18px;
+  text-align: center;
+  color: var(--secondary-light);
+}
+
+.menu-item.active i {
+  color: var(--text-light);
+}
+
+.menu-item span {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.menu-item .fa-chevron-down,
+.menu-item .fa-chevron-up {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  color: var(--text-light);
+}
+
+.menu-item.expanded .fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+.submenu-container {
+  position: relative;
+}
+
+.submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.2);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.submenu.expanded {
+  max-height: 500px;
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 24px 10px 60px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 13px;
+  border-left: 3px solid transparent;
+}
+
+.submenu-item:hover {
+  background: rgba(var(--primary-light), 0.1);
+  color: var(--text-light);
+  border-left: 3px solid var(--primary-light);
+}
+
+.submenu-item.active {
+  background: var(--primary-color);
+  color: var(--text-light);
+  border-left: 3px solid var(--secondary-light);
+}
+
+.submenu-item i {
+  width: 16px;
+  margin-right: 8px;
+  font-size: 14px;
+  color: var(--secondary-light);
+}
+
+.submenu-item.active i {
+  color: var(--text-light);
+}
+
+/* Scrollbar Styling */
+.menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.menu::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    min-width: 70px;
+  }
+
+  .logo {
+    padding: 16px;
+  }
+
+  .logo span {
+    display: none;
+  }
+
+  .logo i {
+    font-size: 24px;
+  }
+
+  .logo img {
+    width: 40px;
+  }
+
+  .menu-item span,
+  .submenu-item span {
+    display: none;
+  }
+
+  .menu-item {
+    padding: 12px;
+    justify-content: center;
+  }
+
+  .menu-item i {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .submenu-item {
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .submenu-item i {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  .submenu {
+    position: fixed;
+    left: 70px;
+    height: 100%;
+    width: 200px;
+    background: linear-gradient(180deg, var(--primary-dark) 0%, var(--background-dark) 100%);
+    box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+} 

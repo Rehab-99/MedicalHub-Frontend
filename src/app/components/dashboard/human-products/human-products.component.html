@@ -1,0 +1,45 @@
+<div class="products-page">
+  <h2>Human Products</h2>
+  
+  <button class="add-button" (click)="navigateToAddProduct()">
+    <i class="fas fa-plus"></i> Add Product
+  </button>
+
+  <!-- Loading State -->
+  <div class="loading" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Loading products...</p>
+  </div>
+
+  <!-- No Products State -->
+  <div class="no-products" *ngIf="!loading && (!products || products.length === 0)">
+    <i class="fas fa-box-open"></i>
+    <p>No products found. Click "Add Product" to create one.</p>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" *ngIf="!loading && products && products.length > 0">
+    <div class="product-card" *ngFor="let product of products">
+      <div class="product-image">
+        <img [src]="'http://127.0.0.1:8000/storage/' + product.image" [alt]="product.name"
+             onerror="this.src='assets/images/placeholder.jpg'">
+      </div>
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <p class="description">{{ product.description }}</p>
+        <div class="product-details">
+          <span class="price">Price: ${{ product.price }}</span>
+          <span class="stock">Stock: {{ product.stock }}</span>
+        </div>
+      </div>
+      <div class="product-actions">
+        <button class="edit-button" (click)="editProduct(product)">
+          <i class="fas fa-edit"></i> Edit
+        </button>
+        <button class="delete-button" (click)="deleteProduct(product)">
+          <i class="fas fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 

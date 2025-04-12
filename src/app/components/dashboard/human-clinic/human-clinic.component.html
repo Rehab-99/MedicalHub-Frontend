@@ -1,0 +1,23 @@
+<div class="human-clinics-page">
+  <h2>Human Clinics</h2>
+  <!-- Add Clinic Button -->
+  <button class="add-clinic-button" (click)="navigateToAddClinic()">Add Clinic</button>
+  <div class="clinics-container">
+    <div *ngFor="let clinic of clinics" class="clinic-card">
+      <!-- Clinic Photo -->
+      <div class="clinic-photo">
+        <img [src]="clinic.photo" alt="{{ clinic.name }}" />
+      </div>
+      <!-- Clinic Details -->
+      <div class="clinic-details">
+        <div class="clinic-name">{{ clinic.name }}</div>
+        <div class="clinic-address">{{ clinic.address }}</div>
+      </div>
+      <!-- Edit and Delete Buttons -->
+      <div class="clinic-actions">
+        <button class="edit-button" (click)="editClinic(clinic)">Edit</button>
+        <button class="delete-button" (click)="deleteClinic(clinic)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

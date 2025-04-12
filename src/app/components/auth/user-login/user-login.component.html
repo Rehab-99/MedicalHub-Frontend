@@ -1,0 +1,83 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Left Side -->
+    <div class="auth-left">
+      <div class="logo">
+        <i class="fas fa-heartbeat"></i>
+        <span>MedicalHub</span>
+      </div>
+      <h2>We at MedicalHub are always fully focused on helping you.</h2>
+      <div class="illustration">
+        <i class="fas fa-stethoscope"></i>
+      </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="auth-right">
+
+      <div class="auth-form">
+        <h1>{{ isLoginMode ? 'Login' : 'Create Account' }}</h1>
+
+        <!-- Social Login Buttons -->
+        <div class="social-buttons">
+          <button class="google-btn">
+            <i class="fab fa-google"></i>
+            Sign {{ isLoginMode ? 'in' : 'up' }} with Google
+          </button>
+          <button class="facebook-btn">
+            <i class="fab fa-facebook-f"></i>
+            Sign {{ isLoginMode ? 'in' : 'up' }} with Facebook
+          </button>
+        </div>
+
+        <div class="divider">
+          <span>-OR-</span>
+        </div>
+
+        <!-- Registration Form -->
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" *ngIf="!isLoginMode">
+          <div class="form-group">
+            <input type="text" formControlName="name" placeholder="Full Name:">
+          </div>
+          <div class="form-group">
+            <input type="email" formControlName="email" placeholder="Email:">
+          </div>
+          <div class="form-group password-group">
+            <input type="password" formControlName="password" placeholder="Password:">
+            <button type="button" class="toggle-password">
+              <i class="far fa-eye"></i>
+            </button>
+          </div>
+          <button type="submit" class="submit-btn" [disabled]="registerForm.invalid">
+            Create Account
+          </button>
+        </form>
+
+        <!-- Login Form -->
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" *ngIf="isLoginMode">
+          <div class="form-group">
+            <input type="email" formControlName="email" placeholder="Email:">
+          </div>
+          <div class="form-group password-group">
+            <input type="password" formControlName="password" placeholder="Password:">
+            <button type="button" class="toggle-password">
+              <i class="far fa-eye"></i>
+            </button>
+          </div>
+          <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">
+            Login
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <p>
+            {{ isLoginMode ? "Don't have an Account? " : "Already have an Account? " }}
+            <a href="#" (click)="toggleMode(); $event.preventDefault()">
+              {{ isLoginMode ? 'Create Account' : 'Log in' }}
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

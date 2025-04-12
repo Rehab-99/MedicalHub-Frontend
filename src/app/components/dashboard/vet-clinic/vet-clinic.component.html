@@ -1,0 +1,21 @@
+<div class="vet-clinics-page">
+  <h2>Vet Clinics</h2>
+  <!-- Add Vet Clinic Button -->
+  <button class="add-vet-clinic-button" (click)="navigateToAddVetClinic()">Add Vet Clinic</button>
+  <div class="vet-clinics-container">
+    <div *ngFor="let vetClinic of vetClinics" class="vet-clinic-card">
+      <div class="vet-clinic-photo">
+        <img [src]="vetClinic.photo" alt="{{ vetClinic.name }}" />
+      </div>
+      <div class="vet-clinic-details">
+        <div class="vet-clinic-name">{{ vetClinic.name }}</div>
+        <div class="vet-clinic-address">{{ vetClinic.address }}</div>
+      </div>
+      <div class="vet-clinic-actions">
+        <button class="edit-button" (click)="editVetClinic(vetClinic)">Edit</button>
+        <button class="delete-button" (click)="deleteVetClinic(vetClinic)">Delete</button>
+      </div>
+    </div>
+    
+  </div>
+</div>
