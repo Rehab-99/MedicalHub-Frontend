@@ -1,0 +1,22 @@
+<app-header></app-header>
+
+<div class="blog-container">
+  <div class="blog-header">
+    <h2>Vet Blogs</h2>
+    <button class="btn " routerLink="/blog/vet/add">Add New Vet Blog</button>
+  </div>
+
+  <div class="blogs-grid">
+    <div *ngFor="let post of vetBlogPosts" class="blog-card" (click)="viewPost(post.id)">
+      <h3>{{ post.title }}</h3>
+      <p class="date">{{ post.date | date:'mediumDate' }}</p>
+      <p>{{ post.content | slice:0:100 }}...</p>
+    </div>
+  </div>
+
+  <div *ngIf="vetBlogPosts.length === 0" class="no-posts">
+    <p>No vet blog posts available yet.</p>
+  </div>
+</div>
+
+<app-footer></app-footer>
