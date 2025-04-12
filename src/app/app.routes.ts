@@ -47,6 +47,14 @@ import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blo
 import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
+import { HumanCategoryComponent } from './components/dashboard/human-category/human-category.component';
+import { VetCategoryComponent } from './components/dashboard/vet-category/vet-category.component';
+import { AddCategoryComponent } from './components/dashboard/add-category/add-category.component';
+import { EditCategoryComponent } from './components/dashboard/edit-category/edit-category.component';
+import { HumanProductsComponent } from './components/dashboard/human-products/human-products.component';
+import { VetProductsComponent } from './components/dashboard/vet-products/vet-products.component';
+import { AddProductComponent } from './components/dashboard/add-product/add-product.component';
+import { EditProductComponent } from './components/dashboard/edit-product/edit-product.component';
 
 export const routes: Routes = [
   {
@@ -90,6 +98,22 @@ export const routes: Routes = [
       {
         path: '',
         component: DashboardHomeComponent
+      },
+      {
+        path: 'edit-category/:id',
+        component: EditCategoryComponent
+      },
+      {
+        path: 'add-category',
+        component: AddCategoryComponent
+      },
+      {
+        path: 'human-categories',
+        component: HumanCategoryComponent
+      },
+      {
+        path: 'vet-categories',
+        component: VetCategoryComponent
       },
       {
         path: 'human-pharmacy',
@@ -146,6 +170,23 @@ export const routes: Routes = [
       {
         path: 'settings',
         component: SettingsComponent
+      },
+      {
+        path: 'human-products',
+        component: HumanProductsComponent
+      },
+      {
+        path: 'vet-products',
+        component: VetProductsComponent
+      },
+      {
+        path: 'add-product',
+        component: AddProductComponent,
+        data: { title: 'Add Product' }
+      },
+      {
+        path: 'edit-product/:id',
+        component: EditProductComponent
       }
     ]
   },

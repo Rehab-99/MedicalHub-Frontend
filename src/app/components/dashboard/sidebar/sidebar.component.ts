@@ -17,6 +17,22 @@ export class SidebarComponent {
       route: '/dashboard'
     },
     {
+      title: 'Categories',
+      icon: 'fas fa-th-list',
+      children: [
+        { title: 'Human Categories', route: '/dashboard/human-categories', icon: 'fas fa-user' },
+        { title: 'Vet Categories', route: '/dashboard/vet-categories', icon: 'fas fa-paw' }
+      ]
+    },
+    {
+      title: 'Products',
+      icon: 'fas fa-box',
+      children: [
+        { title: 'Human Products', route: '/dashboard/human-products', icon: 'fas fa-user' },
+        { title: 'Vet Products', route: '/dashboard/vet-products', icon: 'fas fa-paw' }
+      ]
+    },
+    {
       title: 'Appointments',
       icon: 'fas fa-calendar-check',
       route: '/dashboard/appointments'
