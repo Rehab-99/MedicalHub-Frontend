@@ -43,22 +43,25 @@ app-header {
 /* Doctors grid layout */
 .doctors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: calc(100vh - 140px); /* Viewport - header - footer */
+  grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  gap: 1rem;
+  justify-items: center;
 }
 
-/* Fixed footer */
 
-/* Doctor card styling */
+/* Vet Card Styling */
 .doctor-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 1.5rem;
-  transition: transform 0.2s;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+ 
+  padding: 1rem;
+  text-align: left;
+  transition: transform 0.3s ease;
 }
 
 .doctor-card:hover {
@@ -92,6 +95,7 @@ app-header {
 
 .doctor-info {
   margin-top: 1rem;
+ 
 }
 
 /* Buttons styling */
@@ -161,3 +165,6 @@ app-header {
   }
 }
 
+i{
+  padding: 10px;
+}
