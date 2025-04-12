@@ -10,10 +10,10 @@
       <div class="doctor-info">
         <h3>{{ doc.name }}</h3>
         <p><strong>Specialization:</strong> {{ doc.specialization }}</p>
-        <p><strong>Clinic:</strong> {{ doc.clinic?.name }}</p>
-        <p><strong>Role:</strong> {{ doc.role }}</p>
-        <p><strong>Phone:</strong> {{ doc.phone }}</p>
-        <p><strong>Address:</strong> {{ doc.address }}</p>
+        <p>Clinic:{{ doc.clinic?.name }}</p>
+        <p>Role: {{ doc.role }}</p>
+        <p>Phone:{{ doc.phone }}</p>
+        <p>Address: {{ doc.address }}</p>
         <div class="card-buttons">
           <button class="btn-appointment" (click)="bookAppointment(doc)">Book Appointment</button>
           <button class="btn-chat" (click)="chatWithDoctor(doc)">Chat</button>
@@ -21,12 +21,12 @@
       </div>
     </div>
   </div>
-  
   <ng-template #noDoctors>
     <div class="no-doctors">
       <p>No human doctors found.</p>
     </div>
   </ng-template>
+  
 </div>
 
 <app-footer></app-footer>

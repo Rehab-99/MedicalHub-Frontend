@@ -31,6 +31,13 @@ export class HeaderComponent {
     this.isDoctorsDropdownOpen = !this.isDoctorsDropdownOpen;
   }
   
+
+
+  isBlogsDropdownOpen = false;
+  toggleBlogsDropdown() {
+    console.log('Blogs dropdown toggled, isBlogsDropdownOpen:', this.isBlogsDropdownOpen);
+    this.isBlogsDropdownOpen = !this.isBlogsDropdownOpen;
+  }
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     const menuToggle = document.querySelector('.menu-toggle');

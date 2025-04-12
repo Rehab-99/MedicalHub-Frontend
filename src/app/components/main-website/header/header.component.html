@@ -22,8 +22,15 @@
             <a routerLink="/department" routerLinkActive="active">Department</a>
             <a routerLink="/clinics" routerLinkActive="active" (click)="$event.stopPropagation()">Clinics</a>
 
-
-            <a routerLink="/blog" routerLinkActive="active">Blog</a>
+            <div class="dropdown">
+              <a class="dropdown-toggle" (click)="toggleBlogsDropdown()">
+                Blogs <i class="fas fa-chevron-down"></i>
+              </a>
+              <div class="dropdown-menu" *ngIf="isBlogsDropdownOpen">
+                <a routerLink="/blog/vet" routerLinkActive="active" (click)="toggleBlogsDropdown()">Vet Blogs</a>
+                <a routerLink="/blog/human" routerLinkActive="active" (click)="toggleBlogsDropdown()">Human Blogs</a>
+              </div>
+            </div>
             <a routerLink="/Pharmacy" routerLinkActive="active">Pharmacy</a>
             <a routerLink="/login" routerLinkActive="active" class="login-btn" *ngIf="!isLoggedIn">Login</a>
             <div class="user-menu" *ngIf="isLoggedIn">
