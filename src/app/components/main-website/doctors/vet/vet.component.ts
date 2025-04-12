@@ -14,12 +14,14 @@ import { DoctorService } from '../../../../services/doctor.service';
   styleUrls: ['./vet.component.css']
 })
 export class VetComponent implements OnInit {
-  vets: any[] = [];  // Change to vets array
+  doctors: any[] = [];  // Changed from vets to doctors
 
-  constructor(private vetService: DoctorService) {}  // Change to VetService
-  trackVet(index: number, vet: any): number {  // Change to trackVet
-    return vet.id;  // Make sure `id` is unique for each vet
+  constructor(private doctorService: DoctorService) {}  // Changed from vetService to doctorService
+
+  trackDoctor(index: number, doctor: any): number {  // Changed from trackVet to trackDoctor
+    return doctor.id;
   }
+
   bookAppointment(doc: any) {
     console.log('Booking appointment with:', doc.name);
     // TODO: route to appointment booking page or open modal
@@ -29,11 +31,10 @@ export class VetComponent implements OnInit {
     console.log('Starting chat with:', doc.name);
     // TODO: open chat window or navigate to chat component
   }
-  
 
   ngOnInit(): void {
-    this.vetService.getVetDoctors().subscribe(response => {  // Change to VetService call
-      this.vets = response.data;
+    this.doctorService.getVetDoctors().subscribe(response => {  // Changed from vetService to doctorService
+      this.doctors = response.data;
     });
   }
 }

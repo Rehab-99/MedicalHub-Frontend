@@ -1,30 +1,43 @@
-<app-header></app-header>
+<div class="page-wrapper">
+  <app-header></app-header>
 
-<div class="main-content">
-  <div *ngIf="vets.length > 0; else noVets" class="vets-grid">
-    <div *ngFor="let vet of vets; trackBy: trackVet" class="vet-card">
-      <div class="vet-image">
-        <img *ngIf="vet.image" [src]="vet.image" alt="{{ vet.name }}" class="image-placeholder">
-        <div *ngIf="!vet.image" class="image-placeholder">No Image</div>
-      </div>
-      <div class="vet-info">
-        <h3>{{ vet.name }}</h3>
-        <p><strong>Specialization:</strong> {{ vet.specialization }}</p>
-        <p><strong>Clinic:</strong> {{ vet.clinic?.name }}</p>
-        <p><strong>Role:</strong> {{ vet.role }}</p>
-        <p><strong>Phone:</strong> {{ vet.phone }}</p>
-        <p><strong>Address:</strong> {{ vet.address }}</p>
-        <div class="card-buttons">
-            <button class="btn-appointment" (click)="bookAppointment(vet)">Book Appointment</button>
-            <button class="btn-chat" (click)="chatWithDoctor(vet)">Chat</button>
+  <div class="main-content">
+    <h1 class="page-title">Veterinary Doctors</h1>
+    <div *ngIf="doctors.length > 0; else noDoctors" class="doctors-grid">
+      <div *ngFor="let doc of doctors; trackBy: trackDoctor" class="doctor-card">
+        <div class="doctor-image">
+          <img [src]="doc.imageUrl" [alt]="doc.name" *ngIf="doc.imageUrl; else placeholder">
+          <ng-template #placeholder>
+            <div class="image-placeholder">
+              <i class="fas fa-user-md"></i>
+            </div>
+          </ng-template>
+        </div>
+        <div class="doctor-info">
+          <h3><i class="fas fa-user-md"></i> {{ doc.name }}</h3>
+          <p><i class="fas fa-stethoscope"></i> <strong>Specialization:</strong> {{ doc.specialization }}</p>
+          <p><i class="fas fa-hospital"></i> <strong>Clinic:</strong> {{ doc.clinic?.name }}</p>
+          <p><i class="fas fa-briefcase"></i> <strong>Role:</strong> {{ doc.role }}</p>
+          <p><i class="fas fa-phone"></i> <strong>Phone:</strong> {{ doc.phone }}</p>
+          <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> {{ doc.address }}</p>
+          <div class="card-buttons">
+            <button class="btn-appointment" (click)="bookAppointment(doc)">
+              <i class="fas fa-calendar-check"></i> Book Appointment
+            </button>
+            <button class="btn-chat" (click)="chatWithDoctor(doc)">
+              <i class="fas fa-comments"></i> Chat
+            </button>
           </div>
+        </div>
       </div>
     </div>
+    
+    <ng-template #noDoctors>
+      <div class="no-doctors">
+        <p>No doctors available at the moment</p>
+      </div>
+    </ng-template>
   </div>
-  
-  <ng-template #noVets>
-    <p>No veterinary doctors found.</p>
-  </ng-template>
-</div>
 
-<app-footer></app-footer>
+  <app-footer></app-footer>
+</div>
