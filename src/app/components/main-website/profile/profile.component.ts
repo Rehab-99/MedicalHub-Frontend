@@ -88,10 +88,7 @@ export class ProfileComponent implements OnInit {
         formData.append('image', this.selectedImage);
       }
 
-      // Get token from AuthService
       const token = this.authService.getToken();
-      
-      // Create headers with token
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${token}`
       });

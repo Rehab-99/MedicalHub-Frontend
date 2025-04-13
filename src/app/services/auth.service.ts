@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class AuthService {
 
   private constructImageUrl(imagePath: string | null): string | null {
     if (!imagePath) return null;
+    if (imagePath.startsWith('http')) return imagePath;
     return `${environment.apiUrl.replace('/api', '')}/storage/${imagePath}`;
   }
 
@@ -59,7 +61,14 @@ export class AuthService {
     const token = this.getToken();
     return this.http.get(`${environment.apiUrl}/user`, {
       headers: { Authorization: `Bearer ${token}` }
-    });
+    }).pipe(
+      map((response: any) => {
+        if (response.user && response.user.image) {
+          response.user.image = this.constructImageUrl(response.user.image);
+        }
+        return response;
+      })
+    );
   }
 
   setToken(token: string) {
