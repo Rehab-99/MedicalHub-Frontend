@@ -23,12 +23,19 @@ export class AuthService {
     this.initializeAuthState();
   }
 
+  private constructImageUrl(imagePath: string | null): string | null {
+    if (!imagePath) return null;
+    return `${environment.apiUrl.replace('/api', '')}/storage/${imagePath}`;
+  }
+
   private initializeAuthState() {
     if (isPlatformBrowser(this.platformId)) {
       const user = localStorage.getItem('user');
       const token = localStorage.getItem('token');
       if (user && token) {
-        this.currentUserSubject.next(JSON.parse(user));
+        const parsedUser = JSON.parse(user);
+        parsedUser.image = this.constructImageUrl(parsedUser.image);
+        this.currentUserSubject.next(parsedUser);
         this.isLoggedIn$.next(true);
       }
     }
@@ -64,6 +71,7 @@ export class AuthService {
 
   setUser(user: any) {
     if (isPlatformBrowser(this.platformId)) {
+      user.image = this.constructImageUrl(user.image);
       localStorage.setItem('user', JSON.stringify(user));
       this.currentUserSubject.next(user);
       this.isLoggedIn$.next(true);
