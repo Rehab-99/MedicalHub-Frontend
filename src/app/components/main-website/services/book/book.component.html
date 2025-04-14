@@ -1,0 +1,42 @@
+<app-header></app-header>
+<div class="container mt-4">
+  <h2>Book Service</h2>
+  <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+    <!-- Service Name (Display only) -->
+    <div class="mb-3">
+        <label class="form-label">Service</label>
+        <input type="text" class="form-control" [value]="serviceName" disabled />
+      </div>
+      
+
+    <!-- Date Picker -->
+    <div class="mb-3">
+      <label class="form-label">Date</label>
+      <input 
+        type="date" 
+        class="form-control" 
+        formControlName="appointment_date" 
+        [min]="minDate" />
+    </div>
+
+    <!-- Time Picker -->
+    <div class="mb-3">
+      <label class="form-label">Time</label>
+      <select class="form-control" formControlName="appointment_time">
+        <option value="">Select time</option>
+        <option *ngFor="let time of availableTimes" [value]="time">{{ time }}</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Address</label>
+      <input type="text" class="form-control" formControlName="address" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Phone</label>
+      <input type="text" class="form-control" formControlName="phone" />
+    </div>
+    <button type="submit" class="btn btn-success">Confirm Booking</button>
+  </form>
+</div>
+<app-footer></app-footer>

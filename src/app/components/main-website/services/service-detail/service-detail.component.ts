@@ -5,11 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { HeaderComponent } from '../../header/header.component';
 import { FooterComponent } from '../../footer/footer.component';
 import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-service-detail',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent],
   templateUrl: './service-detail.component.html',
   styleUrls: ['./service-detail.component.scss']
 })
