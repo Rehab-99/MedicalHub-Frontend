@@ -44,14 +44,6 @@ import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors
 import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blog-list/vet-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
-<<<<<<< HEAD
-=======
-
-
-
-
-
->>>>>>> 4736804f8cf438cb1945d840df6352fc08cd2c5f
 import { VetBlogAddComponent } from './components/main-website/blog/vet/vet-blog-add/vet-blog-add.component';
 import { VetBlogDetailComponent } from './components/main-website/blog/vet/vet-blog-detail/vet-blog-detail.component';
 import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
@@ -72,7 +64,6 @@ export const routes: Routes = [
     component: AdminLoginComponent,
     canActivate: [LoginGuard]
   },
-<<<<<<< HEAD
   { 
     path: 'doctors/vet',
     component: VetComponent 
@@ -93,19 +84,6 @@ export const routes: Routes = [
     path: 'services',
     component: ServiceDetailComponent
   },
-=======
-  { path: 'doctors/vet',
-     component: VetComponent },
-    { path: 'doctors/human',
-       component: HumanComponent },
-       { path: 'clinics',
-        component: ClinicsComponent },
-        { path: 'clinic-doctors',
-          component: ClinicDoctorsComponent },
-        
-          
-
->>>>>>> 4736804f8cf438cb1945d840df6352fc08cd2c5f
   {
     path: 'reset-password',
     component: ResetPasswordComponent
