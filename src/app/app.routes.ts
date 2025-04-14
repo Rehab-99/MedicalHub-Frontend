@@ -45,7 +45,10 @@ import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blo
 import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
-import { ServiceListComponent } from './components/main-website/services-list/services-list.component';
+import { ServiceListComponent } from './components/main-website/service/service.component';
+
+
+
 
 
 export const routes: Routes = [
