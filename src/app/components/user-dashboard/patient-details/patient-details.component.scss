@@ -1,0 +1,107 @@
+// Variables (adjust colors and spacing as needed)
+$secondary-color: #6c757d;
+$light-gray: #f8f9fa;
+$dark-gray: #343a40;
+$white: #ffffff;
+$pink: #e83e8c;
+$font-family: sans-serif;
+$border-radius: 12px;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// Base Styles (optional)
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// Patient Details Section Styles
+:host {
+    display: block;
+}
+
+section.patient-details-section {
+    background-color: $white;
+    padding: 25px;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    margin-bottom: 30px; // Keep margin associated with section
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+
+    .patient-summary {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-basis: 35%; // Adjust basis as needed
+
+        .patient-avatar-main {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .default-avatar {
+            font-size: 80px;
+            color: $secondary-color;
+            background-color: $light-gray;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .patient-summary-info {
+            h2 {
+                font-size: 1.4rem;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+            .patient-email {
+                font-size: 0.9rem;
+                color: $secondary-color;
+                margin-bottom: 15px;
+            }
+            .btn-edit-profile {
+                padding: 8px 15px;
+                background-color: $pink;
+                color: $white;
+                border: none;
+                border-radius: 6px;
+                font-weight: 500;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background-color: darken($pink, 10%);
+                }
+            }
+        }
+    }
+
+    .patient-details-grid-main {
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); // Responsive grid
+        gap: 20px;
+
+        .detail-item {
+            span {
+                display: block;
+                font-size: 0.85rem;
+                color: $secondary-color;
+                margin-bottom: 4px;
+            }
+            strong {
+                font-size: 1rem;
+                font-weight: 600;
+                color: $dark-gray;
+            }
+        }
+    }
+} 

@@ -1,31 +1,23 @@
+// This file is kept for legacy reasons but is not used.
+// The application now uses standalone components with bootstrapApplication in main.ts
+// and configuration in app.config.ts
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-
+import { ReactiveFormsModule } from '@angular/forms';  // Import ReactiveFormsModule
 import { AppComponent } from './app.component';
-import { UserLoginComponent } from './components/auth/user-login/user-login.component';
-import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
-import { RegisterComponent } from './components/auth/register/register.component';
-import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
-import { routes } from './app.routes';
+import { BookComponent } from './components/main-website/services/book/book.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserLoginComponent,
-    ResetPasswordComponent,
-    RegisterComponent,
-    MainWebsiteLayoutComponent
+    BookComponent  // Declare the BookComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    RouterModule.forRoot(routes)
+    ReactiveFormsModule,  // Add ReactiveFormsModule here
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { } 
+export class AppModule { }

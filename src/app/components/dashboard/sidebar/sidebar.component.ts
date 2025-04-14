@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,14 +7,30 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive]
+  imports: [CommonModule, RouterModule]
 })
 export class SidebarComponent {
   menuItems = [
     {
       title: 'Dashboard',
-      icon: 'fas fa-tachometer-alt',
+      icon: 'fas fa-home',
       route: '/dashboard'
+    },
+    {
+      title: 'Categories',
+      icon: 'fas fa-th-list',
+      children: [
+        { title: 'Human Categories', route: '/dashboard/human-categories', icon: 'fas fa-user' },
+        { title: 'Vet Categories', route: '/dashboard/vet-categories', icon: 'fas fa-paw' }
+      ]
+    },
+    {
+      title: 'Products',
+      icon: 'fas fa-box',
+      children: [
+        { title: 'Human Products', route: '/dashboard/human-products', icon: 'fas fa-user' },
+        { title: 'Vet Products', route: '/dashboard/vet-products', icon: 'fas fa-paw' }
+      ]
     },
     {
       title: 'Appointments',
@@ -46,7 +62,7 @@ export class SidebarComponent {
     },
     {
       title: 'Clinics',
-      icon: 'fas fa-clinic-medical',
+      icon: 'fas fa-hospital',
       children: [
         { title: 'Human Clinic', route: '/dashboard/human-clinic', icon: 'fas fa-user' },
         { title: 'Vet Clinic', route: '/dashboard/vet-clinic', icon: 'fas fa-paw' }

@@ -1,155 +1,167 @@
 /* General Layout */
 html, body {
-    height: 100%;
-    margin: 0;
-  }
-  
-  .main-website-layout {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  /* Ensure the content doesn't overlap with the header */
-  .main-content {
-    margin-top: 80px; /* Adjust based on your header height */
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  
-  /* Grid layout for vets */
+  height: 100%;
+  margin: 0;
+}
+
+.main-website-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Ensure the content doesn't overlap with the header */
+.main-content {
+  margin-top: 80px; /* Adjust based on your header height */
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Grid layout for vets */
+/* Grid layout for doctors */
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  gap: 1rem;
+  justify-items: center;
+}
+
+
+/* Vet Card Styling */
+.doctor-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+ 
+  padding: 1rem;
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+
+.vet-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Image Styling */
+.vet-image {
+  width: 100%;
+  height: 200px;
+  background-color: #f7f7f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.vet-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 200px;
+  background-color: #f0f0f0;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+/* Vet Info Section */
+.vet-info {
+  margin-top: 1rem;
+}
+
+.vet-info h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.vet-info p {
+  font-size: 1rem;
+  margin: 0.3rem 0;
+  color: #555;
+}
+
+/* Buttons Section */
+.card-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-appointment,
+.btn-chat {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.btn-appointment {
+  background-color: #3498db;
+}
+
+.btn-appointment:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.btn-chat {
+  background-color: #ffffff;
+  color: #3498db;
+  border: 2px solid #3498db;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-chat:hover {
+  background-color: #3498db;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Responsive Layout */
+@media (max-width: 992px) {
   .vets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr); /* Two cards per row on tablets */
   }
-  
-  /* Vet Card Styling */
-  .vet-card {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    padding: 1rem;
-    margin: 1rem auto;
-    text-align: left;
-    transition: transform 0.3s ease;
+}
+
+@media (max-width: 600px) {
+  .vets-grid {
+    grid-template-columns: 1fr; /* One card per row on mobile */
   }
-  
-  .vet-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  /* Image Styling */
-  .vet-image {
-    width: 100%;
-    height: 200px;
-    background-color: #f7f7f7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 8px;
-  }
-  
-  .vet-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .image-placeholder {
-    width: 100%;
-    height: 200px;
-    background-color: #f0f0f0;
-    color: #999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    border-radius: 8px;
-  }
-  
-  /* Vet Info Section */
-  .vet-info {
-    margin-top: 1rem;
-  }
-  
-  .vet-info h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-  }
-  
-  .vet-info p {
-    font-size: 1rem;
-    margin: 0.3rem 0;
-    color: #555;
-  }
-  
-  /* Buttons Section */
-  .card-buttons {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  .btn-appointment,
-  .btn-chat {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 600;
-    color: #fff;
-    transition: all 0.3s ease;
-  }
-  
-  .btn-appointment {
-    background-color: #3498db;
-  }
-  
-  .btn-appointment:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
-  }
-  
-  .btn-chat {
-    background-color: #ffffff;
-    color: #3498db;
-    border: 2px solid #3498db;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
-  
-  .btn-chat:hover {
-    background-color: #3498db;
-    color: #ffffff;
-    transform: translateY(-2px);
-  }
-  
-  
-  /* Responsive Layout */
-  @media (max-width: 768px) {
-    .vets-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  /* Footer always at the bottom */
-  app-footer {
-    margin-top: auto;
-  }
-  
+}
+i{
+  padding: 10px;
+}
+/* Footer always at the bottom */

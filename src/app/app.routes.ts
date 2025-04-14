@@ -11,7 +11,7 @@ import { DoctorsComponent } from './components/dashboard/doctors/doctors.compone
 import { AppointmentsComponent } from './components/dashboard/appointments/appointments.component';
 import { ConsultationsComponent } from './components/dashboard/consultations/consultations.component';
 import { UsersComponent } from './components/dashboard/users/users.component';
-import { SettingsComponent } from './components/dashboard/settings/settings.component';
+import { SettingsComponent as AdminSettingsComponent } from './components/dashboard/settings/settings.component';
 import { AddDoctorComponent } from './components/dashboard/add-doctor/add-doctor.component';
 import { EditDoctorComponent } from './components/dashboard/edit-doctor/edit-doctor.component';
 import { EditClinicComponent } from './components/dashboard/edit-clinic/edit-clinic.component';
@@ -24,13 +24,30 @@ import { ResetPasswordComponent } from './components/auth/reset-password/reset-p
 import { RegisterComponent } from './components/auth/register/register.component';
 import { UpdatePasswordComponent } from './components/auth/update-password/update-password.component';
 import { CheckoutComponent } from './components/main-website/checkout/checkout.component';
+import { ShoppingCartComponent } from './components/main-website/shopping-cart/shopping-cart.component';
+import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blog-list/vet-blog-list.component';
+import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
+import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
+import { VetBlogAddComponent } from './components/main-website/blog/vet/vet-blog-add/vet-blog-add.component';
+import { VetBlogDetailComponent } from './components/main-website/blog/vet/vet-blog-detail/vet-blog-detail.component';
+import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
+import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
+import { SettingsComponent as UserSettingsComponent } from './components/settings/settings.component';
+import { HumanCategoryComponent } from './components/dashboard/human-category/human-category.component';
+import { VetCategoryComponent } from './components/dashboard/vet-category/vet-category.component';
+import { AddCategoryComponent } from './components/dashboard/add-category/add-category.component';
+import { EditCategoryComponent } from './components/dashboard/edit-category/edit-category.component';
+import { HumanProductsComponent } from './components/dashboard/human-products/human-products.component';
+import { VetProductsComponent } from './components/dashboard/vet-products/vet-products.component';
+import { AddProductComponent } from './components/dashboard/add-product/add-product.component';
+import { EditProductComponent } from './components/dashboard/edit-product/edit-product.component';
+import { BookComponent } from './components/main-website/services/book/book.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
 import { AboutPageComponent } from './components/main-website/about/about-page/about-page.component';
-import { ServicesListComponent } from './components/main-website/services/services-list/services-list.component';
 import { ServiceDetailComponent } from './components/main-website/services/service-detail/service-detail.component';
 import { DoctorListComponent } from './components/main-website/doctors/doctor-list/doctor-list.component';
 import { DoctorDetailComponent } from './components/main-website/doctors/doctor-detail/doctor-detail.component';
@@ -43,7 +60,6 @@ import { VetComponent } from './components/main-website/doctors/vet/vet.componen
 import { HumanComponent } from './components/main-website/doctors/human/human.component';
 import { ClinicsComponent } from './components/main-website/clinics/clinics.component';
 import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors/clinic-doctors.component';
-import { ShoppingCartComponent } from './components/main-website/shopping-cart/shopping-cart.component';
 
 export const routes: Routes = [
   {
@@ -67,14 +83,30 @@ export const routes: Routes = [
     component: AdminLoginComponent,
     canActivate: [LoginGuard]
   },
-  { path: 'doctors/vet',
-     component: VetComponent },
-    { path: 'doctors/human',
-       component: HumanComponent },
-       { path: 'clinics',
-        component: ClinicsComponent },
-        { path: 'clinic-doctors',
-          component: ClinicDoctorsComponent },
+  { 
+    path: 'doctors/vet',
+    component: VetComponent 
+  },
+  { 
+    path: 'doctors/human',
+    component: HumanComponent 
+  },
+  { 
+    path: 'clinics',
+    component: ClinicsComponent 
+  },
+  { 
+    path: 'clinic-doctors',
+    component: ClinicDoctorsComponent 
+  },
+  {
+    path: 'services',
+    component: ServiceDetailComponent
+  },
+  {
+    path: 'book/:id',
+    component: BookComponent
+  },
   {
     path: 'reset-password',
     component: ResetPasswordComponent
@@ -97,6 +129,22 @@ export const routes: Routes = [
         component: DashboardHomeComponent
       },
       {
+        path: 'edit-category/:id',
+        component: EditCategoryComponent
+      },
+      {
+        path: 'add-category',
+        component: AddCategoryComponent
+      },
+      {
+        path: 'human-categories',
+        component: HumanCategoryComponent
+      },
+      {
+        path: 'vet-categories',
+        component: VetCategoryComponent
+      },
+      {
         path: 'human-pharmacy',
         component: HumanPharmacyComponent
       },
@@ -104,10 +152,14 @@ export const routes: Routes = [
         path: 'human-clinic',
         component: HumanClinicComponent
       },
-      { path: 'add-clinic', 
-        component: AddClinicComponent }, 
-      { path: 'edit-clinic/:id', 
-        component: EditClinicComponent },
+      { 
+        path: 'add-clinic', 
+        component: AddClinicComponent 
+      }, 
+      { 
+        path: 'edit-clinic/:id', 
+        component: EditClinicComponent 
+      },
       {
         path: 'human-blog',
         component: HumanBlogComponent
@@ -116,10 +168,14 @@ export const routes: Routes = [
         path: 'vet-clinic',
         component: VetClinicComponent
       },
-      { path: 'add-vet-clinic',
-         component: AddVetClinicComponent },
-      { path: 'edit-vet-clinic/:id', component:
-         EditVetClinicComponent },
+      { 
+        path: 'add-vet-clinic',
+        component: AddVetClinicComponent 
+      },
+      { 
+        path: 'edit-vet-clinic/:id', 
+        component: EditVetClinicComponent 
+      },
       {
         path: 'vet-pharmacy',
         component: VetPharmacyComponent
@@ -132,10 +188,14 @@ export const routes: Routes = [
         path: 'doctors',
         component: DoctorsComponent
       },
-      { path: 'add-doctor', 
-        component: AddDoctorComponent },
-      { path: 'edit-doctor/:id',
-         component: EditDoctorComponent }, 
+      { 
+        path: 'add-doctor', 
+        component: AddDoctorComponent 
+      },
+      { 
+        path: 'edit-doctor/:id',
+        component: EditDoctorComponent 
+      }, 
       {
         path: 'appointments',
         component: AppointmentsComponent
@@ -150,7 +210,24 @@ export const routes: Routes = [
       },
       {
         path: 'settings',
-        component: SettingsComponent
+        component: AdminSettingsComponent
+      },
+      {
+        path: 'human-products',
+        component: HumanProductsComponent
+      },
+      {
+        path: 'vet-products',
+        component: VetProductsComponent
+      },
+      {
+        path: 'add-product',
+        component: AddProductComponent,
+        data: { title: 'Add Product' }
+      },
+      {
+        path: 'edit-product/:id',
+        component: EditProductComponent
       }
     ]
   },
@@ -158,5 +235,49 @@ export const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [AuthGuard]
+  },
+  { 
+    path: 'blog/vet', 
+    component: VetBlogListComponent
+  },
+  { 
+    path: 'blog/vet/:id', 
+    component: VetBlogDetailComponent 
+  }, 
+  { 
+    path: 'blog/human', 
+    component: HumanBlogListComponent
+  },
+  { 
+    path: 'blog/human/add', 
+    component: HumanBlogAddComponent 
+  },
+  { 
+    path: 'blog/human/:id', 
+    component: HumanBlogDetailComponent 
+  },
+  { 
+    path: 'blog/vet/add', 
+    component: VetBlogAddComponent 
+  },
+  { 
+    path: 'services', 
+    component: ServiceDetailComponent 
+  },
+  { 
+    path: '', 
+    redirectTo: '/blog/vet', 
+    pathMatch: 'full' 
+  },
+  {
+    path: 'user/dashboard',
+    component: UserDashboardComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { 
+        path: 'settings',
+        component: UserSettingsComponent
+      }
+    ]
   }
 ];
