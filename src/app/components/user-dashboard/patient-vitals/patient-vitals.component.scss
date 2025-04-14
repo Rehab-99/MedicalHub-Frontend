@@ -1,0 +1,78 @@
+// Variables (adjust colors and spacing as needed)
+$secondary-color: #6c757d;
+$light-gray: #f8f9fa;
+$dark-gray: #343a40;
+$white: #ffffff;
+$red: #dc3545;
+$green: #198754;
+$font-family: sans-serif;
+$border-radius: 12px;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// Base Styles (optional)
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// Patient Vitals Section Styles
+:host {
+    display: block;
+}
+
+section.patient-vitals {
+    background-color: $white;
+    padding: 25px;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    margin-bottom: 30px; // Keep margin associated with section
+
+    h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .vitals-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+
+        .vital-card {
+            background-color: $light-gray;
+            padding: 20px;
+            border-radius: $border-radius;
+            text-align: left;
+
+            .vital-value {
+                font-size: 1.8rem;
+                font-weight: 600;
+                margin-bottom: 5px;
+                color: $dark-gray;
+                .unit {
+                    font-size: 0.9rem;
+                    font-weight: 400;
+                    color: $secondary-color;
+                    margin-left: 3px;
+                }
+            }
+
+            .vital-label {
+                font-size: 0.9rem;
+                color: $secondary-color;
+                margin-bottom: 8px;
+            }
+
+            .vital-remark {
+                font-size: 0.8rem;
+                color: $green;
+                font-weight: 500;
+
+                &.alert {
+                    color: $red;
+                }
+            }
+        }
+    }
+} 

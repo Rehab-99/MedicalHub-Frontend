@@ -1,0 +1,22 @@
+<!-- Patient Details Section HTML -->
+<section class="patient-details-section">
+    <div class="patient-summary">
+        <img *ngIf="user?.image" [src]="user.image" alt="User Avatar" class="patient-avatar-main">
+        <i *ngIf="!user?.image" class="fas fa-user-circle default-avatar"></i>
+        <div class="patient-summary-info">
+            <h2>{{ user?.name || 'User Name' }}</h2>
+            <p class="patient-email">{{ user?.email || 'user@example.com' }}</p>
+            <button routerLink="/user/dashboard/settings" class="btn btn-edit-profile">Edit Profile</button>
+        </div>
+    </div>
+    <div class="patient-details-grid-main">
+        <div class="detail-item"><span>Gender</span><strong>{{ user?.gender || 'Not specified' }}</strong></div>
+        <div class="detail-item"><span>Age</span><strong>{{ userAge || 'Not specified' }}</strong></div>
+        <div class="detail-item"><span>Blood</span><strong>{{ user?.blood_type || 'Not specified' }}</strong></div>
+        <div class="detail-item"><span>Status</span><strong>Active</strong></div>
+        <div class="detail-item"><span>Role</span><strong>{{ user?.role || 'Patient' }}</strong></div>
+        <div class="detail-item"><span>Registered Date</span><strong>{{ registrationDate || 'Not available' }}</strong></div>
+        <div class="detail-item"><span>Phone</span><strong>{{ user?.phone || 'Not provided' }}</strong></div>
+        <div class="detail-item"><span>Address</span><strong>{{ user?.address || 'Not provided' }}</strong></div>
+    </div>
+</section> 

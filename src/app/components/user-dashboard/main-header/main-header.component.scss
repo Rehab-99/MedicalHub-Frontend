@@ -1,0 +1,57 @@
+// Variables (adjust colors and spacing as needed)
+$primary-color: #0d6efd;
+$secondary-color: #6c757d;
+$light-gray: #f8f9fa;
+$medium-gray: #dee2e6;
+$dark-gray: #343a40;
+$white: #ffffff;
+$font-family: sans-serif;
+$border-radius: 12px;
+
+// Base Styles (optional)
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// Main Header Styles
+:host {
+    display: block; // Ensure host takes up space
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px; // Keep margin associated with header
+
+    .breadcrumbs {
+        color: $secondary-color;
+        font-size: 0.9rem;
+        span {
+            margin: 0 5px;
+        }
+        strong {
+            color: $dark-gray;
+            font-weight: 600;
+        }
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 15px;
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: $secondary-color;
+            cursor: pointer;
+
+            &:hover {
+                color: $dark-gray;
+            }
+        }
+    }
+} 

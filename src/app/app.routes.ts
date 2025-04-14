@@ -11,7 +11,7 @@ import { DoctorsComponent } from './components/dashboard/doctors/doctors.compone
 import { AppointmentsComponent } from './components/dashboard/appointments/appointments.component';
 import { ConsultationsComponent } from './components/dashboard/consultations/consultations.component';
 import { UsersComponent } from './components/dashboard/users/users.component';
-import { SettingsComponent } from './components/dashboard/settings/settings.component';
+import { SettingsComponent as AdminSettingsComponent } from './components/dashboard/settings/settings.component';
 import { AddDoctorComponent } from './components/dashboard/add-doctor/add-doctor.component';
 import { EditDoctorComponent } from './components/dashboard/edit-doctor/edit-doctor.component';
 import { EditClinicComponent } from './components/dashboard/edit-clinic/edit-clinic.component';
@@ -47,6 +47,8 @@ import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blo
 import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
+import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
+import { SettingsComponent as UserSettingsComponent } from './components/settings/settings.component';
 
 export const routes: Routes = [
   {
@@ -145,7 +147,7 @@ export const routes: Routes = [
       },
       {
         path: 'settings',
-        component: SettingsComponent
+        component: AdminSettingsComponent
       }
     ]
   },
@@ -160,5 +162,15 @@ export const routes: Routes = [
   { path: 'blog/human', component: HumanBlogListComponent},
   { path: 'blog/human/add', component: HumanBlogAddComponent },
   { path: 'blog/human/:id', component: HumanBlogDetailComponent },
-
+  {
+    path: 'user/dashboard',
+    component: UserDashboardComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { 
+        path: 'settings',
+        component: UserSettingsComponent
+      }
+    ]
+  },
 ];
