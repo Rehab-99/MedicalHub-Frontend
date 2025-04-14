@@ -3,28 +3,21 @@
 
 /* Medical Hub Global Styles */
 :root {
-  /* Color Palette */
-  --primary-color: #0077b6; /* Doctor's coat blue */
-  --primary-light: #48cae4;
-  --primary-dark: #023e8a;
-  --primary-accent: #00b4d8;
-  
-  --secondary-color: #2a9d8f; /* Complementary teal */
-  --secondary-light: #76c893;
-  --secondary-dark: #1d7870;
-  
-  /* Neutral Colors */
-  --white: #ffffff;
-  --light-gray: #f8f9fa;
-  --medium-gray: #e9ecef;
-  --dark-gray: #6c757d;
-  --black: #212529;
-  
-  /* Status Colors */
-  --success: #4caf50;
-  --warning: #ff9800;
-  --danger: #f44336;
-  --info: #2196f3;
+  --primary-color: #4361ee;
+  --primary-light: #4895ef;
+  --primary-dark: #3f37c9;
+  --secondary-color: #4cc9f0;
+  --secondary-light: #72efdd;
+  --secondary-dark: #3a0ca3;
+  --background-light: #f8f9fe;
+  --background-dark: #2b2d42;
+  --text-primary: #2b2d42;
+  --text-secondary: #6c757d;
+  --text-light: #ffffff;
+  --success: #31ca7b;
+  --warning: #ffaa4c;
+  --danger: #ff6b6b;
+  --info: #4cc9f0;
   
   /* Typography */
   --font-main: 'Roboto', sans-serif;
