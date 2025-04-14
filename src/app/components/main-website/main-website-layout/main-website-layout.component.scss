@@ -1,0 +1,17 @@
+.news-card-img {
+    width: 100%;
+    height: 300px; // Fixed height for both images
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+        transform: scale(1.02);
+    }
+}
+
+.news-card {
+    overflow: hidden; // To contain the hover effect
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+} 

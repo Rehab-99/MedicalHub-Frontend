@@ -1,0 +1,31 @@
+// Variables (adjust colors and spacing as needed)
+$light-gray: #f8f9fa;
+
+// Base Styles (optional)
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// Main Dashboard Container Layout
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: $light-gray;
+}
+
+// Main Content Area Styles
+.main-content {
+  flex-grow: 1;
+  padding: 30px;
+  overflow-y: auto; // Allow scrolling if content overflows
+
+  // No specific styles needed here anymore as section margins are
+  // handled within the child components.
+}
+
+// Utility classes if needed (can be moved to global styles)
+.btn {
+  // Base button styles can go here
+} 

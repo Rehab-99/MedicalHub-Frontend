@@ -1,0 +1,162 @@
+<div class="settings-container">
+  <div class="profile-card">
+    <div class="profile-header">
+      <h2>User Settings</h2>
+      <p class="subtitle">Manage your personal information and account settings</p>
+    </div>
+
+    <div class="profile-content">
+      <div class="profile-image-section">
+        <div class="image-container">
+          <div class="image-wrapper">
+            <img *ngIf="imagePreview" [src]="imagePreview" alt="Profile Image" class="profile-image">
+            <i *ngIf="!imagePreview" class="fas fa-user-circle default-icon"></i>
+            <div class="image-overlay">
+              <label for="image-upload" class="upload-btn">
+                <i class="fas fa-camera"></i>
+                <span>Change Photo</span>
+              </label>
+              <input type="file" id="image-upload" accept="image/*" (change)="onImageSelected($event)" style="display: none;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+        <div class="form-section">
+          <h3 class="section-title">Personal Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <div class="input-wrapper">
+                <i class="fas fa-user input-icon"></i>
+                <input 
+                  type="text" 
+                  id="name"
+                  formControlName="name"
+                  placeholder="Enter your full name"
+                  [class.error]="name?.invalid && name?.touched">
+              </div>
+              <div class="error-message" *ngIf="name?.invalid && name?.touched">
+                <span *ngIf="name?.errors?.['required']">Name is required</span>
+                <span *ngIf="name?.errors?.['maxlength']">Name cannot exceed 255 characters</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <div class="input-wrapper">
+                <i class="fas fa-envelope input-icon"></i>
+                <input 
+                  type="email" 
+                  id="email"
+                  formControlName="email"
+                  placeholder="Enter your email"
+                  [class.error]="email?.invalid && email?.touched">
+              </div>
+              <div class="error-message" *ngIf="email?.invalid && email?.touched">
+                <span *ngIf="email?.errors?.['required']">Email is required</span>
+                <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+                <span *ngIf="email?.errors?.['maxlength']">Email cannot exceed 255 characters</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="section-title">Security</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password">New Password</label>
+              <div class="input-wrapper">
+                <i class="fas fa-lock input-icon"></i>
+                <input 
+                  type="password" 
+                  id="password"
+                  formControlName="password"
+                  placeholder="Enter new password"
+                  [class.error]="password?.invalid && password?.touched">
+              </div>
+              <div class="error-message" *ngIf="password?.invalid && password?.touched">
+                <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password_confirmation">Confirm Password</label>
+              <div class="input-wrapper">
+                <i class="fas fa-lock input-icon"></i>
+                <input 
+                  type="password" 
+                  id="password_confirmation"
+                  formControlName="password_confirmation"
+                  placeholder="Confirm new password"
+                  [class.error]="profileForm.errors?.['mismatch'] && password_confirmation?.touched">
+              </div>
+              <div class="error-message" *ngIf="profileForm.errors?.['mismatch'] && password_confirmation?.touched">
+                Passwords do not match
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="section-title">Contact Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="address">Address</label>
+              <div class="input-wrapper">
+                <i class="fas fa-map-marker-alt input-icon"></i>
+                <input 
+                  type="text" 
+                  id="address"
+                  formControlName="address"
+                  placeholder="Enter your address"
+                  [class.error]="address?.invalid && address?.touched">
+              </div>
+              <div class="error-message" *ngIf="address?.invalid && address?.touched">
+                <span *ngIf="address?.errors?.['maxlength']">Address cannot exceed 255 characters</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <div class="input-wrapper">
+                <i class="fas fa-phone input-icon"></i>
+                <input 
+                  type="text" 
+                  id="phone"
+                  formControlName="phone"
+                  placeholder="Enter your phone number"
+                  [class.error]="phone?.invalid && phone?.touched">
+              </div>
+              <div class="error-message" *ngIf="phone?.invalid && phone?.touched">
+                <span *ngIf="phone?.errors?.['maxlength']">Phone cannot exceed 20 characters</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="save-btn" 
+            [disabled]="profileForm.invalid || isLoading">
+            <i class="fas" [class.fa-save]="!isLoading" [class.fa-spinner]="isLoading" [class.fa-spin]="isLoading"></i>
+            <span>{{ isLoading ? 'Saving...' : 'Save Changes' }}</span>
+          </button>
+        </div>
+
+        <div class="alert-message success" *ngIf="showSuccess">
+          <i class="fas fa-check-circle"></i>
+          <span>Profile updated successfully!</span>
+        </div>
+
+        <div class="alert-message error" *ngIf="showError">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

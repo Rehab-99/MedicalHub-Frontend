@@ -11,7 +11,7 @@ import { DoctorsComponent } from './components/dashboard/doctors/doctors.compone
 import { AppointmentsComponent } from './components/dashboard/appointments/appointments.component';
 import { ConsultationsComponent } from './components/dashboard/consultations/consultations.component';
 import { UsersComponent } from './components/dashboard/users/users.component';
-import { SettingsComponent } from './components/dashboard/settings/settings.component';
+import { SettingsComponent as AdminSettingsComponent } from './components/dashboard/settings/settings.component';
 import { AddDoctorComponent } from './components/dashboard/add-doctor/add-doctor.component';
 import { EditDoctorComponent } from './components/dashboard/edit-doctor/edit-doctor.component';
 import { EditClinicComponent } from './components/dashboard/edit-clinic/edit-clinic.component';
@@ -29,8 +29,6 @@ import { LoginGuard } from './guards/login.guard';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
 import { AboutPageComponent } from './components/main-website/about/about-page/about-page.component';
-import { ServicesListComponent } from './components/main-website/services/services-list/services-list.component';
-import { ServiceDetailComponent } from './components/main-website/services/service-detail/service-detail.component';
 import { DoctorListComponent } from './components/main-website/doctors/doctor-list/doctor-list.component';
 import { DoctorDetailComponent } from './components/main-website/doctors/doctor-detail/doctor-detail.component';
 import { BlogListComponent } from './components/main-website/blog/blog-list/blog-list.component';
@@ -42,9 +40,7 @@ import { VetComponent } from './components/main-website/doctors/vet/vet.componen
 import { HumanComponent } from './components/main-website/doctors/human/human.component';
 import { ClinicsComponent } from './components/main-website/clinics/clinics.component';
 import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors/clinic-doctors.component';
-import { VetBlogAddComponent } from './components/main-website/blog/vet/vet-blog-add/vet-blog-add.component';
 import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blog-list/vet-blog-list.component';
-import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
 import { HumanCategoryComponent } from './components/dashboard/human-category/human-category.component';
@@ -78,6 +74,12 @@ export const routes: Routes = [
         component: ClinicsComponent },
         { path: 'clinic-doctors',
           component: ClinicDoctorsComponent },
+          {
+            path:'services',
+            component: ServiceListComponent
+          },
+          
+
   {
     path: 'reset-password',
     component: ResetPasswordComponent
@@ -196,10 +198,21 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: 'blog/vet', component: VetBlogListComponent},
-  { path: 'blog/vet/add', component: VetBlogAddComponent },
-  { path: 'blog/vet/:id', component: BlogDetailComponent },
+  { path: 'blog/vet/:id', component: VetBlogDetailComponent }, 
   { path: 'blog/human', component: HumanBlogListComponent},
   { path: 'blog/human/add', component: HumanBlogAddComponent },
   { path: 'blog/human/:id', component: HumanBlogDetailComponent },
-
+  { path: 'blog/vet/add', component: VetBlogAddComponent },
+  { path: '', redirectTo: '/blog/vet', pathMatch: 'full' },
+  {
+    path: 'user/dashboard',
+    component: UserDashboardComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { 
+        path: 'settings',
+        component: UserSettingsComponent
+      }
+    ]
+  },
 ];

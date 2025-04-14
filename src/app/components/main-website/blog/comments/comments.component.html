@@ -1,0 +1,34 @@
+<div class="comments-section">
+    <h3>Comments</h3>
+  
+    <!-- عرض الكومنتات -->
+    <div *ngIf="comments.length > 0; else noComments" class="comments-list">
+      <div *ngFor="let comment of comments" class="comment-item">
+        <p class="comment-content">{{ comment.content }}</p>
+        <p>{{ comment.date | date: 'short' }}</p>
+
+          
+      </div>
+    </div>
+  
+    <ng-template #noComments>
+      <p>No comments yet. Be the first to comment!</p>
+    </ng-template>
+  
+    <!-- فورم إضافة كومنت -->
+    <div class="add-comment">
+      <textarea
+        [(ngModel)]="newComment"
+        placeholder="Write your comment..."
+        rows="4"
+        class="comment-input"
+      ></textarea>
+      <button (click)="addComment()" class="submit-btn">Add Comment</button>
+    </div>
+  
+    <!-- رسالة الخطأ -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
+  

@@ -19,7 +19,8 @@
                 <a routerLink="/doctors/human" routerLinkActive="active" (click)="toggleDoctorsDropdown()">Human Doctors</a>
               </div>
             </div>
-            <a routerLink="/department" routerLinkActive="active">Department</a>
+            <a routerLink="/services" routerLinkActive="active">Services</a>
+
             <a routerLink="/clinics" routerLinkActive="active" (click)="$event.stopPropagation()">Clinics</a>
 
             <div class="dropdown">
@@ -42,7 +43,7 @@
                 <div class="user-info">
                   <span class="user-name">{{ user?.name || 'User' }}</span>
                 </div>
-                <a routerLink="/profile" class="dropdown-item" (click)="toggleUserMenu()">
+                <a routerLink="/user/dashboard" class="dropdown-item" (click)="toggleUserMenu()">
                   <i class="fas fa-user"></i>
                   Profile
                 </a>

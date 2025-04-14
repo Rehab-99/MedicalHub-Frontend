@@ -1,0 +1,170 @@
+<div class="settings-page">
+  <div class="settings-container">
+    <!-- Navigation -->
+    <div class="settings-nav">
+      <div class="nav-header">
+        <div class="user-info">
+          <div class="user-avatar">
+            <img [src]="imagePreview || 'assets/images/default-avatar.png'" alt="صورة المستخدم">
+          </div>
+          <div class="user-details">
+            <h3>{{ user?.name }}</h3>
+            <p>{{ user?.email }}</p>
+          </div>
+        </div>
+      </div>
+      <nav>
+        <a [class.active]="currentSection === 'profile'" (click)="setSection('profile')">
+          <i class="fas fa-user"></i>
+          الملف الشخصي
+        </a>
+        <a [class.active]="currentSection === 'security'" (click)="setSection('security')">
+          <i class="fas fa-lock"></i>
+          الأمان
+        </a>
+        <a [class.active]="currentSection === 'notifications'" (click)="setSection('notifications')">
+          <i class="fas fa-bell"></i>
+          الإشعارات
+        </a>
+      </nav>
+    </div>
+
+    <!-- Content -->
+    <div class="settings-content">
+      <!-- Profile Settings -->
+      <div *ngIf="currentSection === 'profile'" class="settings-section">
+        <h2>إعدادات الملف الشخصي</h2>
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+          <div class="profile-image">
+            <div class="image-preview">
+              <img [src]="imagePreview || 'assets/images/default-avatar.png'" alt="صورة الملف الشخصي">
+            </div>
+            <div class="image-upload">
+              <label for="image-upload" class="upload-btn">
+                <i class="fas fa-camera"></i>
+                تغيير الصورة
+              </label>
+              <input type="file" id="image-upload" (change)="onImageSelected($event)" accept="image/*">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>الاسم</label>
+            <input type="text" formControlName="name" placeholder="أدخل اسمك">
+            <div class="error" *ngIf="profileForm.get('name')?.errors?.['required'] && profileForm.get('name')?.touched">
+              الاسم مطلوب
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" formControlName="email" placeholder="أدخل بريدك الإلكتروني">
+            <div class="error" *ngIf="profileForm.get('email')?.errors?.['required'] && profileForm.get('email')?.touched">
+              البريد الإلكتروني مطلوب
+            </div>
+            <div class="error" *ngIf="profileForm.get('email')?.errors?.['email'] && profileForm.get('email')?.touched">
+              البريد الإلكتروني غير صحيح
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>رقم الهاتف</label>
+            <input type="tel" formControlName="phone" placeholder="أدخل رقم هاتفك">
+          </div>
+
+          <div class="form-group">
+            <label>العنوان</label>
+            <input type="text" formControlName="address" placeholder="أدخل عنوانك">
+          </div>
+
+          <button type="submit" [disabled]="!profileForm.valid || isLoading" class="save-btn">
+            <i class="fas fa-save"></i>
+            حفظ التغييرات
+          </button>
+        </form>
+      </div>
+
+      <!-- Security Settings -->
+      <div *ngIf="currentSection === 'security'" class="settings-section">
+        <h2>إعدادات الأمان</h2>
+        <form [formGroup]="securityForm" (ngSubmit)="onSecuritySubmit()">
+          <div class="form-group">
+            <label>كلمة المرور الحالية</label>
+            <input type="password" formControlName="current_password" placeholder="أدخل كلمة المرور الحالية">
+            <div class="error" *ngIf="securityForm.get('current_password')?.errors?.['required'] && securityForm.get('current_password')?.touched">
+              كلمة المرور الحالية مطلوبة
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>كلمة المرور الجديدة</label>
+            <input type="password" formControlName="new_password" placeholder="أدخل كلمة المرور الجديدة">
+            <div class="error" *ngIf="securityForm.get('new_password')?.errors?.['required'] && securityForm.get('new_password')?.touched">
+              كلمة المرور الجديدة مطلوبة
+            </div>
+            <div class="error" *ngIf="securityForm.get('new_password')?.errors?.['minlength'] && securityForm.get('new_password')?.touched">
+              كلمة المرور يجب أن تكون 6 أحرف على الأقل
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>تأكيد كلمة المرور</label>
+            <input type="password" formControlName="confirm_password" placeholder="أعد إدخال كلمة المرور الجديدة">
+            <div class="error" *ngIf="securityForm.get('confirm_password')?.errors?.['required'] && securityForm.get('confirm_password')?.touched">
+              تأكيد كلمة المرور مطلوب
+            </div>
+          </div>
+
+          <button type="submit" [disabled]="!securityForm.valid || isLoading" class="save-btn">
+            <i class="fas fa-save"></i>
+            تحديث كلمة المرور
+          </button>
+        </form>
+      </div>
+
+      <!-- Notification Settings -->
+      <div *ngIf="currentSection === 'notifications'" class="settings-section">
+        <h2>إعدادات الإشعارات</h2>
+        <form [formGroup]="notificationForm" (ngSubmit)="onNotificationSubmit()">
+          <div class="notification-option">
+            <label class="switch">
+              <input type="checkbox" formControlName="email_notifications">
+              <span class="slider"></span>
+            </label>
+            <div class="notification-text">
+              <h4>إشعارات البريد الإلكتروني</h4>
+              <p>استلام إشعارات عبر البريد الإلكتروني</p>
+            </div>
+          </div>
+
+          <div class="notification-option">
+            <label class="switch">
+              <input type="checkbox" formControlName="appointment_reminders">
+              <span class="slider"></span>
+            </label>
+            <div class="notification-text">
+              <h4>تذكير المواعيد</h4>
+              <p>استلام تذكير قبل موعدك</p>
+            </div>
+          </div>
+
+          <div class="notification-option">
+            <label class="switch">
+              <input type="checkbox" formControlName="prescription_notifications">
+              <span class="slider"></span>
+            </label>
+            <div class="notification-text">
+              <h4>إشعارات الوصفات الطبية</h4>
+              <p>استلام إشعارات عند إضافة وصفة طبية جديدة</p>
+            </div>
+          </div>
+
+          <button type="submit" [disabled]="!notificationForm.valid || isLoading" class="save-btn">
+            <i class="fas fa-save"></i>
+            حفظ الإعدادات
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 
