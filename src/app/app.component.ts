@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { ToastService } from './services/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -31,6 +33,9 @@ export class AppComponent implements OnInit {
           this.authService.setToken(token);
           this.authService.setUser(user);
           
+          // Show success message
+          this.toastService.success('Successfully logged in!');
+          
           // Remove parameters from URL
           this.router.navigate([], { 
             queryParams: { token: null, user: null },
@@ -39,6 +44,7 @@ export class AppComponent implements OnInit {
           });
         } catch (error) {
           console.error('Error parsing user data:', error);
+          this.toastService.error('Error logging in. Please try again.');
           this.router.navigate(['/login']);
         }
       }

@@ -5,6 +5,8 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideHttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +21,16 @@ export const appConfig: ApplicationConfig = {
       ToastrModule.forRoot({
         timeOut: 3000,
         positionClass: 'toast-bottom-right',
-        preventDuplicates: true
+        preventDuplicates: true,
+        enableHtml: true,
+        closeButton: true,
+        progressBar: true,
+        disableTimeOut: false,
+        extendedTimeOut: 1000,
+        toastClass: 'ngx-toastr',
+        tapToDismiss: true,
+        newestOnTop: true,
+        onActivateTick: true
       })
     )
   ]

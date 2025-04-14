@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,13 +7,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive]
+  imports: [CommonModule, RouterModule] as const
 })
 export class SidebarComponent {
   menuItems = [
     {
       title: 'Dashboard',
-      icon: 'fas fa-tachometer-alt',
+      icon: 'fas fa-home',
       route: '/dashboard'
     },
     {
@@ -46,7 +46,7 @@ export class SidebarComponent {
     },
     {
       title: 'Clinics',
-      icon: 'fas fa-clinic-medical',
+      icon: 'fas fa-hospital',
       children: [
         { title: 'Human Clinic', route: '/dashboard/human-clinic', icon: 'fas fa-user' },
         { title: 'Vet Clinic', route: '/dashboard/vet-clinic', icon: 'fas fa-paw' }
