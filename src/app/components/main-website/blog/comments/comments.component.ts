@@ -7,8 +7,10 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
+
   standalone: true, // ✅ لازم يكون standalone = true
   imports: [CommonModule, FormsModule],
+
   styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
