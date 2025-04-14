@@ -1,1 +1,23 @@
-<p>vet-blog-detail works!</p>
+<app-header></app-header>
+
+<div class="blog-detail-page" *ngIf="post">
+  <div class="blog-header-section">
+    <img [src]="post.doctorImage || 'assets/default-doctor.png'" alt="Doctor Image" class="doctor-image" />
+    <div class="doctor-info">
+      <h4 class="doctor-name">{{ doctorName || 'Unknown Doctor' }}</h4>
+      <p class="date">{{ formatDate(post.date) }}</p>
+    </div>
+  </div>
+
+  <div class="blog-content-section">
+    <h1 class="post-title">{{ post.title }}</h1>
+    <p class="post-content">{{ post.content }}</p>
+  </div>
+</div>
+
+<div *ngIf="!post && errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+<app-comments></app-comments>
+
+<app-footer></app-footer>

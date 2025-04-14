@@ -42,11 +42,12 @@ import { VetComponent } from './components/main-website/doctors/vet/vet.componen
 import { HumanComponent } from './components/main-website/doctors/human/human.component';
 import { ClinicsComponent } from './components/main-website/clinics/clinics.component';
 import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors/clinic-doctors.component';
-import { VetBlogAddComponent } from './components/main-website/blog/vet/vet-blog-add/vet-blog-add.component';
 import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blog-list/vet-blog-list.component';
-import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
+import { VetBlogAddComponent } from './components/main-website/blog/vet/vet-blog-add/vet-blog-add.component';
+import { VetBlogDetailComponent } from './components/main-website/blog/vet/vet-blog-detail/vet-blog-detail.component';
+import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
 
 export const routes: Routes = [
   {
@@ -155,10 +156,10 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: 'blog/vet', component: VetBlogListComponent},
-  { path: 'blog/vet/add', component: VetBlogAddComponent },
-  { path: 'blog/vet/:id', component: BlogDetailComponent },
+  { path: 'blog/vet/:id', component: VetBlogDetailComponent }, 
   { path: 'blog/human', component: HumanBlogListComponent},
   { path: 'blog/human/add', component: HumanBlogAddComponent },
   { path: 'blog/human/:id', component: HumanBlogDetailComponent },
-
+  { path: 'blog/vet/add', component: VetBlogAddComponent },
+  { path: '', redirectTo: '/blog/vet', pathMatch: 'full' }
 ];
