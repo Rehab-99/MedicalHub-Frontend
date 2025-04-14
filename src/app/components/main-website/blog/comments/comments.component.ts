@@ -4,11 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommentService } from '../../../../services/blog/comment.service';
 import { AuthService } from '../../../../services/auth.service';
-import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
-  imports: [FormsModule],
+  
   styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
