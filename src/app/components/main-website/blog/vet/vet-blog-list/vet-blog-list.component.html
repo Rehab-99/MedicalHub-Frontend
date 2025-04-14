@@ -1,20 +1,32 @@
 <app-header></app-header>
-
 <div class="blog-container">
   <div class="blog-header">
     <h2>Vet Blogs</h2>
-    <button class="btn " routerLink="/blog/vet/add">Add New Vet Blog</button>
+    <button class="btn" routerLink="/blog/vet/add">Add New Vet Blog</button>
   </div>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
   <div class="blogs-grid">
     <div *ngFor="let post of vetBlogPosts" class="blog-card" (click)="viewPost(post.id)">
-      <h3>{{ post.title }}</h3>
-      <p class="date">{{ post.date | date:'mediumDate' }}</p>
-      <p>{{ post.content | slice:0:100 }}...</p>
+      <div class="card-header">
+        <img [src]="post.doctorImage || 'assets/default-doctor.png'" alt="Doctor Image" class="doctor-image" />
+        <div class="doctor-info">
+          <p class="doctor-name">{{ post.doctorName || 'Unknown Doctor' }}</p>
+          <p class="date">{{ post.date | date:'mediumDate' }}</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3 class="post-title">{{ post.title }}</h3>
+        <p class="summary">{{ post.content | slice:0:100 }}...</p>
+        <div class="show-more-wrapper">
+          <a [routerLink]="['/blog/vet', post.id]" class="show-more-btn">Show more</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="vetBlogPosts.length === 0" class="no-posts">
+  <div *ngIf="vetBlogPosts.length === 0 && !errorMessage" class="no-posts">
     <p>No vet blog posts available yet.</p>
   </div>
 </div>
