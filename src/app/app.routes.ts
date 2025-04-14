@@ -29,7 +29,6 @@ import { LoginGuard } from './guards/login.guard';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
 import { AboutPageComponent } from './components/main-website/about/about-page/about-page.component';
-import { ServicesListComponent } from './components/main-website/services/services-list/services-list.component';
 import { ServiceDetailComponent } from './components/main-website/services/service-detail/service-detail.component';
 import { DoctorListComponent } from './components/main-website/doctors/doctor-list/doctor-list.component';
 import { DoctorDetailComponent } from './components/main-website/doctors/doctor-detail/doctor-detail.component';
@@ -163,6 +162,7 @@ export const routes: Routes = [
   { path: 'blog/human/add', component: HumanBlogAddComponent },
   { path: 'blog/human/:id', component: HumanBlogDetailComponent },
   { path: 'blog/vet/add', component: VetBlogAddComponent },
+  { path: 'services', component: ServiceDetailComponent },
   { path: '', redirectTo: '/blog/vet', pathMatch: 'full' },
   {
     path: 'user/dashboard',

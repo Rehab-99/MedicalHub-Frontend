@@ -1,1 +1,64 @@
-<p>service-detail works!</p>
+<app-header></app-header>
+
+<div class="services-container">
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading" class="services-content">
+    <!-- Services List -->
+    <div class="services-list">
+      <h2>Our Services</h2>
+      <div class="service-cards">
+        <div *ngFor="let service of services" 
+             class="service-card" 
+             [class.selected]="service === selectedService"
+             (click)="selectService(service)">
+          <div class="service-card-image">
+            <img [src]="service.image" [alt]="service.name">
+          </div>
+          <div class="service-card-content">
+            <h3>{{ service.name }}</h3>
+            <p class="price">{{ service.price }} EGP</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selected Service Details -->
+    <div *ngIf="selectedService" class="service-details">
+      <div class="service-header">
+        <h1>{{ selectedService.name }}</h1>
+        <div class="service-meta">
+          <span class="price">{{ selectedService.price }} EGP</span>
+          <span class="duration">Duration: {{ selectedService.duration }} minutes</span>
+        </div>
+      </div>
+
+      <div class="service-image">
+        <img [src]="selectedService.image" [alt]="selectedService.name">
+      </div>
+
+      <div class="service-description">
+        <h2>Service Description</h2>
+        <p>{{ selectedService.description }}</p>
+      </div>
+
+      <div class="service-instructions" *ngIf="selectedService.instructions">
+        <h2>Important Instructions</h2>
+        <p>{{ selectedService.instructions }}</p>
+      </div>
+
+      <div class="service-actions">
+        <button class="btn btn-primary">Book Appointment</button>
+        <button class="btn btn-secondary">Contact Us</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !services.length" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+</div>
+
+<app-footer></app-footer>
