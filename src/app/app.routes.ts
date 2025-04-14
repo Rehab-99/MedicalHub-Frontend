@@ -195,7 +195,7 @@ export const routes: Routes = [
       },
       {
         path: 'settings',
-        component: SettingsComponent
+        component: AdminSettingsComponent
       },
       {
         path: 'human-products',

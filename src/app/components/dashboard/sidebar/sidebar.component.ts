@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive]
+  imports: [CommonModule, RouterModule]
 })
 export class SidebarComponent {
   menuItems = [
