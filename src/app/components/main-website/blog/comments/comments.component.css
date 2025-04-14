@@ -1,72 +1,101 @@
+/* تصميم التعليقات */
 .comments-section {
     margin-top: 2rem;
-    padding: 1rem;
-  }
-  
-  .comments-list {
-    margin-bottom: 1.5rem;
-  }
-  
-  .comment-item {
-    border-bottom: 1px solid #eee;
+    padding: 1.5rem;
+    background-color: #fff; /* تغيير خلفية التعليقات إلى اللون الأبيض */
+    border-radius: 12px; /* استخدام نفس الزوايا المدورة مثل صفحة البوست */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); /* الظل ناعم ومناسب */
+}
+
+/* تنسيق كل تعليق */
+.comment-item {
+    border-bottom: 1px solid #eee; /* تغيير اللون ليتناسب مع التصميم العام */
     padding: 1rem 0;
-  }
-  
-  .comment-content {
+    margin-bottom: 1.25rem;
+    transition: background-color 0.3s ease;
+}
+
+/* تأثير التفاعل عند مرور الماوس */
+.comment-item:hover {
+    background-color: #f9f9fb; /* اللون الفاتح المناسب للتفاعل */
+}
+
+/* محتوى التعليق */
+.comment-content {
     margin: 0;
     font-size: 1rem;
-    color: #333;
-  }
-  
-  .comment-meta {
+    color: #333; /* اللون الداكن يتناسب مع النصوص */
+    line-height: 1.6;
+}
+
+/* معلومات التعليق */
+.comment-meta {
     font-size: 0.85rem;
-    color: #777;
+    color: #888; /* لون حيادي يتناسب مع المعلومات الثانوية */
     margin-top: 0.5rem;
-  }
-  
-  .delete-btn {
-    background: #ff4d4f;
-    color: white;
-    border: none;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 1rem;
-  }
-  
-  .delete-btn:hover {
-    background: #d9363e;
-  }
-  
-  .add-comment {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .comment-input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    resize: vertical;
-  }
-  
-  .submit-btn {
-    background: #28a745;
+}
+
+/* زر الحذف */
+.delete-btn {
+    background: #e74c3c;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 1rem;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+/* إضافة تعليق */
+.add-comment {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* مدخل النص للتعليق */
+.comment-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    resize: vertical;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.comment-input:focus {
+    border-color: #3498db; /* تغيير اللون عند التفاعل */
+    outline: none;
+}
+
+/* زر إرسال التعليق */
+.submit-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
     align-self: flex-start;
-  }
-  
-  .submit-btn:hover {
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
     background: #218838;
-  }
-  
-  .error-message {
-    color: #ff4d4f;
+}
+
+/* رسالة الخطأ */
+.error-message {
+    color: #e74c3c;
     margin-top: 1rem;
-  }
+    font-size: 0.9rem;
+    font-weight: 500;
+}

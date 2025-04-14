@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common'; // أضفنا CommonModule
 import { ToastrModule } from 'ngx-toastr';
+import { DatePipe } from '@angular/common'; // استيراد DatePipe
 
 import { AppComponent } from './app.component';
 import { UserLoginComponent } from './components/auth/user-login/user-login.component';
@@ -44,7 +45,7 @@ import { CommentsComponent } from './components/main-website/blog/comments/comme
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

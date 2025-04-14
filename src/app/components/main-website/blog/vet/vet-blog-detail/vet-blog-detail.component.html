@@ -18,6 +18,6 @@
 <div *ngIf="!post && errorMessage" class="error-message">
   {{ errorMessage }}
 </div>
-<app-comments></app-comments>
+<app-comments [postId]="post?.id"></app-comments>
 
 <app-footer></app-footer>

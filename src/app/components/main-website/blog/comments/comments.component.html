@@ -5,10 +5,9 @@
     <div *ngIf="comments.length > 0; else noComments" class="comments-list">
       <div *ngFor="let comment of comments" class="comment-item">
         <p class="comment-content">{{ comment.content }}</p>
-        <p class="comment-meta">
-          Posted on {{ comment.created_at | date: 'dd MMM yyyy' }}
-          <button *ngIf="canDeleteComment(comment)" (click)="deleteComment(comment.id)" class="delete-btn">Delete</button>
-        </p>
+        <p>{{ comment.date | date: 'short' }}</p>
+
+          
       </div>
     </div>
   
@@ -32,3 +31,4 @@
       {{ errorMessage }}
     </div>
   </div>
+  

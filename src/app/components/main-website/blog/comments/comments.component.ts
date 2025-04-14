@@ -1,93 +1,98 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommentService } from '../../../../services/blog/comment.service';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-comments',
-  standalone: true,
   templateUrl: './comments.component.html',
-  styleUrls: ['./comments.component.css'],
-  imports: [CommonModule, FormsModule],
+  styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
-  @Input() postId!: number;
+  commentForm!: FormGroup;
+  postId!: number;
   comments: any[] = [];
+  userId: number | null = null;
   newComment: string = '';
-  errorMessage: string | null = null;
-  currentUserId: number | null = null; // هتعدله بناءً على الـ auth بتاعك
+  errorMessage: string = '';
 
   constructor(
+    private fb: FormBuilder,
     private commentService: CommentService,
+    private route: ActivatedRoute,
+    private authService: AuthService,
     private toastr: ToastrService
-  ) {
-    // هنا افترض إنك بتجيب الـ user ID من الـ auth service
-    // مثلاً: this.currentUserId = this.authService.getCurrentUserId();
-    this.currentUserId = 1; // قيمة مؤقتة، استبدلها بالـ auth logic
-  }
+  ) {}
 
   ngOnInit(): void {
-    if (this.postId) {
-      this.fetchComments();
-    }
-  }
-
-  fetchComments(): void {
-    this.commentService.getCommentsByPostId(this.postId).subscribe({
-      next: (res) => {
-        this.comments = res.data || [];
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to load comments.';
-        console.error(err);
-      },
+    this.postId = Number(this.route.snapshot.paramMap.get('id'));
+    this.commentForm = this.fb.group({
+      user_id: [null, Validators.required],
+      post_id: [this.postId, Validators.required],
+      comment: ['', Validators.required],
     });
+
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.userId = user.id;
+        this.commentForm.patchValue({ user_id: this.userId });
+      }
+    });
+
+    this.getComments();
   }
 
-  addComment(): void {
+  getComments() {
+    this.commentService.getCommentsByPostId(this.postId).subscribe(
+      (comments: any[]) => {
+        this.comments = comments;
+      },
+      error => {
+        console.error('Error fetching comments:', error);
+      }
+    );
+  }
+
+  addComment() {
     if (!this.newComment.trim()) {
-      this.toastr.warning('Please enter a comment.', 'Warning');
+      this.errorMessage = 'Comment cannot be empty';
       return;
     }
 
     const commentData = {
       post_id: this.postId,
+      user_id: this.userId,
       content: this.newComment,
-      user_id: this.currentUserId, // أضيف الـ user_id لو الـ API بيطلبها
     };
 
-    this.commentService.createComment(commentData).subscribe({
-      next: (res) => {
-        this.comments.push(res.data);
+    this.commentService.createComment(commentData).subscribe(
+      (response) => {
+        this.toastr.success('Comment added successfully');
         this.newComment = '';
-        this.toastr.success('Comment added successfully!', 'Success');
+        this.getComments();
       },
-      error: (err) => {
-        this.toastr.error('Failed to add comment.', 'Error');
-        console.error(err);
-      },
-    });
+      (error) => {
+        console.error('Error adding comment:', error);
+        this.toastr.error('Failed to add comment');
+      }
+    );
   }
 
-  deleteComment(commentId: number): void {
-    if (confirm('Are you sure you want to delete this comment?')) {
-      this.commentService.deleteComment(commentId).subscribe({
-        next: () => {
-          this.comments = this.comments.filter((comment) => comment.id !== commentId);
-          this.toastr.success('Comment deleted successfully!', 'Success');
-        },
-        error: (err) => {
-          this.toastr.error('Failed to delete comment.', 'Error');
-          console.error(err);
-        },
-      });
-    }
+  deleteComment(commentId: number) {
+    this.commentService.deleteComment(commentId).subscribe(
+      () => {
+        this.toastr.success('Comment deleted successfully');
+        this.getComments();
+      },
+      (error) => {
+        this.toastr.error('Failed to delete comment');
+      }
+    );
   }
 
-  // إضافة الدالة الجديدة
   canDeleteComment(comment: any): boolean {
-    // لو اليوزر هو صاحب الكومنت، رجع true
-    return this.currentUserId === comment.user_id;
+    return this.userId === comment.user_id; // Check if the logged-in user is the comment's author
   }
 }
