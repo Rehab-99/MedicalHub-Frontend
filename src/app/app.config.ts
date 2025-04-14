@@ -2,7 +2,8 @@ import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } fr
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { apiInterceptor } from './interceptors/api.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { isPlatformBrowser } from '@angular/common';
@@ -13,9 +14,11 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(),
-
-    // ✅ أضفنا التوست والأنيميشن هنا
+    provideHttpClient(
+      withInterceptors([apiInterceptor])
+    ),
+    
+    // Toast and animations configuration
     importProvidersFrom(
       BrowserAnimationsModule,
       ToastrModule.forRoot({

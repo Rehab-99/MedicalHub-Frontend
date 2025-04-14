@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule] as const
+  imports: [CommonModule, RouterModule]
 })
 export class SidebarComponent {
   menuItems = [
@@ -15,6 +15,22 @@ export class SidebarComponent {
       title: 'Dashboard',
       icon: 'fas fa-home',
       route: '/dashboard'
+    },
+    {
+      title: 'Categories',
+      icon: 'fas fa-th-list',
+      children: [
+        { title: 'Human Categories', route: '/dashboard/human-categories', icon: 'fas fa-user' },
+        { title: 'Vet Categories', route: '/dashboard/vet-categories', icon: 'fas fa-paw' }
+      ]
+    },
+    {
+      title: 'Products',
+      icon: 'fas fa-box',
+      children: [
+        { title: 'Human Products', route: '/dashboard/human-products', icon: 'fas fa-user' },
+        { title: 'Vet Products', route: '/dashboard/vet-products', icon: 'fas fa-paw' }
+      ]
     },
     {
       title: 'Appointments',
