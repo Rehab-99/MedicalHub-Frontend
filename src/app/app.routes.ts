@@ -29,8 +29,6 @@ import { LoginGuard } from './guards/login.guard';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
 import { AboutPageComponent } from './components/main-website/about/about-page/about-page.component';
-import { ServicesListComponent } from './components/main-website/services/services-list/services-list.component';
-import { ServiceDetailComponent } from './components/main-website/services/service-detail/service-detail.component';
 import { DoctorListComponent } from './components/main-website/doctors/doctor-list/doctor-list.component';
 import { DoctorDetailComponent } from './components/main-website/doctors/doctor-detail/doctor-detail.component';
 import { BlogListComponent } from './components/main-website/blog/blog-list/blog-list.component';
@@ -45,6 +43,11 @@ import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors
 import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blog-list/vet-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
+import { ServiceListComponent } from './components/main-website/service/service.component';
+
+
+
+
 import { VetBlogAddComponent } from './components/main-website/blog/vet/vet-blog-add/vet-blog-add.component';
 import { VetBlogDetailComponent } from './components/main-website/blog/vet/vet-blog-detail/vet-blog-detail.component';
 import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
@@ -73,6 +76,12 @@ export const routes: Routes = [
         component: ClinicsComponent },
         { path: 'clinic-doctors',
           component: ClinicDoctorsComponent },
+          {
+            path:'services',
+            component: ServiceListComponent
+          },
+          
+
   {
     path: 'reset-password',
     component: ResetPasswordComponent
