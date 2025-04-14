@@ -1,98 +1,59 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { CommentService } from '../../../../services/blog/comment.service';
-import { AuthService } from '../../../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-comments',
+  standalone: true,
+  imports: [CommonModule, FormsModule, DatePipe],
   templateUrl: './comments.component.html',
-  styleUrls: ['./comments.component.css']
+  styleUrls: ['./comments.component.scss']
 })
 export class CommentsComponent implements OnInit {
-  commentForm!: FormGroup;
-  postId!: number;
+  @Input() postId!: number;
   comments: any[] = [];
-  userId: number | null = null;
   newComment: string = '';
   errorMessage: string = '';
 
   constructor(
-    private fb: FormBuilder,
     private commentService: CommentService,
-    private route: ActivatedRoute,
-    private authService: AuthService,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.postId = Number(this.route.snapshot.paramMap.get('id'));
-    this.commentForm = this.fb.group({
-      user_id: [null, Validators.required],
-      post_id: [this.postId, Validators.required],
-      comment: ['', Validators.required],
-    });
-
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.userId = user.id;
-        this.commentForm.patchValue({ user_id: this.userId });
-      }
-    });
-
-    this.getComments();
+    this.loadComments();
   }
 
-  getComments() {
-    this.commentService.getCommentsByPostId(this.postId).subscribe(
-      (comments: any[]) => {
-        this.comments = comments;
+  loadComments(): void {
+    this.commentService.getCommentsByPostId(this.postId).subscribe({
+      next: (data: any[]) => {
+        this.comments = data;
       },
-      error => {
-        console.error('Error fetching comments:', error);
+      error: (error: any) => {
+        this.errorMessage = 'Failed to load comments';
+        this.toastr.error('Failed to load comments');
       }
-    );
+    });
   }
 
-  addComment() {
-    if (!this.newComment.trim()) {
-      this.errorMessage = 'Comment cannot be empty';
-      return;
-    }
+  addComment(): void {
+    if (!this.newComment.trim()) return;
 
-    const commentData = {
+    this.commentService.createComment({
       post_id: this.postId,
-      user_id: this.userId,
-      content: this.newComment,
-    };
-
-    this.commentService.createComment(commentData).subscribe(
-      (response) => {
-        this.toastr.success('Comment added successfully');
+      content: this.newComment
+    }).subscribe({
+      next: (response: any) => {
+        this.comments.push(response);
         this.newComment = '';
-        this.getComments();
+        this.toastr.success('Comment added successfully');
       },
-      (error) => {
-        console.error('Error adding comment:', error);
+      error: (error: any) => {
+        this.errorMessage = 'Failed to add comment';
         this.toastr.error('Failed to add comment');
       }
-    );
-  }
-
-  deleteComment(commentId: number) {
-    this.commentService.deleteComment(commentId).subscribe(
-      () => {
-        this.toastr.success('Comment deleted successfully');
-        this.getComments();
-      },
-      (error) => {
-        this.toastr.error('Failed to delete comment');
-      }
-    );
-  }
-
-  canDeleteComment(comment: any): boolean {
-    return this.userId === comment.user_id; // Check if the logged-in user is the comment's author
+    });
   }
 }
