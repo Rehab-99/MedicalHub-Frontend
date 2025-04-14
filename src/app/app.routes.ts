@@ -57,6 +57,7 @@ import { HumanProductsComponent } from './components/dashboard/human-products/hu
 import { VetProductsComponent } from './components/dashboard/vet-products/vet-products.component';
 import { AddProductComponent } from './components/dashboard/add-product/add-product.component';
 import { EditProductComponent } from './components/dashboard/edit-product/edit-product.component';
+import { BookComponent } from './components/main-website/services/book/book.component';
 
 export const routes: Routes = [
   {
@@ -91,6 +92,10 @@ export const routes: Routes = [
   {
     path: 'services',
     component: ServiceDetailComponent
+  },
+  {
+    path: 'book/:id',
+    component: BookComponent
   },
   {
     path: 'reset-password',

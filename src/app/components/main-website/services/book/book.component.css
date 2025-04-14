@@ -1,0 +1,88 @@
+/* Ensure full height and no margin */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Flexbox container for the page */
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  
+  /* Header styling */
+  app-header {
+    background-color: #2e7d32;
+    padding: 15px;
+    color: white;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    /* If using an actual component, adjust style within that component's CSS */
+  }
+  
+  /* Footer styling */
+  app-footer {
+    background-color: #2e3c7d;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-top: auto; /* Push footer to the bottom */
+  }
+  
+  /* Form container styling */
+  .container {
+    max-width: 600px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 128, 0, 0.1);
+    padding: 30px;
+    margin: 100px auto; /* Added margin to create space between form and header */
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2a4e66;
+    font-weight: 600;
+  }
+  
+  .form-label {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .form-control {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px 12px;
+    transition: border-color 0.3s;
+  }
+  
+  .form-control:focus {
+    border-color: #2e7d32;
+    box-shadow: 0 0 5px rgba(46, 125, 50, 0.4);
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    background-color: #2e607d; /* Optional: Change button background color */
+    color: #fff; /* Optional: Change text color */
+    padding: 12px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #1e365b; /* Optional: Darken button on hover */
+  }
+  
