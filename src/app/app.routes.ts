@@ -23,6 +23,7 @@ import { UserLoginComponent } from './components/auth/user-login/user-login.comp
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { UpdatePasswordComponent } from './components/auth/update-password/update-password.component';
+import { CheckoutComponent } from './components/main-website/checkout/checkout.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -52,9 +53,11 @@ export const routes: Routes = [
   {
     path: 'cart', 
     component: ShoppingCartComponent,
-  }
-  ,
- 
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent
+  },
   {
     path: 'login',
     component: UserLoginComponent

@@ -9,7 +9,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink, HttpClientModule],
   templateUrl: './update-password.component.html',
-  styleUrls: ['./update-password.component.css']
 })
 export class UpdatePasswordComponent implements OnInit {
   updateForm: FormGroup;
