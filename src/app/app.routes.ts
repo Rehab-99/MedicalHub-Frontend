@@ -163,7 +163,7 @@ export const routes: Routes = [
   { path: 'blog/human/add', component: HumanBlogAddComponent },
   { path: 'blog/human/:id', component: HumanBlogDetailComponent },
   { path: 'blog/vet/add', component: VetBlogAddComponent },
-  { path: '', redirectTo: '/blog/vet', pathMatch: 'full' }
+  { path: '', redirectTo: '/blog/vet', pathMatch: 'full' },
   {
     path: 'user/dashboard',
     component: UserDashboardComponent,
