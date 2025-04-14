@@ -43,7 +43,6 @@ import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors
 import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blog-list/vet-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
-import { ServiceListComponent } from './components/main-website/service/service.component';
 
 
 
@@ -76,10 +75,7 @@ export const routes: Routes = [
         component: ClinicsComponent },
         { path: 'clinic-doctors',
           component: ClinicDoctorsComponent },
-          {
-            path:'services',
-            component: ServiceListComponent
-          },
+         
           
 
   {

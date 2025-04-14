@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CommentService } from '../../../../services/blog/comment.service';
 import { AuthService } from '../../../../services/auth.service';
-
+import { CommonModule } from '@angular/common'; 
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
-  
+  standalone: true, // ✅ لازم يكون standalone = true
+  imports: [CommonModule, FormsModule],
   styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
+  @Input() postId!: number; // ✅ استقبال postId من الكمبوننت الأب
+
   commentForm!: FormGroup;
-  postId!: number;
   comments: any[] = [];
   userId: number | null = null;
   newComment: string = '';
@@ -22,13 +23,11 @@ export class CommentsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private commentService: CommentService,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.postId = Number(this.route.snapshot.paramMap.get('id'));
     this.commentForm = this.fb.group({
       user_id: [null, Validators.required],
       post_id: [this.postId, Validators.required],
@@ -94,6 +93,6 @@ export class CommentsComponent implements OnInit {
   }
 
   canDeleteComment(comment: any): boolean {
-    return this.userId === comment.user_id; // Check if the logged-in user is the comment's author
+    return this.userId === comment.user_id;
   }
 }
