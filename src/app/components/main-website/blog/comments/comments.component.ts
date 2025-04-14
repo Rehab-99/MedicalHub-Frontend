@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   standalone: true,
   imports: [CommonModule, FormsModule, DatePipe],
   templateUrl: './comments.component.html',
-  styleUrls: ['./comments.component.scss']
+  styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
   @Input() postId!: number;

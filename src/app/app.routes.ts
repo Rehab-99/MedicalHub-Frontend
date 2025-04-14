@@ -29,6 +29,7 @@ import { LoginGuard } from './guards/login.guard';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
 import { AboutPageComponent } from './components/main-website/about/about-page/about-page.component';
+import { ServiceDetailComponent } from './components/main-website/services/service-detail/service-detail.component';
 import { DoctorListComponent } from './components/main-website/doctors/doctor-list/doctor-list.component';
 import { DoctorDetailComponent } from './components/main-website/doctors/doctor-detail/doctor-detail.component';
 import { BlogListComponent } from './components/main-website/blog/blog-list/blog-list.component';
@@ -43,6 +44,11 @@ import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors
 import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blog-list/vet-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
+import { VetBlogAddComponent } from './components/main-website/blog/vet/vet-blog-add/vet-blog-add.component';
+import { VetBlogDetailComponent } from './components/main-website/blog/vet/vet-blog-detail/vet-blog-detail.component';
+import { HumanBlogListComponent } from './components/main-website/blog/human/human-blog-list/human-blog-list.component';
+import { UserDashboardComponent } from './components/user-dashboard/user-dashboard.component';
+import { SettingsComponent as UserSettingsComponent } from './components/settings/settings.component';
 import { HumanCategoryComponent } from './components/dashboard/human-category/human-category.component';
 import { VetCategoryComponent } from './components/dashboard/vet-category/vet-category.component';
 import { AddCategoryComponent } from './components/dashboard/add-category/add-category.component';
@@ -66,20 +72,26 @@ export const routes: Routes = [
     component: AdminLoginComponent,
     canActivate: [LoginGuard]
   },
-  { path: 'doctors/vet',
-     component: VetComponent },
-    { path: 'doctors/human',
-       component: HumanComponent },
-       { path: 'clinics',
-        component: ClinicsComponent },
-        { path: 'clinic-doctors',
-          component: ClinicDoctorsComponent },
-          {
-            path:'services',
-            component: ServiceListComponent
-          },
-          
-
+  { 
+    path: 'doctors/vet',
+    component: VetComponent 
+  },
+  { 
+    path: 'doctors/human',
+    component: HumanComponent 
+  },
+  { 
+    path: 'clinics',
+    component: ClinicsComponent 
+  },
+  { 
+    path: 'clinic-doctors',
+    component: ClinicDoctorsComponent 
+  },
+  {
+    path: 'services',
+    component: ServiceDetailComponent
+  },
   {
     path: 'reset-password',
     component: ResetPasswordComponent
@@ -125,10 +137,14 @@ export const routes: Routes = [
         path: 'human-clinic',
         component: HumanClinicComponent
       },
-      { path: 'add-clinic', 
-        component: AddClinicComponent }, 
-      { path: 'edit-clinic/:id', 
-        component: EditClinicComponent },
+      { 
+        path: 'add-clinic', 
+        component: AddClinicComponent 
+      }, 
+      { 
+        path: 'edit-clinic/:id', 
+        component: EditClinicComponent 
+      },
       {
         path: 'human-blog',
         component: HumanBlogComponent
@@ -137,10 +153,14 @@ export const routes: Routes = [
         path: 'vet-clinic',
         component: VetClinicComponent
       },
-      { path: 'add-vet-clinic',
-         component: AddVetClinicComponent },
-      { path: 'edit-vet-clinic/:id', component:
-         EditVetClinicComponent },
+      { 
+        path: 'add-vet-clinic',
+        component: AddVetClinicComponent 
+      },
+      { 
+        path: 'edit-vet-clinic/:id', 
+        component: EditVetClinicComponent 
+      },
       {
         path: 'vet-pharmacy',
         component: VetPharmacyComponent
@@ -153,10 +173,14 @@ export const routes: Routes = [
         path: 'doctors',
         component: DoctorsComponent
       },
-      { path: 'add-doctor', 
-        component: AddDoctorComponent },
-      { path: 'edit-doctor/:id',
-         component: EditDoctorComponent }, 
+      { 
+        path: 'add-doctor', 
+        component: AddDoctorComponent 
+      },
+      { 
+        path: 'edit-doctor/:id',
+        component: EditDoctorComponent 
+      }, 
       {
         path: 'appointments',
         component: AppointmentsComponent
@@ -197,13 +221,39 @@ export const routes: Routes = [
     component: ProfileComponent,
     canActivate: [AuthGuard]
   },
-  { path: 'blog/vet', component: VetBlogListComponent},
-  { path: 'blog/vet/:id', component: VetBlogDetailComponent }, 
-  { path: 'blog/human', component: HumanBlogListComponent},
-  { path: 'blog/human/add', component: HumanBlogAddComponent },
-  { path: 'blog/human/:id', component: HumanBlogDetailComponent },
-  { path: 'blog/vet/add', component: VetBlogAddComponent },
-  { path: '', redirectTo: '/blog/vet', pathMatch: 'full' },
+  { 
+    path: 'blog/vet', 
+    component: VetBlogListComponent
+  },
+  { 
+    path: 'blog/vet/:id', 
+    component: VetBlogDetailComponent 
+  }, 
+  { 
+    path: 'blog/human', 
+    component: HumanBlogListComponent
+  },
+  { 
+    path: 'blog/human/add', 
+    component: HumanBlogAddComponent 
+  },
+  { 
+    path: 'blog/human/:id', 
+    component: HumanBlogDetailComponent 
+  },
+  { 
+    path: 'blog/vet/add', 
+    component: VetBlogAddComponent 
+  },
+  { 
+    path: 'services', 
+    component: ServiceDetailComponent 
+  },
+  { 
+    path: '', 
+    redirectTo: '/blog/vet', 
+    pathMatch: 'full' 
+  },
   {
     path: 'user/dashboard',
     component: UserDashboardComponent,
@@ -214,5 +264,5 @@ export const routes: Routes = [
         component: UserSettingsComponent
       }
     ]
-  },
+  }
 ];
