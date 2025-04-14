@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -10,11 +10,15 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
+
+
 export class HeaderComponent {
   isMenuOpen = false;
   isLoggedIn = false;
   isUserMenuOpen = false;
   user: any = null;
+  isDoctorsDropdownOpen = false;
+  isBlogsDropdownOpen = false;
 
   constructor(private authService: AuthService) {
     this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
@@ -25,24 +29,38 @@ export class HeaderComponent {
       this.user = user;
     });
   }
-  isDoctorsDropdownOpen = false;
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+
+    const isDoctorsDropdown = target.closest('.doctors-dropdown');
+    const isBlogsDropdown = target.closest('.blogs-dropdown');
+
+    if (!isDoctorsDropdown) {
+      this.isDoctorsDropdownOpen = false;
+    }
+
+    if (!isBlogsDropdown) {
+      this.isBlogsDropdownOpen = false;
+    }
+  }
 
   toggleDoctorsDropdown() {
     this.isDoctorsDropdownOpen = !this.isDoctorsDropdownOpen;
+    this.isBlogsDropdownOpen = false;
   }
-  
 
-
-  isBlogsDropdownOpen = false;
   toggleBlogsDropdown() {
-    console.log('Blogs dropdown toggled, isBlogsDropdownOpen:', this.isBlogsDropdownOpen);
     this.isBlogsDropdownOpen = !this.isBlogsDropdownOpen;
+    this.isDoctorsDropdownOpen = false;
   }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
-    
+
     if (menuToggle && navLinks) {
       menuToggle.classList.toggle('active');
       navLinks.classList.toggle('active');

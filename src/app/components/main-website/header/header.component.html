@@ -1,64 +1,71 @@
 <!-- Navigation Bar -->
 <nav class="navbar">
-    <div class="nav-container">
-        <div class="logo">
-            <a routerLink="/">
-                <i class="fas fa-heartbeat logo-icon"></i>
-                <span class="logo-text">MedicalHub</span>
+  <div class="nav-container">
+      <div class="logo">
+          <a routerLink="/">
+              <i class="fas fa-heartbeat logo-icon"></i>
+              <span class="logo-text">MedicalHub</span>
+          </a>
+      </div>
+
+      <div class="nav-links">
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+         <!-- Doctors Dropdown -->
+<div class="dropdown doctors-dropdown">
+  <a class="dropdown-toggle" (click)="toggleDoctorsDropdown(); $event.stopPropagation()">
+    Doctors <i class="fas fa-chevron-down"></i>
+  </a>
+  <ul *ngIf="isDoctorsDropdownOpen" class="dropdown-menu">
+    <li><a routerLink="/doctors/human">Human</a></li>
+    <li><a routerLink="/doctors/vet">Vet</a></li>
+  </ul>
+</div>
+          
+          <a routerLink="/services" routerLinkActive="active">Services</a>
+
+          <a routerLink="/clinics" routerLinkActive="active" (click)="$event.stopPropagation()">Clinics</a>
+
+          <div class="dropdown">
+            <a class="dropdown-toggle" (click)="toggleBlogsDropdown()">
+              Blogs <i class="fas fa-chevron-down"></i>
             </a>
-        </div>
-
-        <div class="nav-links">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-            <div class="dropdown">
-              <a class="dropdown-toggle" (click)="toggleDoctorsDropdown()">
-                Doctors <i class="fas fa-chevron-down"></i>
+            <div class="dropdown-menu" *ngIf="isBlogsDropdownOpen">
+              <li class="nav-item dropdown blogs-dropdown">
+                <a class="nav-link" (click)="toggleBlogsDropdown(); $event.stopPropagation()">Blogs</a>
+                <ul *ngIf="isBlogsDropdownOpen" class="dropdown-menu">
+                  <li><a routerLink="/blogs/human">Human</a></li>
+                  <li><a routerLink="/blogs/vet">Vet</a></li>
+                </ul>
+              </li>
+            </div>
+          </div>
+          <a routerLink="/Pharmacy" routerLinkActive="active">Pharmacy</a>
+          <a routerLink="/login" routerLinkActive="active" class="login-btn" *ngIf="!isLoggedIn">Login</a>
+          <div class="user-menu" *ngIf="isLoggedIn">
+            <div class="user-profile" (click)="toggleUserMenu()">
+              <img *ngIf="user?.image" [src]="user.image" alt="User Profile" class="profile-image">
+              <i *ngIf="!user?.image" class="fas fa-user-circle profile-icon"></i>
+            </div>
+            <div class="dropdown-menu" *ngIf="isUserMenuOpen">
+              <div class="user-info">
+                <span class="user-name">{{ user?.name || 'User' }}</span>
+              </div>
+              <a routerLink="/user/dashboard" class="dropdown-item" (click)="toggleUserMenu()">
+                <i class="fas fa-user"></i>
+                Profile
               </a>
-              <div class="dropdown-menu" *ngIf="isDoctorsDropdownOpen">
-                <a routerLink="/doctors/vet" routerLinkActive="active" (click)="toggleDoctorsDropdown()">Vet Doctors</a>
-                <a routerLink="/doctors/human" routerLinkActive="active" (click)="toggleDoctorsDropdown()">Human Doctors</a>
-              </div>
-            </div>
-            <a routerLink="/services" routerLinkActive="active">Services</a>
-
-            <a routerLink="/clinics" routerLinkActive="active" (click)="$event.stopPropagation()">Clinics</a>
-
-            <div class="dropdown">
-              <a class="dropdown-toggle" (click)="toggleBlogsDropdown()">
-                Blogs <i class="fas fa-chevron-down"></i>
+              <a (click)="logout()" class="dropdown-item">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
               </a>
-              <div class="dropdown-menu" *ngIf="isBlogsDropdownOpen">
-                <a routerLink="/blog/vet" routerLinkActive="active" (click)="toggleBlogsDropdown()">Vet Blogs</a>
-                <a routerLink="/blog/human" routerLinkActive="active" (click)="toggleBlogsDropdown()">Human Blogs</a>
-              </div>
             </div>
-            <a routerLink="/Pharmacy" routerLinkActive="active">Pharmacy</a>
-            <a routerLink="/login" routerLinkActive="active" class="login-btn" *ngIf="!isLoggedIn">Login</a>
-            <div class="user-menu" *ngIf="isLoggedIn">
-              <div class="user-profile" (click)="toggleUserMenu()">
-                <img *ngIf="user?.image" [src]="user.image" alt="User Profile" class="profile-image">
-                <i *ngIf="!user?.image" class="fas fa-user-circle profile-icon"></i>
-              </div>
-              <div class="dropdown-menu" *ngIf="isUserMenuOpen">
-                <div class="user-info">
-                  <span class="user-name">{{ user?.name || 'User' }}</span>
-                </div>
-                <a routerLink="/user/dashboard" class="dropdown-item" (click)="toggleUserMenu()">
-                  <i class="fas fa-user"></i>
-                  Profile
-                </a>
-                <a (click)="logout()" class="dropdown-item">
-                  <i class="fas fa-sign-out-alt"></i>
-                  Logout
-                </a>
-              </div>
-            </div>
-        </div>
+          </div>
+      </div>
 
-        <button class="menu-toggle" (click)="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </div>
+      <button class="menu-toggle" (click)="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+      </button>
+  </div>
 </nav>

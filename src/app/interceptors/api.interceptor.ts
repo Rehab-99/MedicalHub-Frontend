@@ -4,10 +4,13 @@ import { throwError } from 'rxjs';
 import Swal from 'sweetalert2';
 
 export const apiInterceptor: HttpInterceptorFn = (req, next) => {
-  // Get the token from localStorage
-  const token = localStorage.getItem('token');
+  let token: string | null = null;
 
-  // Clone the request and add the authorization header if token exists
+  // ✅ Only access localStorage if in the browser
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    token = localStorage.getItem('token');
+  }
+
   if (token) {
     req = req.clone({
       setHeaders: {
@@ -20,19 +23,18 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       console.error('API Error:', error);
 
-      if (error.status === 401) {
-        // Handle unauthorized access
-        localStorage.removeItem('token');
-        window.location.href = '/login';
-      } else if (error.status === 403) {
-        // Handle forbidden access
-        Swal.fire('Error', 'You do not have permission to perform this action', 'error');
-      } else {
-        // Handle other errors
-        Swal.fire('Error', 'An error occurred while processing your request', 'error');
+      if (typeof window !== 'undefined') {
+        if (error.status === 401) {
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        } else if (error.status === 403) {
+          Swal.fire('Error', 'You do not have permission to perform this action', 'error');
+        } else {
+          Swal.fire('Error', 'An error occurred while processing your request', 'error');
+        }
       }
 
       return throwError(() => error);
     })
   );
-}; 
+};
