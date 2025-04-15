@@ -23,6 +23,7 @@ import { UserLoginComponent } from './components/auth/user-login/user-login.comp
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { UpdatePasswordComponent } from './components/auth/update-password/update-password.component';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -264,9 +265,13 @@ export const routes: Routes = [
     component: UserDashboardComponent,
     canActivate: [AuthGuard],
     children: [
-      { 
+      {
         path: 'settings',
         component: UserSettingsComponent
+      },
+      {
+        path: 'cart',
+        component: ShoppingCartComponent
       }
     ]
   }
