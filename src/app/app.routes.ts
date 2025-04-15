@@ -23,6 +23,7 @@ import { UserLoginComponent } from './components/auth/user-login/user-login.comp
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { UpdatePasswordComponent } from './components/auth/update-password/update-password.component';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -58,6 +59,7 @@ import { HumanProductsComponent } from './components/dashboard/human-products/hu
 import { VetProductsComponent } from './components/dashboard/vet-products/vet-products.component';
 import { AddProductComponent } from './components/dashboard/add-product/add-product.component';
 import { EditProductComponent } from './components/dashboard/edit-product/edit-product.component';
+import { BookComponent } from './components/main-website/services/book/book.component';
 
 export const routes: Routes = [
   {
@@ -105,6 +107,10 @@ export const routes: Routes = [
     component: ServiceDetailComponent
   },
 
+  {
+    path: 'book/:id',
+    component: BookComponent
+  },
   {
     path: 'reset-password',
     component: ResetPasswordComponent
@@ -272,9 +278,13 @@ export const routes: Routes = [
     component: UserDashboardComponent,
     canActivate: [AuthGuard],
     children: [
-      { 
+      {
         path: 'settings',
         component: UserSettingsComponent
+      },
+      {
+        path: 'cart',
+        component: ShoppingCartComponent
       }
     ]
   }
