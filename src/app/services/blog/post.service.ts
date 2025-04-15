@@ -11,6 +11,7 @@ export class PostService {
 
   constructor(private http: HttpClient) {}
 
+  // الحصول على الـ token من localStorage
   private getAuthHeaders() {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -20,6 +21,7 @@ export class PostService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
+  // الحصول على جميع البوستات
   getAllPosts(): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get(this.apiUrl, { headers }).pipe(
@@ -27,6 +29,7 @@ export class PostService {
     );
   }
 
+  // إنشاء بوست جديد
   createPost(postData: FormData): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.post(this.apiUrl, postData, { headers }).pipe(
@@ -34,6 +37,7 @@ export class PostService {
     );
   }
 
+  // الحصول على بوست باستخدام الـ ID
   getPostById(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get(`${this.apiUrl}/${id}`, { headers }).pipe(
@@ -41,13 +45,15 @@ export class PostService {
     );
   }
 
+  // تحديث البوست باستخدام الـ ID
   updatePost(id: number, postData: FormData): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/${id}?_method=PUT`, postData, { headers }).pipe(
+    return this.http.put(`${this.apiUrl}/${id}`, postData, { headers }).pipe(
       catchError(error => this.handleError(error))
     );
   }
 
+  // حذف البوست باستخدام الـ ID
   deletePost(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.delete(`${this.apiUrl}/${id}`, { headers }).pipe(
@@ -55,6 +61,7 @@ export class PostService {
     );
   }
 
+  // معالج الأخطاء
   private handleError(error: any) {
     console.error('PostService Error:', error);
     return throwError(() => error);

@@ -3,21 +3,9 @@
 // and configuration in app.config.ts
 
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';  // Import ReactiveFormsModule
-import { AppComponent } from './app.component';
-import { BookComponent } from './components/main-website/services/book/book.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    BookComponent  // Declare the BookComponent
-  ],
-  imports: [
-    BrowserModule,
-    ReactiveFormsModule,  // Add ReactiveFormsModule here
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  imports: [],
+  providers: []
 })
 export class AppModule { }

@@ -1,5 +1,5 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, RouterModule } from '@angular/router'; // أضف RouterModule هنا
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -17,9 +17,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([apiInterceptor])
     ),
-    
-    // Toast and animations configuration
+
     importProvidersFrom(
+      RouterModule, // ✅ هذا هو المطلوب لحل المشكلة
       BrowserAnimationsModule,
       ToastrModule.forRoot({
         timeOut: 3000,

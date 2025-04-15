@@ -6,7 +6,6 @@ import { HumanClinicComponent } from './components/dashboard/human-clinic/human-
 import { HumanBlogComponent } from './components/dashboard/human-blog/human-blog.component';
 import { VetClinicComponent } from './components/dashboard/vet-clinic/vet-clinic.component';
 import { VetPharmacyComponent } from './components/dashboard/vet-pharmacy/vet-pharmacy.component';
-import { VetBlogComponent } from './components/dashboard/vet-blog/vet-blog.component';
 import { DoctorsComponent } from './components/dashboard/doctors/doctors.component';
 import { AppointmentsComponent } from './components/dashboard/appointments/appointments.component';
 import { ConsultationsComponent } from './components/dashboard/consultations/consultations.component';
@@ -60,6 +59,8 @@ import { VetProductsComponent } from './components/dashboard/vet-products/vet-pr
 import { AddProductComponent } from './components/dashboard/add-product/add-product.component';
 import { EditProductComponent } from './components/dashboard/edit-product/edit-product.component';
 import { BookComponent } from './components/main-website/services/book/book.component';
+import { VetBlogComponent } from './components/dashboard/vet-blog/vet-blog.component';
+import { EditPostBlogComponent } from './dashboard/vet-blog/edit-vet-blog/edit-post-blog.component';
 
 export const routes: Routes = [
   {
@@ -264,6 +265,9 @@ export const routes: Routes = [
     path: 'blog/vet/add', 
     component: VetBlogAddComponent 
   },
+  { path: 'dashboard/post-blog/edit/:id',
+     component: EditPostBlogComponent },
+
   { 
     path: 'services', 
     component: ServiceDetailComponent 

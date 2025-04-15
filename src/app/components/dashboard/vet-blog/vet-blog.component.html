@@ -2,15 +2,31 @@
 
 <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-<ul class="post-list">
-  <li *ngFor="let post of vetPosts" class="post-item">
-    <a [routerLink]="['/blog/vet', post.id]">{{ post.title }}</a>
-    <div class="actions">
-      <button (click)="editPost(post.id)" class="edit-btn">Edit</button>
-      <button (click)="deletePost(post.id)" class="delete-btn">Delete</button>
-    </div>
-  </li>
-</ul>
+<table class="post-table" *ngIf="vetPosts.length > 0">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let post of vetPosts" class="post-row">
+      <td>
+        <a [routerLink]="['/blog/vet', post.id]">{{ post.title }}</a>
+      </td>
+      <td>
+        <a [routerLink]="['/dashboard/post-blog/edit', post.id]" class="edit-btn">
+          <i class="fas fa-edit"></i> Edit
+        </a>
+        
+        
+        <button (click)="deletePost(post.id)" class="delete-btn">
+          <i class="fas fa-trash-alt"></i> Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <div *ngIf="vetPosts.length === 0 && !errorMessage" class="empty">
   <p>No blog posts found.</p>
