@@ -10,9 +10,9 @@
   <div class="blogs-grid">
     <div *ngFor="let post of vetBlogPosts" class="blog-card" (click)="viewPost(post.id)">
       <div class="card-header">
-        <img [src]="post.doctorImage || 'assets/default-doctor.png'" alt="Doctor Image" class="doctor-image" />
+        <img [src]="doctorNames[post.doctor_id]?.image || 'assets/default-doctor.png'" class="doctor-image" />
         <div class="doctor-info">
-          <p class="doctor-name">{{ post.doctorName || 'Unknown Doctor' }}</p>
+          <p class="doctor-name">{{ doctorNames[post.doctor_id]?.name || 'Unknown Doctor' }}</p>
           <p class="date">{{ post.date | date:'mediumDate' }}</p>
         </div>
       </div>

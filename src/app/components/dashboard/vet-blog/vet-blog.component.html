@@ -1,1 +1,17 @@
-<p>vet-blog works!</p>
+<h2>Vet Blog Posts (Dashboard View)</h2>
+
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+<ul class="post-list">
+  <li *ngFor="let post of vetPosts" class="post-item">
+    <a [routerLink]="['/blog/vet', post.id]">{{ post.title }}</a>
+    <div class="actions">
+      <button (click)="editPost(post.id)" class="edit-btn">Edit</button>
+      <button (click)="deletePost(post.id)" class="delete-btn">Delete</button>
+    </div>
+  </li>
+</ul>
+
+<div *ngIf="vetPosts.length === 0 && !errorMessage" class="empty">
+  <p>No blog posts found.</p>
+</div>

@@ -10,6 +10,11 @@ import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common'; // استورد DatePipe
 import { DoctorService } from '../../../../../services/doctor.service';
 
+interface Doctor {
+  name: string;
+  image: string;
+}
+
 @Component({
   selector: 'app-vet-blog-list',
   standalone: true,
@@ -22,7 +27,7 @@ export class VetBlogListComponent implements OnInit, OnDestroy {
   vetBlogPosts: any[] = [];
   errorMessage: string | null = null;
   private subscription: Subscription = new Subscription();
-  doctorNames: { [key: number]: string } = {}; // لتخزين أسماء الأطباء بناءً على doctor_id
+  doctorNames: { [key: number]: Doctor } = {}; // تخزين أسماء الأطباء
 
   constructor(
     private postService: PostService,
@@ -73,8 +78,11 @@ export class VetBlogListComponent implements OnInit, OnDestroy {
     this.vetBlogPosts.forEach((post) => {
       if (post.doctor_id) {
         this.doctorService.getDoctorById(post.doctor_id).subscribe({
-          next: (doctor: { name: string }) => {
-            this.doctorNames[post.doctor_id] = doctor.name; // تخزين اسم الدكتور
+          next: (doctor: Doctor) => {
+            this.doctorNames[post.doctor_id] = {
+              name: doctor.name,
+              image: doctor.image
+            };
           },
           error: (err) => {
             console.error('Error fetching doctor:', err);
