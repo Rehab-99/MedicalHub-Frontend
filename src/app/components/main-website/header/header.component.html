@@ -10,17 +10,15 @@
 
       <div class="nav-links">
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-         <!-- Doctors Dropdown -->
-<div class="dropdown doctors-dropdown">
-  <a class="dropdown-toggle" (click)="toggleDoctorsDropdown(); $event.stopPropagation()">
-    Doctors <i class="fas fa-chevron-down"></i>
-  </a>
-  <ul *ngIf="isDoctorsDropdownOpen" class="dropdown-menu">
-    <li><a routerLink="/doctors/human">Human</a></li>
-    <li><a routerLink="/doctors/vet">Vet</a></li>
-  </ul>
-</div>
-          
+          <div class="dropdown">
+            <a class="dropdown-toggle" (click)="toggleDoctorsDropdown()">
+              Doctors <i class="fas fa-chevron-down"></i>
+            </a>
+            <div class="dropdown-menu" *ngIf="isDoctorsDropdownOpen">
+              <a routerLink="/doctors/vet" routerLinkActive="active" (click)="toggleDoctorsDropdown()">Vet Doctors</a>
+              <a routerLink="/doctors/human" routerLinkActive="active" (click)="toggleDoctorsDropdown()">Human Doctors</a>
+            </div>
+          </div>
           <a routerLink="/services" routerLinkActive="active">Services</a>
 
           <a routerLink="/clinics" routerLinkActive="active" (click)="$event.stopPropagation()">Clinics</a>
@@ -30,13 +28,8 @@
               Blogs <i class="fas fa-chevron-down"></i>
             </a>
             <div class="dropdown-menu" *ngIf="isBlogsDropdownOpen">
-              <li class="nav-item dropdown blogs-dropdown">
-                <a class="nav-link" (click)="toggleBlogsDropdown(); $event.stopPropagation()">Blogs</a>
-                <ul *ngIf="isBlogsDropdownOpen" class="dropdown-menu">
-                  <li><a routerLink="/blogs/human">Human</a></li>
-                  <li><a routerLink="/blogs/vet">Vet</a></li>
-                </ul>
-              </li>
+              <a routerLink="/blog/vet" routerLinkActive="active" (click)="toggleBlogsDropdown()">Vet Blogs</a>
+              <a routerLink="/blog/human" routerLinkActive="active" (click)="toggleBlogsDropdown()">Human Blogs</a>
             </div>
           </div>
           <a routerLink="/Pharmacy" routerLinkActive="active">Pharmacy</a>
@@ -50,7 +43,7 @@
               <div class="user-info">
                 <span class="user-name">{{ user?.name || 'User' }}</span>
               </div>
-              <a routerLink="/user/dashboard" class="dropdown-item" (click)="toggleUserMenu()">
+              <a routerLink="/profile" class="dropdown-item" (click)="toggleUserMenu()">
                 <i class="fas fa-user"></i>
                 Profile
               </a>
