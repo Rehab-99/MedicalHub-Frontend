@@ -6,7 +6,10 @@
       <!-- Image Section at the top -->
       <div class="image-section">
         <div class="image-container">
-          <img [src]="getImageUrl(doctor?.image)" alt="Doctor's Image" class="profile-image">
+          <div class="profile-image" *ngIf="!doctor?.image">
+            <i class="fas fa-user-md"></i>
+          </div>
+          <img *ngIf="doctor?.image" [src]="getImageUrl(doctor?.image)" alt="Doctor's Image" class="profile-image">
           <div class="image-upload">
             <label for="image" class="upload-label">
               <i class="fas fa-camera"></i>
