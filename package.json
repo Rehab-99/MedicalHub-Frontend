@@ -24,6 +24,8 @@
     "@fortawesome/angular-fontawesome": "^1.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.5",
     "chart.js": "^4.4.8",
     "express": "^4.18.2",
     "ngx-toastr": "^19.0.0",
@@ -33,6 +35,7 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^1.15.1",
     "@angular-devkit/build-angular": "^19.2.7",
     "@angular/cli": "^19.2.7",
     "@angular/compiler-cli": "^19.2.6",

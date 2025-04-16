@@ -22,9 +22,9 @@ import { UserLoginComponent } from './components/auth/user-login/user-login.comp
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { UpdatePasswordComponent } from './components/auth/update-password/update-password.component';
-import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
+// import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 
-import { AuthGuard } from './guards/auth.guard';
+
 import { LoginGuard } from './guards/login.guard';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
@@ -41,6 +41,8 @@ import { VetComponent } from './components/main-website/doctors/vet/vet.componen
 import { HumanComponent } from './components/main-website/doctors/human/human.component';
 import { ClinicsComponent } from './components/main-website/clinics/clinics.component';
 import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors/clinic-doctors.component';
+import { CheckoutComponent } from './components/main-website/checkout/checkout.component';
+import { ShoppingCartComponent } from './components/main-website/shopping-cart/shopping-cart.component';
 import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blog-list/vet-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
@@ -63,10 +65,36 @@ import { VetBlogComponent } from './components/dashboard/vet-blog/vet-blog.compo
 import { EditPostBlogComponent } from './dashboard/vet-blog/edit-vet-blog/edit-post-blog.component';
 import { DoctorLoginComponent } from './doctor-login/doctor-login.component';
 
+import { AuthGuard } from './guards/auth.guard';
+
+// import { AdminAuthGuard } from './guards/admin-auth.guard';
+// import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
+// import { AboutPageComponent } from './components/main-website/about/about-page/about-page.component';
+// import { ServiceDetailComponent } from './components/main-website/services/service-detail/service-detail.component';
+// import { DoctorListComponent } from './components/main-website/doctors/doctor-list/doctor-list.component';
+// import { DoctorDetailComponent } from './components/main-website/doctors/doctor-detail/doctor-detail.component';
+// import { BlogListComponent } from './components/main-website/blog/blog-list/blog-list.component';
+// import { BlogDetailComponent } from './components/main-website/blog/blog-detail/blog-detail.component';
+// import { ContactPageComponent } from './components/main-website/contact/contact-page/contact-page.component';
+// import { AppointmentFormComponent } from './components/main-website/appointments/appointment-form/appointment-form.component';
+// import { ProfileComponent } from './components/main-website/profile/profile.component';
+// import { VetComponent } from './components/main-website/doctors/vet/vet.component';
+// import { HumanComponent } from './components/main-website/doctors/human/human.component';
+// import { ClinicsComponent } from './components/main-website/clinics/clinics.component';
+// import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors/clinic-doctors.component';
+
 export const routes: Routes = [
   {
     path: '',
     component: MainWebsiteLayoutComponent
+  },
+  {
+    path: 'cart', 
+    component: ShoppingCartComponent,
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent
   },
   {
     path: 'login',
