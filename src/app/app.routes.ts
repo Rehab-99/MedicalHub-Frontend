@@ -61,6 +61,7 @@ import { EditProductComponent } from './components/dashboard/edit-product/edit-p
 import { BookComponent } from './components/main-website/services/book/book.component';
 import { VetBlogComponent } from './components/dashboard/vet-blog/vet-blog.component';
 import { EditPostBlogComponent } from './dashboard/vet-blog/edit-vet-blog/edit-post-blog.component';
+import { DoctorLoginComponent } from './doctor-login/doctor-login.component';
 
 export const routes: Routes = [
   {
@@ -267,7 +268,12 @@ export const routes: Routes = [
   },
   { path: 'dashboard/post-blog/edit/:id',
      component: EditPostBlogComponent },
-
+     {
+      path: 'doctor-dashboard',
+       loadComponent: () => import('./doctor-dashboard/doctor-dashboard.component')
+         .then(m => m.DoctorDashboardComponent)
+    },
+    
   { 
     path: 'services', 
     component: ServiceDetailComponent 
@@ -277,6 +283,9 @@ export const routes: Routes = [
     redirectTo: '/blog/vet', 
     pathMatch: 'full' 
   },
+  { path: 'doctor-login', component: DoctorLoginComponent },
+{ path: '', redirectTo: '/doctor-login', pathMatch: 'full' },
+
   {
     path: 'user/dashboard',
     component: UserDashboardComponent,
