@@ -1,18 +1,25 @@
 <app-header></app-header>
 <div class="main-content">
-    <h2 class="section-title">Our Clinics</h2>
-    <div class="clinics-grid">
-      <div class="clinic-card" *ngFor="let clinic of clinics" (click)="goToClinicDoctors(clinic.id)">
-        <div class="clinic-image">
-          <img *ngIf="clinic.image" [src]="clinic.image" alt="{{ clinic.name }}" />
-          <div *ngIf="!clinic.image" class="image-placeholder">No Image</div>
-        </div>
-        <div class="clinic-info">
-          <h3>{{ clinic.name }}</h3>
-          <p>{{ clinic.description }}</p>
-        </div>
-      </div>
+    <div class="section-header">
+        <h2 class="section-title">Our Clinics</h2>
+        <p class="section-subtitle">Find the perfect clinic for your needs</p>
     </div>
-  </div>
+    
+    <div class="clinics-grid">
+        <div class="clinic-card" *ngFor="let clinic of clinics" (click)="goToClinicDoctors(clinic.id)">
+            <div class="clinic-image">
+                <img *ngIf="clinic.image" [src]="clinic.image" alt="{{ clinic.name }}" />
+                <div *ngIf="!clinic.image" class="image-placeholder">
+                    <i class="fas fa-clinic-medical"></i>
+                </div>
+            </div>
+            <div class="clinic-info">
+                <h3>{{ clinic.name }}</h3>
+                <p class="clinic-description">{{ clinic.description }}</p>
+                <button class="view-doctors-btn">View Doctors <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
   <app-footer></app-footer>
   
