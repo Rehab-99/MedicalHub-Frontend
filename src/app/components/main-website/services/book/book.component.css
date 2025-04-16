@@ -1,88 +1,126 @@
-/* Ensure full height and no margin */
+/* General Styles */
 body, html {
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  margin: 0;
+  font-family: 'Tajawal', Arial, sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Booking Container */
+.booking-container {
+  max-width: 600px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin: 100px auto;
+  border: 1px solid #e0e0e0;
+}
+
+.booking-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.booking-header h2 {
+  color: #2a4e66;
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-icon {
+  font-size: 2rem;
+  color: #2980b9;
+}
+
+/* باقي الكود يبقى كما هو */
+.booking-form {
+  padding: 0 15px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #495057;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon i {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  padding: 12px 45px 12px 15px;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-size: 16px;
+  background-color: #f8f9fa;
+}
+
+.form-control:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.25);
+  background-color: #fff;
+}
+
+select.form-control {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.submit-btn {
+  width: 100%;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 18px;
+  background-color: #2980b9;
+  color: white;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .booking-container {
+      margin: 20px auto;
+      padding: 20px;
   }
   
-  /* Flexbox container for the page */
-  .app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
+  .booking-form {
+      padding: 0;
   }
-  
-  /* Header styling */
-  app-header {
-    background-color: #2e7d32;
-    padding: 15px;
-    color: white;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    /* If using an actual component, adjust style within that component's CSS */
-  }
-  
-  /* Footer styling */
-  app-footer {
-    background-color: #2e3c7d;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    margin-top: auto; /* Push footer to the bottom */
-  }
-  
-  /* Form container styling */
-  .container {
-    max-width: 600px;
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 128, 0, 0.1);
-    padding: 30px;
-    margin: 100px auto; /* Added margin to create space between form and header */
-    overflow-y: auto;
-    max-height: 80vh;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #2a4e66;
-    font-weight: 600;
-  }
-  
-  .form-label {
-    font-weight: 500;
-    color: #333;
-  }
-  
-  .form-control {
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    padding: 10px 12px;
-    transition: border-color 0.3s;
-  }
-  
-  .form-control:focus {
-    border-color: #2e7d32;
-    box-shadow: 0 0 5px rgba(46, 125, 50, 0.4);
-  }
-  
-  button[type="submit"] {
-    width: 100%;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 16px;
-    background-color: #2e607d; /* Optional: Change button background color */
-    color: #fff; /* Optional: Change text color */
-    padding: 12px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #1e365b; /* Optional: Darken button on hover */
-  }
-  
+}
