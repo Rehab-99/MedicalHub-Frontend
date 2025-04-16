@@ -1,56 +1,121 @@
-<div class="add-doctor-page">
-  <h2>Add Doctor</h2>
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" id="name" [(ngModel)]="doctor.name" name="name" required />
-    </div>
+<div class="edit-doctor-page">
+  <div class="form-container">
+    <h2>Add New Doctor</h2>
+    
+    <form #doctorForm="ngForm" (ngSubmit)="onSubmit()" class="doctor-form">
+      <!-- Image Section at the top -->
+      <div class="image-section">
+        <div class="image-container">
+          <div class="profile-image" *ngIf="!doctor?.image">
+            <i class="fas fa-user-md"></i>
+          </div>
+          <img *ngIf="doctor?.image" [src]="getImageUrl(doctor?.image)" alt="Doctor's Image" class="profile-image">
+          <div class="image-upload">
+            <label for="image" class="upload-label">
+              <i class="fas fa-camera"></i>
+              Add Image
+            </label>
+            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
+          </div>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" [(ngModel)]="doctor.email" name="email" required />
-    </div>
+      <div class="form-grid">
+        <!-- Personal Information Section -->
+        <div class="form-section">
+          <h3>Personal Information</h3>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" [(ngModel)]="doctor.name" name="name" required 
+                   placeholder="Enter doctor's full name" />
+          </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" id="password" [(ngModel)]="doctor.password" name="password" required />
-    </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" [(ngModel)]="doctor.email" name="email" required 
+                   placeholder="Enter email address" />
+          </div>
 
-    <div class="form-group">
-      <label for="password_confirmation">Confirm Password</label>
-      <input type="password" id="password_confirmation" [(ngModel)]="doctor.password_confirmation" name="password_confirmation" required />
-    </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" [(ngModel)]="doctor.phone" name="phone" 
+                   placeholder="Enter phone number" />
+          </div>
 
-    <div class="form-group">
-      <label for="clinic_id">Clinic ID</label>
-      <input type="number" id="clinic_id" [(ngModel)]="doctor.clinic_id" name="clinic_id" required />
-    </div>
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" [(ngModel)]="doctor.address" name="address" 
+                   placeholder="Enter address" />
+          </div>
+        </div>
 
-    <div class="form-group">
-      <label for="specialization">Specialization</label>
-      <input type="text" id="specialization" [(ngModel)]="doctor.specialization" name="specialization" required />
-    </div>
-    <div class="form-group">
-      <label for="specialization">Role</label>
-      <input type="text" id="role" [(ngModel)]="doctor.role" name="role" required />
-    </div>
+        <!-- Professional Information Section -->
+        <div class="form-section">
+          <h3>Professional Information</h3>
+          <div class="form-group">
+            <label for="clinic_id">Clinic</label>
+            <select id="clinic_id" [(ngModel)]="doctor.clinic_id" name="clinic_id" required>
+              <option value="">Select Clinic</option>
+              <option *ngFor="let clinic of clinics" [value]="clinic.id">
+                {{ clinic.name }}
+              </option>
+            </select>
+          </div>
 
-    <div class="form-group">
-      <label for="bio">Bio</label>
-      <textarea id="bio" [(ngModel)]="doctor.bio" name="bio"></textarea>
-    </div>
+          <div class="form-group">
+            <label for="specialization">Specialization</label>
+            <input type="text" id="specialization" [(ngModel)]="doctor.specialization" name="specialization" required 
+                   placeholder="Enter specialization" />
+          </div>
 
-    <div class="form-group">
-      <label for="phone">Phone</label>
-      <input type="text" id="phone" [(ngModel)]="doctor.phone" name="phone" />
-    </div>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <select id="role" [(ngModel)]="doctor.role" name="role" required>
+              <option value="">Select Role</option>
+              <option *ngFor="let role of roles" [value]="role.value">
+                {{ role.label }}
+              </option>
+            </select>
+          </div>
 
-    <div class="form-group">
-      <label for="image">Image URL</label>
-      <input type="url" id="image" [(ngModel)]="doctor.image" name="image" />
-    </div>
+          <div class="form-group">
+            <label for="clinic_address">Clinic Address</label>
+            <input type="text" id="clinic_address" [(ngModel)]="doctor.clinic_address" name="clinic_address" 
+                   placeholder="Enter clinic address" />
+          </div>
+        </div>
 
-    <button type="submit">Add Doctor</button>
-    <button type="button" (click)="onCancel()">Cancel</button>
-  </form>
+        <!-- Security Section -->
+        <div class="form-section">
+          <h3>Security</h3>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" [(ngModel)]="doctor.password" name="password" required 
+                   placeholder="Enter password" />
+          </div>
+
+          <div class="form-group">
+            <label for="password_confirmation">Confirm Password</label>
+            <input type="password" id="password_confirmation" [(ngModel)]="doctor.password_confirmation" 
+                   name="password_confirmation" required placeholder="Confirm password" />
+          </div>
+        </div>
+
+        <!-- Additional Information Section -->
+        <div class="form-section">
+          <h3>Additional Information</h3>
+          <div class="form-group">
+            <label for="bio">Bio</label>
+            <textarea id="bio" [(ngModel)]="doctor.bio" name="bio" 
+                      placeholder="Enter doctor's bio"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-button" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="submit-button" [disabled]="doctorForm.invalid">Add Doctor</button>
+      </div>
+    </form>
+  </div>
 </div>

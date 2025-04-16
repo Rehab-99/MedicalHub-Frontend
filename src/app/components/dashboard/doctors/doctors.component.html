@@ -10,7 +10,7 @@
       
       <!-- Doctor Photo -->
       <div class="doctor-photo">
-        <img [src]="doctor.photo || 'https://via.placeholder.com/100'" alt="{{ doctor.name }}" />
+        <img [src]="getImageUrl(doctor.image)" alt="{{ doctor.name }}" />
       </div>
 
       <!-- Doctor Details -->

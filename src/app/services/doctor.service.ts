@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -18,13 +18,16 @@ export class DoctorService {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
-  addDoctor(doctor: any): Observable<any> {
+  addDoctor(doctor: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}`, doctor);
   }
 
-  updateDoctor(id: number, doctor: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, doctor);
+  updateDoctor(id: number, doctor: FormData): Observable<any> {
+    // Add _method=PUT to the FormData to simulate PUT request
+    doctor.append('_method', 'PUT');
+    return this.http.post(`${this.apiUrl}/${id}`, doctor);
   }
+
   getVetDoctors(): Observable<any> {
     return this.http.get(`${this.apiUrl}?role=vet`);
   }
