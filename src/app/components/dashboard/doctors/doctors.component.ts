@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 import Swal from 'sweetalert2';
 import { DoctorService } from '../../../services/doctor.service';
@@ -14,6 +15,7 @@ import { DoctorService } from '../../../services/doctor.service';
 })
 export class DoctorsComponent implements OnInit {
   doctors: any[] = [];
+  baseUrl = environment.apiUrl;
 
   constructor(private router: Router, private doctorService: DoctorService) {}
 
@@ -26,6 +28,10 @@ export class DoctorsComponent implements OnInit {
       (response) => {
         console.log('Fetched Doctors:', response); // Debugging
         this.doctors = response.data || response; // Adjust if API returns { data: [...] }
+        // Debug image URLs
+        this.doctors.forEach(doctor => {
+          console.log('Doctor:', doctor.name, 'Image URL:', this.getImageUrl(doctor.image));
+        });
       },
       (error) => {
         console.error('Error fetching doctors:', error);
@@ -78,4 +84,12 @@ export class DoctorsComponent implements OnInit {
     return Array.from({ length: Math.min(totalStars, 5) }); // Ensure max 5 stars
   }
   
+  getImageUrl(imagePath: string | null): string {
+    if (!imagePath) {
+      return 'https://via.placeholder.com/100';
+    }
+    // Remove /api from the base URL for storage access
+    const storageUrl = this.baseUrl.replace('/api', '');
+    return `${storageUrl}/storage/${imagePath}`;
+  }
 }

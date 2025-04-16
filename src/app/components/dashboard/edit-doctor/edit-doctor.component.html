@@ -1,50 +1,90 @@
 <div class="edit-doctor-page">
-  <h2>Edit Doctor</h2>
-  <form #doctorForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="doctor">
+  <div class="form-container">
+    <h2>Edit Doctor</h2>
+    
+    <form #doctorForm="ngForm" (ngSubmit)="onSubmit()" class="doctor-form" *ngIf="doctor">
+      <!-- Image Section at the top -->
+      <div class="image-section">
+        <div class="image-container">
+          <img [src]="getImageUrl(doctor?.image)" alt="Doctor's Image" class="profile-image">
+          <div class="image-upload">
+            <label for="image" class="upload-label">
+              <i class="fas fa-camera"></i>
+              Change Image
+            </label>
+            <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
+          </div>
+        </div>
+      </div>
 
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" id="name" [(ngModel)]="doctor.name" name="name" class="form-control" required />
-    </div>
+      <div class="form-grid">
+        <!-- Personal Information Section -->
+        <div class="form-section">
+          <h3>Personal Information</h3>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" [(ngModel)]="doctor.name" name="name" required 
+                   placeholder="Enter doctor's full name" />
+          </div>
 
-    <div class="form-group">
-      <label for="specialization">Specialization</label>
-      <input type="text" id="specialization" [(ngModel)]="doctor.specialization" name="specialization" class="form-control" required />
-    </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" [(ngModel)]="doctor.email" name="email" required 
+                   placeholder="Enter email address" />
+          </div>
 
-    <div class="form-group">
-      <label for="clinic_id">Clinic</label>
-      <select id="clinic_id" [(ngModel)]="doctor.clinic_id" name="clinic_id" class="form-control" required>
-        <option *ngFor="let clinic of clinics" [value]="clinic.id">{{ clinic.name }}</option>
-      </select>
-    </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" [(ngModel)]="doctor.phone" name="phone" 
+                   placeholder="Enter phone number" />
+          </div>
+        </div>
 
-    <div class="form-group">
-      <label for="bio">Bio</label>
-      <textarea id="bio" [(ngModel)]="doctor.bio" name="bio" class="form-control"></textarea>
-    </div>
+        <!-- Professional Information Section -->
+        <div class="form-section">
+          <h3>Professional Information</h3>
+          <div class="form-group">
+            <label for="clinic_id">Clinic</label>
+            <select id="clinic_id" [(ngModel)]="doctor.clinic_id" name="clinic_id" required>
+              <option value="">Select Clinic</option>
+              <option *ngFor="let clinic of clinics" [value]="clinic.id">
+                {{ clinic.name }}
+              </option>
+            </select>
+          </div>
 
-    <div class="form-group">
-      <label for="phone">Phone</label>
-      <input type="text" id="phone" [(ngModel)]="doctor.phone" name="phone" class="form-control" required />
-    </div>
+          <div class="form-group">
+            <label for="specialization">Specialization</label>
+            <input type="text" id="specialization" [(ngModel)]="doctor.specialization" name="specialization" required 
+                   placeholder="Enter specialization" />
+          </div>
 
-    <div class="form-group">
-      <label for="role">Role</label>
-      <select id="role" [(ngModel)]="doctor.role" name="role" class="form-control" required>
-        <option value="human">Human Doctor</option>
-        <option value="vet">Veterinary Doctor</option>
-      </select>
-    </div>
+          <div class="form-group">
+            <label for="role">Role</label>
+            <select id="role" [(ngModel)]="doctor.role" name="role" required>
+              <option value="">Select Role</option>
+              <option *ngFor="let role of roles" [value]="role.value">
+                {{ role.label }}
+              </option>
+            </select>
+          </div>
+        </div>
 
-    <div class="form-group">
-      <label for="image">Photo URL</label>
-      <input type="url" id="image" [(ngModel)]="doctor.image" name="image" class="form-control" required />
-    </div>
+        <!-- Additional Information Section -->
+        <div class="form-section">
+          <h3>Additional Information</h3>
+          <div class="form-group">
+            <label for="bio">Bio</label>
+            <textarea id="bio" [(ngModel)]="doctor.bio" name="bio" 
+                      placeholder="Enter doctor's bio"></textarea>
+          </div>
+        </div>
+      </div>
 
-    <div class="button-group">
-      <button type="submit" class="btn btn-primary" [disabled]="doctorForm.invalid">Update Doctor</button>
-      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-    </div>
-  </form>
+      <div class="form-actions">
+        <button type="button" class="cancel-button" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="submit-button" [disabled]="doctorForm.invalid">Update Doctor</button>
+      </div>
+    </form>
+  </div>
 </div>
