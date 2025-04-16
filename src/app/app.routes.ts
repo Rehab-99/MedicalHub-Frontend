@@ -59,6 +59,10 @@ import { VetProductsComponent } from './components/dashboard/vet-products/vet-pr
 import { AddProductComponent } from './components/dashboard/add-product/add-product.component';
 import { EditProductComponent } from './components/dashboard/edit-product/edit-product.component';
 import { BookComponent } from './components/main-website/services/book/book.component';
+import { ServicesComponent } from './components/dashboard/services/services.component';
+import { AddservicesComponent } from './components/dashboard/addservices/addservices.component';
+import { EditServiceComponent } from './components/dashboard/editservice/editservice.component';
+
 
 export const routes: Routes = [
   {
@@ -179,6 +183,14 @@ export const routes: Routes = [
         path: 'doctors',
         component: DoctorsComponent
       },
+      {
+        path: 'addservice',
+        component: AddservicesComponent
+      },
+      {
+          path:'editservice/:id'
+          ,component:EditServiceComponent
+      },
       { 
         path: 'add-doctor', 
         component: AddDoctorComponent 
@@ -194,6 +206,10 @@ export const routes: Routes = [
       {
         path: 'consultations',
         component: ConsultationsComponent
+      },
+      {
+        path:'services',
+        component: ServicesComponent
       },
       {
         path: 'users',

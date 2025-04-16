@@ -7,13 +7,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';  // Import ReactiveFormsModule
 import { AppComponent } from './app.component';
 import { BookComponent } from './components/main-website/services/book/book.component';
+import { AddservicesComponent } from './components/dashboard/addservices/addservices.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BookComponent  // Declare the BookComponent
+    BookComponent ,
+    AddservicesComponent // Declare the BookComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     ReactiveFormsModule,  // Add ReactiveFormsModule here
   ],
