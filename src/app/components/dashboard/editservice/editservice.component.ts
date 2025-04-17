@@ -1,95 +1,129 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { ServiceService, Service } from '../../../services/service.service';
-import { ReactiveFormsModule } from '@angular/forms';  // <-- Import ReactiveFormsModule
 
 @Component({
   selector: 'app-edit-service',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],  // <-- Include ReactiveFormsModule here
+  imports: [CommonModule, FormsModule],
   templateUrl: './editservice.component.html',
   styleUrls: ['./editservice.component.css']
 })
 export class EditServiceComponent implements OnInit {
-  serviceForm!: FormGroup;  // Use the '!' operator to indicate the form will be assigned later
-  serviceId: number | null = null;
   service: Service | null = null;
+  baseUrl = 'http://127.0.0.1:8000'; // Adjust if you use an environment file
+  selectedImagePreview: string | null = null;
 
   constructor(
-    private router: Router,
     private serviceService: ServiceService,
-    private fb: FormBuilder
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    // Initialize form in ngOnInit
-    this.serviceForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(5)]],
-      description: [''],
-      price: [''],
-      duration: [''],
-      is_active: [''],
-      instructions: [''],
-      image: [null]  // Placeholder for image input
+    const serviceId = this.route.snapshot.paramMap.get('id');
+    if (serviceId) {
+      this.fetchService(serviceId);
+    }
+  }
+
+  fetchService(id: string) {
+    this.serviceService.getServiceById(+id).subscribe(
+      (response: Service) => {
+        this.service = response;
+        console.log('Service data:', this.service); // Debug log
+      },
+      (error: any) => {
+        console.error('Error fetching service:', error);
+        Swal.fire('Error', 'Failed to fetch service details. Please try again.', 'error');
+      }
+    );
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0 && this.service) {
+      const file = input.files[0];
+      this.service.image = file;
+
+      // Create preview URL for the selected image
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImagePreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  getImageUrl(imagePath: string | File | null | undefined): string {
+    if (!imagePath) {
+      return 'https://via.placeholder.com/100';
+    }
+    if (imagePath instanceof File) {
+      return this.selectedImagePreview || 'https://via.placeholder.com/100';
+    }
+    // Adjust for Laravel storage path
+    return `${this.baseUrl}/storage/${imagePath.replace('storage/', '')}`;
+  }
+
+  onSubmit() {
+    if (!this.service) return;
+
+    const formData = new FormData();
+
+    // Append all service data to FormData
+    Object.entries(this.service).forEach(([key, value]) => {
+      if (
+        value !== null &&
+        value !== undefined &&
+        key !== 'created_at' &&
+        key !== 'updated_at'
+      ) {
+        if (key === 'image') {
+          if (value instanceof File) {
+            formData.append(key, value);
+          }
+        } else {
+          formData.append(key, String(value));
+        }
+      }
     });
 
-    // Get the service ID from the route
-    this.serviceId = +this.router.url.split('/').pop()!; // Or use ActivatedRoute to get the ID
-
-    if (this.serviceId) {
-      // Fetch service data by ID
-      this.serviceService.getServiceById(this.serviceId).subscribe((response) => {
-        this.service = response;  // Corrected to response directly
-        this.initializeForm();
-      });
+    // Log the form data for debugging
+    console.log('Form Data being sent:');
+    for (let pair of (formData as any).entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
     }
-  }
 
-  // Initialize form with service data
-  initializeForm() {
-    if (this.service) {
-      this.serviceForm.patchValue({
-        name: this.service.name,
-        description: this.service.description,
-        price: this.service.price,
-        duration: this.service.duration,
-        is_active: this.service.is_active,
-        instructions: this.service.instructions,
-        image: null  // Keep image as null until a new one is selected
-      });
-    }
-  }
-
-  // Submit the form
-  onSubmit() {
-    if (this.serviceForm.valid) {
-      const formData = new FormData();
-      
-      // Append all form data to FormData object
-      Object.keys(this.serviceForm.controls).forEach((key) => {
-        const control = this.serviceForm.get(key);
-        if (control?.value) {
-          formData.append(key, control.value);
-        }
-      });
-  
-      // Call the service method to update the service
-      if (this.serviceId) {
-        this.serviceService.updateService(this.serviceId, formData).subscribe(
-          (response) => {
-            Swal.fire('Success', 'Service updated successfully!', 'success');
-            this.router.navigate(['/dashboard/services']);  // Redirect after update
-          },
-          (error) => {
-            Swal.fire('Error', 'Failed to update service.', 'error');
-            console.error(error);
-          }
-        );
+    this.serviceService.updateService(this.service.id, formData).subscribe(
+      (response: any) => {
+        console.log('Update response:', response); // Debug log
+        Swal.fire({
+          title: 'Success!',
+          text: 'Service updated successfully!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/dashboard/services']);
+        });
+      },
+      (error: any) => {
+        console.error('Error updating service:', error);
+        const errorMessage = error.error?.message || error.message || 'Unknown error occurred';
+        Swal.fire({
+          title: 'Error',
+          text: `Failed to update service: ${errorMessage}`,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
-    }
+    );
   }
-  
-}  
+
+  onCancel() {
+    this.router.navigate(['/dashboard/services']);
+  }
+}
