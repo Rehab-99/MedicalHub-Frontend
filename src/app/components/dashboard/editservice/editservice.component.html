@@ -1,4 +1,4 @@
-<div class="container" *ngIf="service">
+<div class="edit-service-container" *ngIf="service">
   <h2>Edit Service</h2>
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
@@ -49,8 +49,7 @@
       />
     </div>
 
-    <div class="form-group">
-      <label for="is_active">Active</label>
+    <div class="form-group form-check">
       <input
         id="is_active"
         [(ngModel)]="service.is_active"
@@ -58,6 +57,7 @@
         type="checkbox"
         class="form-check-input"
       />
+      <label for="is_active" class="form-check-label">Active</label>
     </div>
 
     <div class="form-group">
@@ -88,8 +88,8 @@
       />
     </div>
 
-    <div class="form-group">
-      <button type="submit" class="btn btn-primary">Update Service</button>
+    <div class="form-actions mt-3">
+      <button type="submit" class="btn btn-success me-2">Update Service</button>
       <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
     </div>
   </form>
