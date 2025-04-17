@@ -2,20 +2,26 @@
   <h2>Vet Clinics</h2>
   <!-- Add Vet Clinic Button -->
   <button class="add-vet-clinic-button" (click)="navigateToAddVetClinic()">Add Vet Clinic</button>
-  <div class="vet-clinics-container">
-    <div *ngFor="let vetClinic of vetClinics" class="vet-clinic-card">
+
+  <!-- Vet Clinics List -->
+  <div *ngIf="vetClinics.length > 0; else noClinics" class="vet-clinics-container">
+    <div *ngFor="let vetClinic of vetClinics" class="vet-clinic-card" [attr.data-vet-id]="vetClinic.id">
       <div class="vet-clinic-photo">
-        <img [src]="vetClinic.photo" alt="{{ vetClinic.name }}" />
+        <img [src]="getImageUrl(vetClinic.image)" alt="{{ vetClinic.name }}" />
       </div>
       <div class="vet-clinic-details">
         <div class="vet-clinic-name">{{ vetClinic.name }}</div>
-        <div class="vet-clinic-address">{{ vetClinic.address }}</div>
+        <div class="vet-clinic-description">{{ vetClinic.description }}</div>
       </div>
       <div class="vet-clinic-actions">
-        <button class="edit-button" (click)="editVetClinic(vetClinic)">Edit</button>
-        <button class="delete-button" (click)="deleteVetClinic(vetClinic)">Delete</button>
+        <button class="edit-button" (click)="editVetClinic(vetClinic)">✏️ Edit</button>
+        <button class="delete-button" (click)="deleteVetClinic(vetClinic)">🗑️ Delete</button>
       </div>
     </div>
-    
   </div>
+
+  <!-- No Clinics Message -->
+  <ng-template #noClinics>
+    <p class="no-clinics">No vet clinics available. Add a new clinic!</p>
+  </ng-template>
 </div>

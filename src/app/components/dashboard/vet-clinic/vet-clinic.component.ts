@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Import CommonModule
+import { VetService } from '../../../services/vet.service';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
 @Component({
@@ -10,29 +11,29 @@ import Swal from 'sweetalert2'; // Import SweetAlert2
   templateUrl: './vet-clinic.component.html',
   styleUrls: ['./vet-clinic.component.css']
 })
-export class VetClinicComponent {
-  vetClinics = [
-    {
-      id: 1,
-      name: 'Paws & Claws Vet Clinic',
-      photo: 'https://via.placeholder.com/100',
-      address: '123 Pet St, City, Country'
-    },
-    {
-      id: 2,
-      name: 'Animal Care Center',
-      photo: 'https://via.placeholder.com/100',
-      address: '456 Dog St, Town, Country'
-    },
-    {
-      id: 3,
-      name: 'Happy Tails Veterinary',
-      photo: 'https://via.placeholder.com/100',
-      address: '789 Cat St, Village, Country'
-    }
-  ];
+export class VetClinicComponent implements OnInit {
+  vetClinics: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private vetService: VetService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadVetClinics();
+  }
+
+  loadVetClinics() {
+    this.vetService.getVetClinics().subscribe(
+      (response) => {
+        this.vetClinics = response.data;
+      },
+      (error) => {
+        console.error('Error fetching vet clinics:', error);
+        Swal.fire('Error', 'Failed to fetch vet clinics', 'error');
+      }
+    );
+  }
 
   // Navigate to the "Add Vet Clinic" page
   navigateToAddVetClinic() {
@@ -56,13 +57,34 @@ export class VetClinicComponent {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.vetClinics = this.vetClinics.filter(v => v.id !== vetClinic.id); // Remove the vet clinic from the list
-        Swal.fire(
-          'Deleted!',
-          `${vetClinic.name} has been deleted.`,
-          'success'
-        );
+        // Add deleting class for animation
+        const cardElement = document.querySelector(`[data-vet-id="${vetClinic.id}"]`);
+        if (cardElement) {
+          cardElement.classList.add('deleting');
+        }
+
+        // Wait for animation to complete before making the API call
+        setTimeout(() => {
+          this.vetService.deleteVetClinic(vetClinic.id).subscribe(
+            (response) => {
+              this.vetClinics = this.vetClinics.filter(v => v.id !== vetClinic.id);
+              Swal.fire(
+                'Deleted!',
+                `${vetClinic.name} has been deleted.`,
+                'success'
+              );
+            },
+            (error) => {
+              console.error('Error deleting vet clinic:', error);
+              Swal.fire('Error', 'Failed to delete vet clinic', 'error');
+            }
+          );
+        }, 800); // Match this with animation duration
       }
     });
+  }
+
+  getImageUrl(image: string): string {
+    return image ? `http://127.0.0.1:8000/storage/${image}` : '';
   }
 }

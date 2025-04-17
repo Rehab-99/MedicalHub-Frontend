@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
+import { VetService } from '../../../services/vet.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-add-vet-clinic',
@@ -10,25 +12,86 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
   templateUrl: './add-vet-clinic.component.html',
   styleUrls: ['./add-vet-clinic.component.css']
 })
-export class AddVetClinicComponent {
-  vetClinic = {
-    id: 0,
+export class AddVetClinicComponent implements OnInit {
+  vetClinic: any = {
     name: '',
-    photo: '',
-    address: ''
+    description: '',
+    image: null
   };
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private vetService: VetService
+  ) { }
 
-  // Handle form submission
-  onSubmit() {
-    // Add logic to save the vet clinic (e.g., send to a service or backend)
-    console.log('Vet Clinic added:', this.vetClinic);
-    this.router.navigate(['/dashboard/vet-clinics']); // Navigate back to the vet clinics list
+  ngOnInit(): void {
   }
 
-  // Handle cancel button
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.vetClinic.image = file;
+      
+      // Create a preview of the image
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const img = document.querySelector('.profile-image img') as HTMLImageElement;
+        if (img) {
+          // Create a new image to handle the preview
+          const tempImg = new Image();
+          tempImg.onload = () => {
+            // Set the preview image source
+            img.src = e.target.result;
+            // Ensure the image maintains its aspect ratio
+            img.style.objectFit = 'cover';
+          };
+          tempImg.src = e.target.result;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  getImageUrl(image: any): string {
+    if (image instanceof File) {
+      return URL.createObjectURL(image);
+    }
+    return image ? `http://127.0.0.1:8000/storage/${image}` : '';
+  }
+
+  onSubmit() {
+    // Validate required fields
+    if (!this.vetClinic.name || !this.vetClinic.description) {
+      Swal.fire('Error', 'Name and description are required fields', 'error');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('name', this.vetClinic.name);
+    formData.append('description', this.vetClinic.description);
+    if (this.vetClinic.image) {
+      formData.append('image', this.vetClinic.image);
+    }
+
+    this.vetService.createVetClinic(formData).subscribe(
+      response => {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Vet clinic added successfully!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/dashboard/vet-clinic']);
+        });
+      },
+      error => {
+        console.error('Error creating vet clinic:', error);
+        Swal.fire('Error', `Failed to add vet clinic: ${error.error?.message || error.message}`, 'error');
+      }
+    );
+  }
+
   onCancel() {
-    this.router.navigate(['/dashboard/vet-clinics']); // Navigate back to the vet clinics list
+    this.router.navigate(['/dashboard/vet-clinic']);
   }
 }
