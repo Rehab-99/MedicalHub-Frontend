@@ -54,7 +54,7 @@ export class ServiceService {
 
   // Delete a service
   deleteService(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/services/${id}`).pipe(
+    return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(
       catchError(this.handleError)
     );
   }
