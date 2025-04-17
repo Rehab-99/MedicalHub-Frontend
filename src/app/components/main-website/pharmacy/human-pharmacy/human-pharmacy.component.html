@@ -1,0 +1,72 @@
+<!-- Header -->
+<app-header></app-header>
+
+<!-- Hero Section with Image Slider -->
+<section class="hero-section">
+    <div class="slider-container">
+      <div class="slide" *ngFor="let img of images; let i = index" [class.active]="i === currentSlide">
+        <img [src]="img" [alt]="'Slide ' + (i + 1)">
+      </div>
+      <div class="hero-content">
+        <h1>Welcome to Human Pharmacy</h1>
+        <p>Your trusted source for health and wellness</p>
+        <button (click)="scrollToCategories()">Browse Categories</button>
+      </div>
+      <div class="slider-controls">
+        <span *ngFor="let img of images; let i = index" 
+              (click)="goToSlide(i)" 
+              [class.active]="i === currentSlide"></span>
+      </div>
+    </div>
+  </section>
+  
+
+<!-- Main Content -->
+<div class="pharmacy-container">
+    <div class="pharmacy-header">
+        <h1>Human Pharmacy</h1>
+        <p>Find the medicines you need for your health</p>
+    </div>
+
+    <div class="pharmacy-content">
+        <div class="categories-section">
+            <h3>Browse By Category</h3>
+            
+            <!-- Loading State -->
+            <div *ngIf="isLoading" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading categories...</p>
+            </div>
+            
+            <!-- Error State -->
+            <div *ngIf="error" class="error-state">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>{{ error }}</p>
+                <button (click)="loadCategories()" class="retry-btn">Retry</button>
+            </div>
+            
+            <!-- Categories Grid -->
+            <div class="categories-grid" *ngIf="!isLoading && !error">
+                <div class="category-card" 
+                     *ngFor="let category of categories" 
+                     [class.active]="selectedCategory?.id === category.id"
+                     (click)="filterByCategory(category)">
+                     <div class="category-image">
+                        <img *ngIf="category.image" 
+                             [src]="'http://127.0.0.1:8000/storage/' + category.image" 
+                             [alt]="category.name">
+                    </div>
+                    
+                    <div class="category-info">
+                        <h4>{{ category.name }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer> 

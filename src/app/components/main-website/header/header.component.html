@@ -32,7 +32,15 @@
                 <a routerLink="/blog/human" routerLinkActive="active" (click)="toggleBlogsDropdown()">Human Blogs</a>
               </div>
             </div>
-            <a routerLink="/Pharmacy" routerLinkActive="active">Pharmacy</a>
+            <div class="dropdown">
+              <a class="dropdown-toggle" (click)="togglePharmacyDropdown()">
+                Pharmacy <i class="fas fa-chevron-down"></i>
+              </a>
+              <div class="dropdown-menu" *ngIf="isPharmacyDropdownOpen">
+                <a routerLink="/pharmacy/human" routerLinkActive="active" (click)="togglePharmacyDropdown()">Human Pharmacy</a>
+                <a routerLink="/pharmacy/vet" routerLinkActive="active" (click)="togglePharmacyDropdown()">Vet Pharmacy</a>
+              </div>
+            </div>
             <a routerLink="/login" routerLinkActive="active" class="login-btn" *ngIf="!isLoggedIn">Login</a>
             <div class="user-menu" *ngIf="isLoggedIn">
               <div class="user-profile" (click)="toggleUserMenu()">

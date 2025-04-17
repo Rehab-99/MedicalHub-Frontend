@@ -62,7 +62,8 @@ import { BookComponent } from './components/main-website/services/book/book.comp
 import { ServicesComponent } from './components/dashboard/services/services.component';
 import { AddservicesComponent } from './components/dashboard/addservices/addservices.component';
 import { EditServiceComponent } from './components/dashboard/editservice/editservice.component';
-
+import { HumanPharmacyComponent as MainWebsiteHumanPharmacyComponent } from './components/main-website/pharmacy/human-pharmacy/human-pharmacy.component';
+import { VetPharmacyComponent as MainWebsiteVetPharmacyComponent } from './components/main-website/pharmacy/vet-pharmacy/vet-pharmacy.component';
 
 export const routes: Routes = [
   {
@@ -290,5 +291,13 @@ export const routes: Routes = [
         component: ShoppingCartComponent
       }
     ]
-  }
+  },
+  { 
+    path: 'pharmacy/human',
+    component: MainWebsiteHumanPharmacyComponent 
+  },
+  { 
+    path: 'pharmacy/vet',
+    component: MainWebsiteVetPharmacyComponent 
+  },
 ];

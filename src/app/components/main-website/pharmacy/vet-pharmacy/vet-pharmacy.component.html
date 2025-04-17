@@ -1,0 +1,68 @@
+<!-- Header -->
+<app-header></app-header>
+
+<!-- Main Content -->
+<div class="pharmacy-container">
+    <div class="pharmacy-header">
+        <h1>Veterinary Pharmacy</h1>
+        <p>Find the medicines your pets need for their health</p>
+    </div>
+
+    <div class="pharmacy-content">
+        <div class="categories-sidebar">
+            <h3>Categories</h3>
+            
+            <!-- Loading State -->
+            <div *ngIf="isLoading" class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading categories...</p>
+            </div>
+            
+            <!-- Error State -->
+            <div *ngIf="error" class="error-state">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>{{ error }}</p>
+                <button (click)="loadCategories()" class="retry-btn">Retry</button>
+            </div>
+            
+            <!-- Categories List -->
+            <ul class="category-list" *ngIf="!isLoading && !error">
+                <li *ngFor="let category of categories" 
+                    [class.active]="selectedCategory?.id === category.id"
+                    (click)="filterByCategory(category)">
+                    <div class="category-item">
+                        <img *ngIf="category.image" [src]="category.image" [alt]="category.name" class="category-image">
+                        <span class="category-name">{{ category.name }}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="medicines-grid">
+            <!-- No Category Selected Message -->
+            <div *ngIf="!selectedCategory" class="no-category-selected">
+                <i class="fas fa-th-large"></i>
+                <p>Please select a category to view medicines</p>
+            </div>
+            
+            <!-- Products will be loaded here when a category is selected -->
+            <div class="medicine-card" *ngFor="let medicine of medicines">
+                <div class="medicine-image">
+                    <img [src]="medicine.image" [alt]="medicine.name">
+                </div>
+                <div class="medicine-info">
+                    <h3>{{ medicine.name }}</h3>
+                    <p class="category">{{ medicine.category }}</p>
+                    <p class="description">{{ medicine.description }}</p>
+                    <div class="price-action">
+                        <span class="price">${{ medicine.price }}</span>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer> 
