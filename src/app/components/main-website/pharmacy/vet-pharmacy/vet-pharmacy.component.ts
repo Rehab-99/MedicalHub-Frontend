@@ -25,6 +25,9 @@ export class VetPharmacyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
+    setInterval(() => {
+      this.nextSlide();
+    }, 5000); // تغيير كل 5 ثواني
   }
 
   loadCategories() {
@@ -47,5 +50,28 @@ export class VetPharmacyComponent implements OnInit {
   filterByCategory(category: Category) {
     this.selectedCategory = category;
     // TODO: Implement product loading by category
+  }
+
+
+  images: string[] = [
+    'assets/images/pharmacy/vet/slide5.jpg',
+    'assets/images/pharmacy/vet/slide6.jpg',
+    'assets/images/pharmacy/vet/slide4.jpg'
+  ];
+  
+  currentSlide = 0;
+
+  
+  nextSlide() {
+    this.currentSlide = (this.currentSlide + 1) % this.images.length;
+  }
+  
+  goToSlide(index: number) {
+    this.currentSlide = index;
+  }
+  
+  scrollToCategories() {
+    const el = document.querySelector('.pharmacy-container');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   }
 } 
