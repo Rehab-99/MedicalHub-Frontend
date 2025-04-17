@@ -28,6 +28,6 @@ export class ServiceService {
   }
 
   getServiceById(id: number): Observable<Service> {
-    return this.http.get<Service>(`${this.baseUrl}/services/${id}`);
+    return this.http.get<Service>(`${this.baseUrl}/${id}`);
   }
 }
