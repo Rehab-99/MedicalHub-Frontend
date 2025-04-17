@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { HeaderComponent } from '../../header/header.component';
 import { FooterComponent } from '../../footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -8,6 +8,13 @@ import { CategoryService, Category } from '../../../../services/category.service
 import { ProductService, Product } from '../../../../services/product.service';
 import { catchError, forkJoin, Subject, takeUntil } from 'rxjs';
 import { of } from 'rxjs';
+
+// Add ResizeObserver type declaration
+declare global {
+  interface Window {
+    ResizeObserver: typeof ResizeObserver;
+  }
+}
 
 @Component({
   selector: 'app-human-pharmacy',
@@ -24,7 +31,7 @@ export class HumanPharmacyComponent implements OnInit, OnDestroy, AfterViewInit 
   allProducts: Product[] = [];
   featuredProducts: Product[] = [];
   paginatedProducts: Product[] = [];
-  isLoading = true;
+  loading = false;
   error: string | null = null;
   readonly placeholderImage = 'assets/images/placeholder-category.jpg';
   private destroy$ = new Subject<void>();
@@ -40,21 +47,48 @@ export class HumanPharmacyComponent implements OnInit, OnDestroy, AfterViewInit 
   slideWidth = 0;
   totalSlides = 0;
   productsPerSlide = 4;
-  private resizeObserver: ResizeObserver;
+  private resizeObserver: any;
+  sliderInterval: any;
+  heroSlides = [
+    {
+      image: 'assets/images/pharmacy/slide1.jpg',
+      title: 'Quality Medications',
+      description: 'Wide range of pharmaceutical products'
+    },
+    {
+      image: 'assets/images/pharmacy/slide2.jpg',
+      title: 'Professional Service',
+      description: 'Expert pharmaceutical care and advice'
+    },
+    {
+      image: 'assets/images/pharmacy/slide3.jpg',
+      title: 'Healthcare Products',
+      description: 'Complete range of healthcare essentials'
+    },
+    {
+      image: 'assets/images/pharmacy/slide4.jpg',
+      title: 'Modern Pharmacy',
+      description: 'State-of-the-art facilities and service'
+    }
+  ];
+  currentHeroSlide = 0;
 
   constructor(
     private categoryService: CategoryService,
-    private productService: ProductService
+    private productService: ProductService,
+    private router: Router
   ) {
     // Initialize resize observer
-    this.resizeObserver = new ResizeObserver(entries => {
-      this.updateSliderDimensions();
-    });
+    if (typeof window !== 'undefined' && window.ResizeObserver) {
+      this.resizeObserver = new window.ResizeObserver(entries => {
+        this.updateSliderDimensions();
+      });
+    }
   }
 
-  ngOnInit() {
-    console.log('HumanPharmacyComponent initialized');
+  ngOnInit(): void {
     this.loadData();
+    this.startHeroSlider();
   }
 
   ngOnDestroy() {
@@ -62,61 +96,61 @@ export class HumanPharmacyComponent implements OnInit, OnDestroy, AfterViewInit 
     this.destroy$.next();
     this.destroy$.complete();
     // Clean up resize observer
-    this.resizeObserver.disconnect();
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+    if (this.sliderInterval) {
+      clearInterval(this.sliderInterval);
+    }
   }
 
   ngAfterViewInit(): void {
     // Set up resize observer for the slider track
-    if (this.sliderTrack) {
+    if (this.sliderTrack && this.resizeObserver) {
       this.resizeObserver.observe(this.sliderTrack.nativeElement);
       this.updateSliderDimensions();
     }
   }
 
-  loadData() {
-    console.log('Loading data for human pharmacy');
-    this.isLoading = true;
+  loadData(): void {
+    this.loading = true;
     this.error = null;
-    
-    // Load categories and products separately to better handle errors
-    this.categoryService.getHumanCategories()
-      .pipe(
-        takeUntil(this.destroy$),
-        catchError(error => {
-          console.error('Error loading categories:', error);
-          this.error = 'Failed to load categories. Please try again.';
-          return of([]);
-        })
-      )
-      .subscribe((categories: Category[]) => {
-        console.log('Categories loaded:', categories.length);
-        this.categories = categories;
+
+    forkJoin({
+      categories: this.categoryService.getHumanCategories(),
+      products: this.productService.getProductsByType('human')
+    }).pipe(
+      takeUntil(this.destroy$),
+      catchError(error => {
+        console.error('Error loading data:', error);
+        this.error = 'Failed to load data. Please try again later.';
+        return of({ categories: [], products: [] });
+      })
+    ).subscribe({
+      next: (data) => {
+        this.categories = data.categories;
+        this.allProducts = data.products;
+        this.totalProducts = this.allProducts.length;
+        this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
         
-        // Load products after categories
-        this.productService.getProductsByType('human')
-          .pipe(
-            takeUntil(this.destroy$),
-            catchError(error => {
-              console.error('Error loading products:', error);
-              this.error = 'Failed to load products. Please try again.';
-              return of([]);
-            })
-          )
-          .subscribe((products: any[]) => {
-            console.log('Products loaded:', products.length);
-            this.allProducts = products;
-            this.totalProducts = products.length;
-            this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
-            
-            // Set featured products (first 4)
-            this.featuredProducts = products.slice(0, 4);
-            
-            // Set paginated products
-            this.updatePaginatedProducts();
-            
-            this.isLoading = false;
-          });
-      });
+        // Set featured products (first 4)
+        this.featuredProducts = this.allProducts.slice(0, 4);
+        
+        // Set paginated products
+        this.updatePaginatedProducts();
+        
+        console.log('Data loaded successfully:', {
+          categories: this.categories.length,
+          products: this.allProducts.length
+        });
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Subscription error:', error);
+        this.error = 'An unexpected error occurred while loading data.';
+        this.loading = false;
+      }
+    });
   }
 
   updatePaginatedProducts() {
@@ -134,7 +168,6 @@ export class HumanPharmacyComponent implements OnInit, OnDestroy, AfterViewInit 
   handleImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     if (img) {
-      console.log('Image error, using placeholder:', img.src);
       img.src = this.placeholderImage;
     }
   }
@@ -152,6 +185,11 @@ export class HumanPharmacyComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   getCategoryIcon(categoryName: string): string {
+    // Return default icon if categoryName is undefined or null
+    if (!categoryName) {
+      return 'fa-pills';
+    }
+    
     // Map category names to Font Awesome icons
     const iconMap: { [key: string]: string } = {
       // Medication Types
@@ -258,14 +296,22 @@ export class HumanPharmacyComponent implements OnInit, OnDestroy, AfterViewInit 
   }
   
   updateSliderDimensions(): void {
-    if (this.sliderTrack) {
+    if (this.sliderTrack && this.sliderTrack.nativeElement && this.sliderTrack.nativeElement.parentElement) {
       const containerWidth = this.sliderTrack.nativeElement.parentElement.offsetWidth;
       this.slideWidth = containerWidth;
-      this.totalSlides = Math.ceil(this.featuredProducts.length / this.productsPerSlide);
       
-      // Reset current slide if it's out of bounds
-      if (this.currentSlide >= this.totalSlides) {
-        this.currentSlide = this.totalSlides - 1;
+      // Check if featuredProducts exists and has items
+      if (this.featuredProducts && this.featuredProducts.length > 0) {
+        this.totalSlides = Math.ceil(this.featuredProducts.length / this.productsPerSlide);
+        
+        // Reset current slide if it's out of bounds
+        if (this.currentSlide >= this.totalSlides) {
+          this.currentSlide = this.totalSlides - 1;
+        }
+      } else {
+        // If no featured products, set totalSlides to 0
+        this.totalSlides = 0;
+        this.currentSlide = 0;
       }
     }
   }
@@ -286,5 +332,29 @@ export class HumanPharmacyComponent implements OnInit, OnDestroy, AfterViewInit 
     if (index >= 0 && index < this.totalSlides) {
       this.currentSlide = index;
     }
+  }
+
+  onCategoryClick(categoryId: number): void {
+    this.router.navigate(['/pharmacy/human/category', categoryId]);
+  }
+
+  startHeroSlider() {
+    this.sliderInterval = setInterval(() => {
+      this.nextHeroSlide();
+    }, 5000); // Change slide every 5 seconds
+  }
+
+  nextHeroSlide() {
+    this.currentHeroSlide = (this.currentHeroSlide + 1) % this.heroSlides.length;
+  }
+
+  prevHeroSlide() {
+    this.currentHeroSlide = this.currentHeroSlide === 0 
+      ? this.heroSlides.length - 1 
+      : this.currentHeroSlide - 1;
+  }
+
+  goToHeroSlide(index: number) {
+    this.currentHeroSlide = index;
   }
 } 

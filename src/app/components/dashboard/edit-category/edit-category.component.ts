@@ -2,16 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CategoryService } from '../../../services/category.service';
+import { CategoriesService, Category } from '../../../services/categories.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 import Swal from 'sweetalert2';
-
-interface Category {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  type: string;
-}
 
 @Component({
   selector: 'app-edit-category',
@@ -26,7 +20,9 @@ export class EditCategoryComponent implements OnInit {
     name: '',
     description: '',
     type: 'human',
-    image: ''
+    image: '',
+    created_at: '',
+    updated_at: ''
   };
   selectedFile: File | null = null;
   imagePreview: string | null = null;
@@ -36,7 +32,7 @@ export class EditCategoryComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private categoryService: CategoryService
+    private categoryService: CategoriesService
   ) {}
 
   ngOnInit() {
@@ -49,18 +45,14 @@ export class EditCategoryComponent implements OnInit {
   loadCategory(id: number) {
     this.loading = true;
     this.categoryService.getCategory(id).subscribe({
-      next: (response: any) => {
-        if (response.status === 200 && response.data) {
-          this.category = response.data;
-          this.loading = false;
-          if (this.category.image) {
-            this.imagePreview = `http://127.0.0.1:8000/storage/${this.category.image}`;
-          }
-        } else {
-          throw new Error('Invalid response format');
+      next: (category: Category) => {
+        this.category = category;
+        this.loading = false;
+        if (this.category.image) {
+          this.imagePreview = this.category.image; // The image URL is already processed by the service
         }
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         console.error('Error loading category:', error);
         this.loading = false;
         Swal.fire({
@@ -94,32 +86,44 @@ export class EditCategoryComponent implements OnInit {
     }
 
     const formData = new FormData();
-    formData.append('name', this.category.name);
-    formData.append('description', this.category.description);
+    formData.append('name', this.category.name.trim());
+    formData.append('description', this.category.description.trim());
     formData.append('type', this.category.type);
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);
     }
 
+    // Log the form data for debugging
+    console.log('Submitting form data:', {
+      id: this.category.id,
+      name: this.category.name.trim(),
+      description: this.category.description.trim(),
+      type: this.category.type,
+      hasImage: !!this.selectedFile
+    });
+
     this.categoryService.updateCategory(this.category.id, formData).subscribe({
-      next: (response: any) => {
-        if (response.status === 200) {
-          this.submitted = false;
-          Swal.fire({
-            title: 'Success!',
-            text: 'Category updated successfully',
-            icon: 'success',
-            timer: 1500,
-            showConfirmButton: false
-          }).then(() => {
-            this.router.navigate([`/dashboard/${this.category.type}-categories`]);
-          });
-        } else {
-          throw new Error(response.message || 'Failed to update category');
-        }
+      next: (category: Category) => {
+        console.log('Update successful:', category);
+        this.submitted = false;
+        Swal.fire({
+          title: 'Success!',
+          text: 'Category updated successfully',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          this.router.navigate([`/dashboard/${this.category.type}-categories`]);
+        });
       },
-      error: (error) => {
-        console.error('Error updating category:', error);
+      error: (error: HttpErrorResponse) => {
+        console.error('Error updating category:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          message: error.message,
+          url: `${environment.apiUrl}/categories/${this.category.id}`
+        });
         this.submitted = false;
         Swal.fire({
           title: 'Error!',

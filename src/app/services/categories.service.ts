@@ -44,6 +44,55 @@ export class CategoriesService {
     );
   }
 
+  getCategory(id: number): Observable<Category> {
+    return this.http.get<{ status: number; message: string; data: Category }>(`${this.apiUrl}/categories/${id}`).pipe(
+      map(response => {
+        if (response.status === 200 && response.data) {
+          return {
+            ...response.data,
+            image: this.getFullImageUrl(response.data.image)
+          };
+        }
+        throw new Error('Invalid response format');
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  updateCategory(id: number, formData: FormData): Observable<Category> {
+    console.log('Updating category:', { id, formData });
+    return this.http.post<{ status: number; message: string; data: Category }>(
+      `${this.apiUrl}/categories/${id}`, 
+      formData,
+      {
+        headers: {
+          'Accept': 'application/json'
+        }
+      }
+    ).pipe(
+      map(response => {
+        console.log('Update response:', response);
+        if (response.status === 200 && response.data) {
+          return {
+            ...response.data,
+            image: this.getFullImageUrl(response.data.image)
+          };
+        }
+        throw new Error('Invalid response format');
+      }),
+      catchError(error => {
+        console.error('Update category error:', {
+          status: error.status,
+          statusText: error.statusText,
+          error: error.error,
+          message: error.message,
+          url: `${this.apiUrl}/categories/${id}`
+        });
+        return this.handleError(error);
+      })
+    );
+  }
+
   private getFullImageUrl(imagePath: string): string {
     if (!imagePath) {
       return 'assets/images/placeholder-category.jpg';

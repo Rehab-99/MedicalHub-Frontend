@@ -2,17 +2,11 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
-import { CategoryService } from '../../../services/category.service';
+import { CategoriesService, Category } from '../../../services/categories.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 let Swal: any;
-
-interface Category {
-  id: number;
-  name: string;
-  type: string;
-}
 
 @Component({
   selector: 'app-add-product',
@@ -20,7 +14,7 @@ interface Category {
   imports: [CommonModule, RouterModule, FormsModule, HttpClientModule],
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.css'],
-  providers: [ProductService, CategoryService]
+  providers: [ProductService, CategoriesService]
 })
 export class AddProductComponent implements OnInit {
   product = {
@@ -35,14 +29,14 @@ export class AddProductComponent implements OnInit {
   imagePreview: string | null = null;
   loading = false;
   submitted = false;
-  productType = 'human'; // Default type
+  productType: 'human' | 'vet' = 'human'; // Default type
   private isBrowser: boolean;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private productService: ProductService,
-    private categoryService: CategoryService,
+    private categoryService: CategoriesService,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -64,6 +58,9 @@ export class AddProductComponent implements OnInit {
     this.productType = params['source'] || 'human';
     console.log('Product type set to:', this.productType);
     
+    // Load categories immediately
+    this.loadCategories();
+    
     // Also subscribe to query params changes
     this.route.queryParams.subscribe(params => {
       console.log('Query params from subscription:', params);
@@ -74,12 +71,12 @@ export class AddProductComponent implements OnInit {
   }
 
   loadCategories() {
+    console.log('Loading categories for type:', this.productType);
     this.loading = true;
-    this.categoryService.getCategoriesByType(this.productType).subscribe({
-      next: (response: any) => {
-        if (response && response.data) {
-          this.categories = response.data;
-        }
+    this.categoryService.getCategories(this.productType).subscribe({
+      next: (categories: Category[]) => {
+        console.log('Categories loaded:', categories);
+        this.categories = categories;
         this.loading = false;
       },
       error: (error: any) => {
@@ -140,13 +137,28 @@ export class AddProductComponent implements OnInit {
 
     this.productService.createProduct(formData).subscribe({
       next: (response: any) => {
+        console.log('Product created successfully:', response);
         this.loading = false;
-        if (response && response.status === 201) {
-          this.showAlert('Success!', response.message || 'Product created successfully', 'success', 1500)
-            .then(() => {
-              const route = this.productType === 'human' ? 'human-products' : 'vet-products';
-              this.router.navigate(['/dashboard', route]);
-            });
+        
+        // Use SweetAlert for success message
+        if (this.isBrowser && Swal) {
+          Swal.fire({
+            title: 'Success!',
+            text: 'Product created successfully',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+          }).then(() => {
+            // Navigate after the alert is closed
+            const route = this.productType === 'human' ? '/dashboard/human-products' : '/dashboard/vet-products';
+            console.log('Navigating to:', route);
+            window.location.href = route;
+          });
+        } else {
+          // Fallback if SweetAlert is not available
+          alert('Product created successfully!');
+          const route = this.productType === 'human' ? '/dashboard/human-products' : '/dashboard/vet-products';
+          window.location.href = route;
         }
       },
       error: (error: any) => {
@@ -161,7 +173,17 @@ export class AddProductComponent implements OnInit {
           errorMessage = error.error.message;
         }
         
-        this.showAlert('Error!', errorMessage, 'error');
+        // Use SweetAlert for error message
+        if (this.isBrowser && Swal) {
+          Swal.fire({
+            title: 'Error!',
+            text: errorMessage,
+            icon: 'error'
+          });
+        } else {
+          // Fallback if SweetAlert is not available
+          alert(errorMessage);
+        }
       }
     });
   }

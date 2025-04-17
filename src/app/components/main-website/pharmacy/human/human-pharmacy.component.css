@@ -58,14 +58,14 @@
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 2rem;
+  padding: 1rem;
 }
 
 .category-card {
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
@@ -73,11 +73,11 @@
 
 .category-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
 }
 
 .category-image {
-  height: 150px;
+  height: 200px;
   overflow: hidden;
 }
 
@@ -85,39 +85,39 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.3s ease;
 }
 
 .category-card:hover .category-image img {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .category-name {
+  padding: 1rem;
   font-size: 1.25rem;
   font-weight: 600;
-  padding: 1rem 1rem 0.5rem;
-  color: #333;
+  color: #2d3748;
+  text-align: center;
 }
 
 .category-description {
-  font-size: 0.875rem;
-  color: #666;
   padding: 0 1rem 1rem;
+  color: #4a5568;
+  font-size: 0.875rem;
+  text-align: center;
 }
 
 .loading-error-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 200px;
-  text-align: center;
+  min-height: 300px;
+  width: 100%;
 }
 
 .loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #4f46e5;
+  text-align: center;
+  color: #4a5568;
 }
 
 .loading-spinner i {
@@ -126,7 +126,8 @@
 }
 
 .error-message {
-  color: #ef4444;
+  text-align: center;
+  color: #e53e3e;
 }
 
 .error-message i {
@@ -137,23 +138,22 @@
 .retry-button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
-  background-color: #4f46e5;
+  background-color: #4299e1;
   color: white;
-  border: none;
   border-radius: 0.375rem;
-  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .retry-button:hover {
-  background-color: #4338ca;
+  background-color: #3182ce;
 }
 
-.no-categories, .no-products {
-  color: #6b7280;
+.no-categories {
+  text-align: center;
+  color: #4a5568;
 }
 
-.no-categories i, .no-products i {
+.no-categories i {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
@@ -481,4 +481,69 @@
     height: 2rem;
     font-size: 0.875rem;
   }
+
+  .categories-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .category-image {
+    height: 150px;
+  }
+
+  .category-name {
+    font-size: 1rem;
+  }
+}
+
+.hero-section {
+  margin-bottom: 3rem;
+}
+
+.hero-slider {
+  position: relative;
+  overflow: hidden;
+}
+
+.slides-container {
+  position: relative;
+}
+
+.slide {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Navigation Arrows */
+.hero-slider button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero-slider button:hover {
+  background-color: rgba(0, 0, 0, 0.75);
+  transform: scale(1.1);
+}
+
+/* Dots Navigation */
+.hero-slider .dots-nav button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 4px;
+  transition: all 0.3s ease;
+}
+
+.hero-slider .dots-nav button:hover {
+  transform: scale(1.2);
 } 

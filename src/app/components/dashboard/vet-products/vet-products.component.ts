@@ -64,11 +64,9 @@ export class VetProductsComponent implements OnInit {
   loadProducts() {
     this.loading = true;
     this.productService.getProductsByType('vet').subscribe({
-      next: (response: any) => {
-        if (response && response.data) {
-          this.products = response.data;
-          console.log('Loaded vet products:', this.products);
-        }
+      next: (products: Product[]) => {
+        this.products = products;
+        console.log('Loaded vet products:', this.products);
         this.loading = false;
       },
       error: (error: any) => {

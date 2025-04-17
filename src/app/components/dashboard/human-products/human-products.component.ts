@@ -64,11 +64,9 @@ export class HumanProductsComponent implements OnInit {
   loadProducts() {
     this.loading = true;
     this.productService.getProductsByType('human').subscribe({
-      next: (response: any) => {
-        if (response && response.data) {
-          this.products = response.data;
-          console.log('Loaded human products:', this.products);
-        }
+      next: (products: Product[]) => {
+        this.products = products;
+        console.log('Loaded human products:', this.products);
         this.loading = false;
       },
       error: (error: any) => {

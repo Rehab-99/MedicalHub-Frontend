@@ -1,33 +1,87 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from '../../environments/environment';
+
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  category_id: number;
+  type: 'human' | 'vet';
+  stock: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ApiResponse<T> {
+  status: string;
+  message: string;
+  data: T;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://127.0.0.1:8000/api/products';
+  private apiUrl = `${environment.apiUrl}/products`;
+  private readonly baseStorageUrl = environment.apiUrl.replace('/api', '');
 
   constructor(private http: HttpClient) {}
 
-  getProductsByType(type: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/type/${type}`);
+  getProducts(): Observable<Product[]> {
+    return this.http.get<ApiResponse<Product[]>>(this.apiUrl)
+      .pipe(
+        map(response => response.data)
+      );
   }
 
-  getProduct(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  getProduct(id: number): Observable<Product> {
+    return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/${id}`)
+      .pipe(
+        map(response => response.data)
+      );
   }
 
-  createProduct(formData: FormData): Observable<any> {
-    return this.http.post(this.apiUrl, formData);
+  getProductsByType(type: 'human' | 'vet'): Observable<Product[]> {
+    return this.http.get<ApiResponse<Product[]>>(`${this.apiUrl}/type/${type}`)
+      .pipe(
+        map(response => response.data)
+      );
   }
 
-  updateProduct(id: number, formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${id}`, formData);
+  createProduct(formData: FormData): Observable<Product> {
+    return this.http.post<ApiResponse<Product>>(this.apiUrl, formData)
+      .pipe(
+        map(response => response.data)
+      );
   }
 
-  deleteProduct(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  updateProduct(id: number, formData: FormData): Observable<Product> {
+    return this.http.post<ApiResponse<Product>>(`${this.apiUrl}/${id}`, formData)
+      .pipe(
+        map(response => response.data)
+      );
+  }
+
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`)
+      .pipe(
+        map(response => response.data)
+      );
+  }
+
+  private getFullImageUrl(imagePath: string): string {
+    if (!imagePath) {
+      return 'assets/images/placeholder-product.jpg';
+    }
+
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+
+    return `${this.baseStorageUrl}/storage/${imagePath}`;
   }
 } 

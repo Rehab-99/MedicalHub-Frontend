@@ -1,21 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CategoryService } from '../../../services/category.service';
+import { CategoryService, Category } from '../../../services/category.service';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-interface Category {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  type: string;
-}
-
-interface ApiResponse {
-  data: Category[];
+interface ApiResponse<T> {
+  status: number;
+  message: string;
+  data: T;
 }
 
 @Component({
@@ -30,6 +24,7 @@ export class HumanCategoryComponent implements OnInit {
   categories: Category[] = [];
   loading = true;
   submitted: boolean = false;
+  readonly placeholderImage = 'assets/images/placeholder-category.jpg';
   category = {
     name: '',
     description: '',
@@ -51,14 +46,9 @@ export class HumanCategoryComponent implements OnInit {
     console.log('Loading categories...');
     
     this.categoryService.getCategoriesByType('human').subscribe({
-      next: (response: ApiResponse) => {
-        console.log('API Response:', response);
-        if (response && response.data) {
-          this.categories = response.data;
-        } else {
-          this.categories = [];
-        }
-        console.log('Processed categories:', this.categories);
+      next: (categories: Category[]) => {
+        console.log('Categories loaded:', categories);
+        this.categories = categories;
         this.loading = false;
       },
       error: (error: unknown) => {
@@ -71,6 +61,13 @@ export class HumanCategoryComponent implements OnInit {
         });
       }
     });
+  }
+
+  handleImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (img) {
+      img.src = this.placeholderImage;
+    }
   }
 
   editCategory(category: Category) {
@@ -142,7 +139,7 @@ export class HumanCategoryComponent implements OnInit {
     formData.append('image', this.selectedFile);
 
     this.categoryService.createCategory(formData).subscribe({
-      next: (response: Category) => {
+      next: (category: Category) => {
         Swal.fire({
           title: 'Success!',
           text: 'Category created successfully',

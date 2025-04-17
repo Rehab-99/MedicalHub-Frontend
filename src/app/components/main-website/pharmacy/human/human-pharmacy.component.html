@@ -4,12 +4,43 @@
 <main class="container mx-auto px-4 py-8">
   <!-- Hero Section -->
   <section class="hero-section mb-12">
-    <div class="relative h-[400px] rounded-lg overflow-hidden">
-      <img src="assets/images/human-pharmacy-hero.jpg" alt="Human Pharmacy" class="w-full h-full object-cover">
-      <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="text-center text-white">
-          <h1 class="text-4xl md:text-5xl font-bold mb-4">Human Pharmacy</h1>
-          <p class="text-xl md:text-2xl">Quality medications and healthcare products for you and your family</p>
+    <div class="relative h-[500px] rounded-lg overflow-hidden">
+      <!-- Hero Slider -->
+      <div class="hero-slider w-full h-full">
+        <div class="slides-container relative w-full h-full">
+          <!-- Slides -->
+          <div *ngFor="let slide of heroSlides; let i = index" 
+               class="slide absolute w-full h-full transition-opacity duration-500"
+               [class.opacity-100]="i === currentHeroSlide"
+               [class.opacity-0]="i !== currentHeroSlide">
+            <img [src]="slide.image" [alt]="slide.title" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div class="text-center text-white">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ slide.title }}</h1>
+                <p class="text-xl md:text-2xl">{{ slide.description }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Arrows -->
+          <button class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full bg-black bg-opacity-50 hover:bg-opacity-75 transition-all z-10"
+                  (click)="prevHeroSlide()">
+            <i class="fas fa-chevron-left text-2xl"></i>
+          </button>
+          <button class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white p-2 rounded-full bg-black bg-opacity-50 hover:bg-opacity-75 transition-all z-10"
+                  (click)="nextHeroSlide()">
+            <i class="fas fa-chevron-right text-2xl"></i>
+          </button>
+
+          <!-- Dots Navigation -->
+          <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+            <button *ngFor="let slide of heroSlides; let i = index" 
+                    class="w-3 h-3 rounded-full transition-all"
+                    [class.bg-white]="i === currentHeroSlide"
+                    [class.bg-gray-400]="i !== currentHeroSlide"
+                    (click)="goToHeroSlide(i)">
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -19,39 +50,50 @@
   <section class="categories-section mb-16">
     <h2 class="text-3xl font-bold mb-8 text-center">Browse by category</h2>
     
-    <div class="categories-grid">
-      <ng-container *ngIf="!isLoading && !error && categories.length > 0; else loadingOrError">
-        <div class="category-card" *ngFor="let category of categories">
-          <div class="category-image">
-            <img [src]="category.image" 
-                 [alt]="category.name"
-                 (error)="handleImageError($event)"
-                 class="w-full h-full object-cover transition-transform duration-300">
-          </div>
-          <h3 class="category-name">{{category.name}}</h3>
-          <p class="category-description" *ngIf="category.description">{{category.description}}</p>
-        </div>
-      </ng-container>
+    <div class="human-pharmacy-container">
+      <div class="header">
+        <h1>Human Pharmacy</h1>
+        <p>Browse our wide selection of human medications and healthcare products</p>
+      </div>
 
-      <ng-template #loadingOrError>
-        <div class="loading-error-container">
-          <div *ngIf="isLoading" class="loading-spinner">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Loading categories...</p>
-          </div>
-          <div *ngIf="error" class="error-message">
-            <i class="fas fa-exclamation-circle"></i>
-            <p>{{error}}</p>
-            <button (click)="retryLoading()" class="retry-button">
-              <i class="fas fa-sync-alt"></i> Retry
-            </button>
-          </div>
-          <div *ngIf="!isLoading && !error && categories.length === 0" class="no-categories">
-            <i class="fas fa-info-circle"></i>
-            <p>No categories found.</p>
+      <div class="categories-section">
+        <h2>Categories</h2>
+        
+        <!-- Loading State -->
+        <div *ngIf="loading" class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading categories...</p>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error" class="error-state">
+          <p>{{ error }}</p>
+          <button (click)="loadData()" class="retry-button">Retry</button>
+        </div>
+
+        <!-- Categories Grid -->
+        <div *ngIf="!loading && !error" class="categories-grid">
+          <div *ngFor="let category of categories" 
+               class="category-card"
+               (click)="onCategoryClick(category.id)">
+            <div class="category-image">
+              <img [src]="category.image" 
+                   [alt]="category.name"
+                   (error)="handleImageError($event)"
+                   class="category-img">
+            </div>
+            <div class="category-info">
+              <h3>{{ category.name }}</h3>
+              <p>{{ category.description }}</p>
+            </div>
           </div>
         </div>
-      </ng-template>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && !error && categories.length === 0" class="empty-state">
+          <p>No categories available at the moment.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -59,7 +101,7 @@
   <section class="products-section mb-16">
     <h2 class="text-3xl font-bold mb-8 text-center">Featured Products</h2>
     
-    <ng-container *ngIf="!isLoading && !error && featuredProducts.length > 0; else noFeaturedProducts">
+    <ng-container *ngIf="!loading && !error && featuredProducts.length > 0; else noFeaturedProducts">
       <div class="slider-container">
         <button class="slider-arrow prev" (click)="prevSlide()">
           <i class="fas fa-chevron-left"></i>
@@ -103,7 +145,7 @@
     </ng-container>
 
     <ng-template #noFeaturedProducts>
-      <div class="loading-error-container" *ngIf="!isLoading && !error">
+      <div class="loading-error-container" *ngIf="!loading && !error">
         <div class="no-products">
           <i class="fas fa-box-open"></i>
           <p>No featured products available at the moment.</p>

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ProductService } from '../../../services/product.service';
-import { CategoryService } from '../../../services/category.service';
+import { ProductService, Product } from '../../../services/product.service';
+import { CategoriesService, Category } from '../../../services/categories.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,7 +22,7 @@ export class EditProductComponent implements OnInit {
     category_id: '',
     image: null as File | null
   };
-  categories: any[] = [];
+  categories: Category[] = [];
   loading = false;
   submitted = false;
   selectedFile: File | null = null;
@@ -32,7 +32,7 @@ export class EditProductComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private categoryService: CategoryService,
+    private categoryService: CategoriesService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -55,19 +55,16 @@ export class EditProductComponent implements OnInit {
   loadProduct() {
     this.loading = true;
     this.productService.getProduct(this.productId).subscribe({
-      next: (response) => {
-        if (response && response.data) {
-          const product = response.data;
-          this.product = {
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            stock: product.stock,
-            category_id: product.category_id,
-            image: null
-          };
-          this.imagePreview = product.image ? `http://127.0.0.1:8000/storage/${product.image}` : null;
-        }
+      next: (product: Product) => {
+        this.product = {
+          name: product.name,
+          description: product.description || '',
+          price: product.price.toString(),
+          stock: product.stock?.toString() || '',
+          category_id: product.category_id.toString(),
+          image: null
+        };
+        this.imagePreview = product.image ? `http://127.0.0.1:8000/storage/${product.image}` : null;
         this.loading = false;
       },
       error: (error) => {
@@ -83,14 +80,19 @@ export class EditProductComponent implements OnInit {
   }
 
   loadCategories() {
-    this.categoryService.getCategoriesByType(this.source).subscribe({
-      next: (response) => {
-        if (response && response.data) {
-          this.categories = response.data;
-        }
+    console.log('Loading categories for type:', this.source);
+    this.categoryService.getCategories(this.source as 'human' | 'vet').subscribe({
+      next: (categories: Category[]) => {
+        console.log('Categories loaded successfully:', categories);
+        this.categories = categories;
       },
       error: (error) => {
         console.error('Error loading categories:', error);
+        console.error('Error details:', {
+          status: error.status,
+          message: error.message,
+          error: error.error
+        });
         Swal.fire({
           title: 'Error!',
           text: 'Failed to load categories',
@@ -142,22 +144,18 @@ export class EditProductComponent implements OnInit {
     }
 
     this.productService.updateProduct(this.productId, formData).subscribe({
-      next: (response: any) => {
+      next: (product: Product) => {
         this.loading = false;
-        if (response && (response.status === 200 || response.status === 'success')) {
-          Swal.fire({
-            title: 'Success!',
-            text: 'Product updated successfully',
-            icon: 'success',
-            timer: 1500,
-            showConfirmButton: false
-          }).then(() => {
-            const route = this.source === 'human' ? 'human-products' : 'vet-products';
-            this.router.navigate(['/dashboard', route]);
-          });
-        } else {
-          throw new Error('Update failed');
-        }
+        Swal.fire({
+          title: 'Success!',
+          text: 'Product updated successfully',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          const route = this.source === 'human' ? 'human-products' : 'vet-products';
+          this.router.navigate(['/dashboard', route]);
+        });
       },
       error: (error: any) => {
         console.error('Error updating product:', error);
