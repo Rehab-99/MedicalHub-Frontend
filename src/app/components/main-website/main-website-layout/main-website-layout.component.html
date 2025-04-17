@@ -1,201 +1,196 @@
-<!-- Navigation Bar -->
-<app-header></app-header>
 
-<!-- Main Content -->
+    <!-- Navigation Bar -->
+    <app-header></app-header>
 
+    <!-- Main Content -->
 
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" (click)="scrollToTop()" [class.visible]="isScrollButtonVisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
-<!-- Scroll to Top Button -->
-<button class="scroll-to-top" (click)="scrollToTop()" [class.visible]="isScrollButtonVisible">
-    <i class="fas fa-arrow-up"></i>
-</button>
-
-<!-- Hero Section -->
-<div class="hero-section">
-    <div class="hero-content">
-        <h1 class="hero-title">Your Most Trusted Health Partner For Life.</h1>
-        <p class="hero-subtitle">We offer free consulting and the best project management for your ideas, 100% delivery guaranteed.</p>
-        <div class="hero-buttons">
-            <button class="btn btn-appointment">Appointment</button>
-            <button class="btn btn-services" routerLink="/services">Services</button>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title"><i class="fas fa-heartbeat"></i> Your Most Trusted Health Partner For Life.</h1>
+            <p class="hero-subtitle">We offer free consulting and the best project management for your ideas, 100% delivery guaranteed.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-appointment"><i class="fas fa-calendar-check"></i> Appointment</button>
+                <button class="btn btn-services" routerLink="/services"><i class="fas fa-concierge-bell"></i> Services</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.ctfassets.net/szez98lehkfm/3aFXjISnNZfF0MkUX6Z5rZ/af19d4cd2183c340fde85ef620db9d81/MyIC_Inline_79497" alt="Medical Hub Hero Image">
         </div>
     </div>
-    <div class="hero-image">
-        <img src="https://images.ctfassets.net/szez98lehkfm/3aFXjISnNZfF0MkUX6Z5rZ/af19d4cd2183c340fde85ef620db9d81/MyIC_Inline_79497" alt="Medical Hub Hero Image">
-    </div>
-</div>
 
-<!-- Health Department Section -->
-<section class="health-department">
-    <div class="container">
-        <div class="who-we-are-section">
-            <div class="who-we-are">
-                <h2>Who We Are</h2>
-                <h3>Pioneering In Health.</h3>
-                <div class="blue-line"></div>
-                <p>Where you are at the heart of our mission. We hope you will consider us as your medical home—the place where you feel safe, comfortable and cared for. As a multi-specialty medical group.</p>
-                <button class="more-about-btn">More About Us</button>
+    <!-- Health Department Section -->
+    <section class="health-department">
+        <div class="container">
+            <div class="who-we-are-section">
+                <div class="who-we-are">
+                    <h2><i class="fas fa-user-md"></i> Who We Are</h2>
+                    <h3>Pioneering In Health.</h3>
+                    <div class="blue-line"></div>
+                    <p>Where you are at the heart of our mission. We hope you will consider us as your medical home—the place where you feel safe, comfortable and cared for. As a multi-specialty medical group.</p>
+                    <button class="more-about-btn"><i class="fas fa-info-circle"></i> More About Us</button>
+                </div>
+                <div class="who-we-are-image">
+                    <img src="https://images.ctfassets.net/szez98lehkfm/3aFXjISnNZfF0MkUX6Z5rZ/af19d4cd2183c340fde85ef620db9d81/MyIC_Inline_79497" alt="Medical Hub Hero Image">
+                </div>
             </div>
-            <div class="who-we-are-image">
-                <img src="https://images.ctfassets.net/szez98lehkfm/3aFXjISnNZfF0MkUX6Z5rZ/af19d4cd2183c340fde85ef620db9d81/MyIC_Inline_79497" alt="Medical Hub Hero Image">
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h4>Medical Treatment</h4>
+                    <p>Whether you're taking your first steps, just finding your stride.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <h4>Emergency Help</h4>
+                    <p>Whether you're taking your first steps, just finding your stride.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>Qualified Doctors</h4>
+                    <p>Whether you're taking your first steps, just finding your stride.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-hospital-user"></i>
+                    </div>
+                    <h4>Medical Professionals</h4>
+                    <p>Whether you're taking your first steps, just finding your stride.</p>
+                </div>
             </div>
         </div>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-stethoscope"></i>
-                </div>
-                <h4>Medical Treatment</h4>
-                <p>Whether you're taking your first steps, just finding your stride.</p>
+    </section>
+
+    <!-- Medical Specialists Section -->
+    <section class="medical-specialists">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-heartbeat"></i> The Medical Specialists</h2>
+                <div class="title-line"></div>
             </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-ambulance"></i>
+            <div class="doctors-grid">
+                <div class="doctor-card">
+                    <img class="images" src="https://thumbs.dreamstime.com/b/happy-male-doctor-standing-arms-crossed-portrait-against-white-background-vertical-shot-39366106.jpg" alt="Medical Hub Hero Image">
+                    <h3>Dr. Jack Rose</h3>
+                    <p>Cardiology</p>
                 </div>
-                <h4>Emergency Help</h4>
-                <p>Whether you're taking your first steps, just finding your stride.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-user-md"></i>
+                <div class="doctor-card">
+                    <img class="images" src="https://img.freepik.com/fotos-premium/jovem-medica-morena-permanente-com-prancheta-e-sorrindo-no-hospital-medico-pronto-para-examinar-o-paciente_665183-8178.jpg" alt="Medical Hub Hero Image">
+                    <h3>Dr. Sara Smith</h3>
+                    <p>Neurology</p>
                 </div>
-                <h4>Qualified Doctors</h4>
-                <p>Whether you're taking your first steps, just finding your stride.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">
-                    <i class="fas fa-hospital-user"></i>
+                <div class="doctor-card">
+                    <img class="images" src="https://th.bing.com/th/id/R.45f34d9db5f8f45d0f95e00e83c152f6?rik=9YO1FpxXMIaabA&riu=http%3a%2f%2fmodeltheme.com%2fmt_medplus%2fwp-content%2fuploads%2f2016%2f10%2fdoctor-adam.png&ehk=S5ji5AtgGZZhqe7PV1dsCwoVcV8XmIYs4anfFPP%2fkSM%3d&risl=&pid=ImgRaw&r=0" alt="Medical Hub Hero Image">
+                    <h3>Dr. David Lewis</h3>
+                    <p>Orthopedics</p>
                 </div>
-                <h4>Medical Professionals</h4>
-                <p>Whether you're taking your first steps, just finding your stride.</p>
+                <div class="doctor-card">
+                    <img class="images" src="https://img.freepik.com/premium-photo/attractive-female-doctor-background_488220-38623.jpg" alt="Medical Hub Hero Image">
+                    <h3>Dr. Rose Parker</h3>
+                    <p>Pediatrics</p>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-
-
-<!-- Medical Specialists Section -->
-<section class="medical-specialists">
-    <div class="container">
-        <div class="section-header">
-            <h2>The Medical Specialists</h2>
-            <div class="title-line"></div>
-        </div>
-        <div class="doctors-grid">
-            <div class="doctor-card">
-                <div class="image-placeholder">270x370</div>
-                <h3>Dr. Jack Rose</h3>
-                <p>Cardiology</p>
+    <!-- Patient Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-users"></i> What Patients Saying</h2>
+                <div class="title-line"></div>
             </div>
-            <div class="doctor-card">
-                <div class="image-placeholder">270x370</div>
-                <h3>Dr. Sara Smith</h3>
-                <p>Neurology</p>
-            </div>
-            <div class="doctor-card">
-                <div class="image-placeholder">270x370</div>
-                <h3>Dr. David Lewis</h3>
-                <p>Orthopedics</p>
-            </div>
-            <div class="doctor-card">
-                <div class="image-placeholder">270x370</div>
-                <h3>Dr. Rose Parker</h3>
-                <p>Pediatrics</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- Patient Testimonials Section -->
-<section class="testimonials">
-    <div class="container">
-        <div class="section-header">
-            <h2>What Patients Saying</h2>
-            <div class="title-line"></div>
-        </div>
-        <div class="testimonials-slider">
-            <div class="testimonial-card">
-                <div class="avatar">Client</div>
-                <p class="quote">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
-                <h4>John Smith</h4>
-                <p class="location">New York</p>
-            </div>
-            <div class="testimonial-card">
-                <div class="avatar">Client</div>
-                <p class="quote">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
-                <h4>Jane Doe</h4>
-                <p class="location">Los Angeles</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Statistics Section -->
-<section class="statistics">
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-clock"></i>
+            <div class="testimonials-slider">
+                <div class="testimonial-card">
+                    <div class="avatar">Client</div>
+                    <p class="quote"><i class="fas fa-quote-left"></i> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
+                    <h4>John Smith</h4>
+                    <p class="location">New York</p>
                 </div>
-                <div class="stat-number">836</div>
-                <p>Working Hours</p>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-user-md"></i>
+                <div class="testimonial-card">
+                    <div class="avatar">Client</div>
+                    <p class="quote"><i class="fas fa-quote-left"></i> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
+                    <h4>Jane Doe</h4>
+                    <p class="location">Los Angeles</p>
                 </div>
-                <div class="stat-number">78</div>
-                <p>Doctor's Available</p>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-heartbeat"></i>
-                </div>
-                <div class="stat-number">485</div>
-                <p>Primary Health Care</p>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-flask"></i>
-                </div>
-                <div class="stat-number">60</div>
-                <p>Lab Results</p>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Latest News Section -->
-<section class="latest-news">
-    <div class="container">
-        <div class="section-header">
-            <h2>Latest News & Articles</h2>
-            <div class="title-line"></div>
-        </div>
-        <div class="news-grid">
-            <article class="news-card">
-                <img src="https://www.adventhealth.com/sites/default/files/styles/fc_4x3_sm/public/media/22-dmsoc-07341_-_october_2022_toolkit_-_6_blood_tests_you_should_get_every_year-jk-p1-2000x1333.jpg.webp?h=63d1751d&itok=fQcggOxH" alt="Blood Test Procedure" class="news-card-img">
-                <div class="content">
-                    <h3>Diagnostic Results for Blood Health</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="read-more">Read More</a>
+    <!-- Statistics Section -->
+    <section class="statistics">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number">836</div>
+                    <p>Working Hours</p>
                 </div>
-            </article>
-            <article class="news-card">
-                <img src="https://media.healthecareers.com/wp-content/uploads/2022/02/11202354/6-traits-that-will-help-you-succeed-as-a-health-professional.jpg.webp" alt="Medical Success Story" class="news-card-img">
-                <div class="content">
-                    <h3>Success in Get Best Results</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a href="#" class="read-more">Read More</a>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="stat-number">78</div>
+                    <p>Doctor's Available</p>
                 </div>
-            </article>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="stat-number">485</div>
+                    <p>Primary Health Care</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="stat-number">60</div>
+                    <p>Lab Results</p>
+                </div>
+            </div>
         </div>
-       
-    </div>
-</section>
+    </section>
 
-<!-- Footer Component -->
-<app-footer></app-footer>
+    <!-- Latest News Section -->
+    <section class="latest-news">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-newspaper"></i> Latest News & Articles</h2>
+                <div class="title-line"></div>
+            </div>
+            <div class="news-grid">
+                <article class="news-card">
+                    <img src="https://www.adventhealth.com/sites/default/files/styles/fc_4x3_sm/public/media/22-dmsoc-07341_-_october_2022_toolkit_-_6_blood_tests_you_should_get_every_year-jk-p1-2000x1333.jpg.webp?h=63d1751d&itok=fQcggOxH" alt="Blood Test Procedure" class="news-card-img">
+                    <div class="content">
+                        <h3><i class="fas fa-vial"></i> Diagnostic Results for Blood Health</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <a href="#" class="read-more"><i class="fas fa-angle-right"></i> Read More</a>
+                    </div>
+                </article>
+                <article class="news-card">
+                    <img src="https://media.healthecareers.com/wp-content/uploads/2022/02/11202354/6-traits-that-will-help-you-succeed-as-a-health-professional.jpg.webp" alt="Medical Success Story" class="news-card-img">
+                    <div class="content">
+                        <h3><i class="fas fa-trophy"></i> Success in Get Best Results</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <a href="#" class="read-more"><i class="fas fa-angle-right"></i> Read More</a>
+                    </div>
+                </article>
+            </div>
+,        </div>
+    </section>
+    <!-- Contact Us Section -->         
+    <!-- Footer Component -->
+    <app-footer></app-footer>
