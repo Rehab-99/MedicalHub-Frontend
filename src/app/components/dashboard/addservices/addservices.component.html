@@ -1,0 +1,45 @@
+<div class="add-services-page">
+    <h2>Add New Service</h2>
+    
+    <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Service Name</label>
+        <input id="name" formControlName="name" type="text" class="form-control" placeholder="Enter service name" />
+      </div>
+      
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" class="form-control" placeholder="Enter service description"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input id="price" formControlName="price" type="number" class="form-control" placeholder="Enter price" />
+      </div>
+      
+      <div class="form-group">
+        <label for="duration">Duration (in minutes)</label>
+        <input id="duration" formControlName="duration" type="number" class="form-control" placeholder="Enter duration" />
+      </div>
+      
+      <div class="form-group">
+        <label for="instructions">Instructions (Optional)</label>
+        <textarea id="instructions" formControlName="instructions" class="form-control" placeholder="Enter instructions (if any)"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="is_active">Is Active</label>
+        <input id="is_active" formControlName="is_active" type="checkbox" />
+      </div>
+  
+      <div class="form-group">
+        <label for="image">Upload Image</label>
+        <input id="image" type="file" (change)="onFileChange($event)" />
+      </div>
+  
+      <button type="submit" [disabled]="serviceForm.invalid" class="btn btn-primary">
+        Add Service
+      </button>
+    </form>
+  </div>
+  

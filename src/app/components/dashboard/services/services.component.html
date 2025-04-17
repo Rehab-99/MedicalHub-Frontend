@@ -1,0 +1,25 @@
+<div class="services-page">
+    <h2>All Services</h2>
+    <button class="add-service-button" (click)="navigateToAddService()">Add Service</button>
+  
+    <div *ngIf="services.length > 0" class="services-container">
+      <div *ngFor="let service of services" class="service-card">
+        <div class="service-photo">
+            <img [src]="'http://127.0.0.1:8000/' + service.image" alt="Service Image" />
+
+        </div>
+        <div class="service-details">
+          <h3 class="service-name">{{ service.name }}</h3>
+          <p class="service-description">{{ service.description }}</p>
+          <p class="service-price">Price: {{ service.price }}</p>
+          <p class="service-duration">Duration: {{ service.duration }} minutes</p>
+        </div>
+        <div class="service-footer">
+          <button class="edit-button" (click)="editService(service)"> ✏️ Edit</button>
+          <button class="delete-button" (click)="deleteService(service)">🗑️ Delete</button>
+        </div>
+      </div>
+    </div>
+    <p *ngIf="services.length === 0" class="no-services">No services available.</p>
+  </div>
+  

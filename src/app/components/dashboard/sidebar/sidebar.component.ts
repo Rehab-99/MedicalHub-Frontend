@@ -82,6 +82,12 @@ export class SidebarComponent {
       route: '/dashboard/users'
     },
     {
+      title: 'Services',
+      icon: 'fas fa-hand-holding-medical'
+,
+      route: '/dashboard/services'
+    },
+    {
       title: 'Settings',
       icon: 'fas fa-cog',
       route: '/dashboard/settings'
