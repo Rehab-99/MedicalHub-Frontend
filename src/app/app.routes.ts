@@ -62,6 +62,7 @@ import { BookComponent } from './components/main-website/services/book/book.comp
 import { ServicesComponent } from './components/dashboard/services/services.component';
 import { AddservicesComponent } from './components/dashboard/addservices/addservices.component';
 import { EditServiceComponent } from './components/dashboard/editservice/editservice.component';
+import { EditPostBlogComponent } from './components/dashboard/edit-post-blog/edit-post-blog.component';
 
 
 export const routes: Routes = [
@@ -277,6 +278,11 @@ export const routes: Routes = [
     pathMatch: 'full' 
   },
   {
+    path: "edit-blog/:id",
+    component: EditPostBlogComponent
+  },
+
+  {
     path: 'user/dashboard',
     component: UserDashboardComponent,
     canActivate: [AuthGuard],
@@ -290,5 +296,6 @@ export const routes: Routes = [
         component: ShoppingCartComponent
       }
     ]
-  }
+  },
+ 
 ];

@@ -1,1 +1,32 @@
-<p>human-blog works!</p>
+<h2>Human Blog Posts (Dashboard View)</h2>
+
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+<table class="post-table" *ngIf="humanPosts.length > 0">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let post of humanPosts" class="post-row">
+      <td>
+        <a [routerLink]="['/blog/human', post.id]">{{ post.title }}</a>
+      </td>
+      <td>
+        <a [routerLink]="['/edit-blog', post.id]" class="edit-btn">
+          <i class="fas fa-edit"></i> Edit
+        </a>
+
+        <button (click)="deletePost(post.id)" class="delete-btn">
+          <i class="fas fa-trash-alt"></i> Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="humanPosts.length === 0 && !errorMessage" class="empty">
+  <p>No blog posts found.</p>
+</div>

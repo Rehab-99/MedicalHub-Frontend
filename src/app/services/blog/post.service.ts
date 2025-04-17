@@ -41,19 +41,22 @@ export class PostService {
     );
   }
 
+
   updatePost(id: number, postData: FormData): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/${id}?_method=PUT`, postData, { headers }).pipe(
+    return this.http.put(`${this.apiUrl}/${id}`, postData, { headers }).pipe(
       catchError(error => this.handleError(error))
     );
   }
 
+ 
   deletePost(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.delete(`${this.apiUrl}/${id}`, { headers }).pipe(
       catchError(error => this.handleError(error))
     );
   }
+
 
   private handleError(error: any) {
     console.error('PostService Error:', error);
