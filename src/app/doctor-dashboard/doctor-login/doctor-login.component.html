@@ -1,0 +1,68 @@
+<div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-left">
+        <div class="logo">
+          <i class="fas fa-user-md"></i>
+          <span>MedicalHub Doctor</span>
+        </div>
+        <h2>Welcome Doctor, sign in to access your dashboard.</h2>
+        <div class="illustration">
+          <i class="fas fa-notes-medical"></i>
+        </div>
+      </div>
+  
+      <div class="auth-right">
+        <div class="auth-form">
+          <h1>Doctor Login</h1>
+  
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <input 
+                type="email" 
+                formControlName="email" 
+                placeholder="Email Address"
+                [class.error]="email?.invalid && email?.touched">
+              <div class="error-message" *ngIf="email?.invalid && email?.touched">
+                <span *ngIf="email?.errors?.['required']">Email is required</span>
+                <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <input 
+                type="password" 
+                formControlName="password" 
+                placeholder="Password"
+                [class.error]="password?.invalid && password?.touched">
+              <div class="error-message" *ngIf="password?.invalid && password?.touched">
+                <span *ngIf="password?.errors?.['required']">Password is required</span>
+              </div>
+            </div>
+  
+            <button 
+              type="submit" 
+              class="submit-btn" 
+              [disabled]="loginForm.invalid || isLoading">
+              <span *ngIf="!isLoading">Login</span>
+              <span *ngIf="isLoading">Logging in...</span>
+            </button>
+          </form>
+  
+          <div class="success-message" *ngIf="showSuccess">
+            <i class="fas fa-check-circle"></i>
+            Login successful! Redirecting to doctor dashboard...
+          </div>
+  
+          <div class="error-message" *ngIf="showError">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMessage }}
+          </div>
+  
+          <div class="auth-footer">
+            <a routerLink="/doctor-reset-password">Forgot Password?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

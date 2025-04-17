@@ -64,6 +64,8 @@ import { AddservicesComponent } from './components/dashboard/addservices/addserv
 import { EditServiceComponent } from './components/dashboard/editservice/editservice.component';
 
 import { EditPostBlogComponent } from './components/dashboard/edit-post-blog/edit-post-blog.component';
+import { DoctorLoginComponent } from './doctor-dashboard/doctor-login/doctor-login.component';
+import { DoctorDashboardComponent } from './doctor-dashboard/doctor-dashboard/doctor-dashboard.component';
 
 import { HumanPharmacyComponent as MainWebsiteHumanPharmacyComponent } from './components/main-website/pharmacy/human-pharmacy/human-pharmacy.component';
 import { VetPharmacyComponent as MainWebsiteVetPharmacyComponent } from './components/main-website/pharmacy/vet-pharmacy/vet-pharmacy.component';
@@ -283,6 +285,14 @@ export const routes: Routes = [
   {
     path: "edit-blog/:id",
     component: EditPostBlogComponent
+  },
+  {
+    path: "doctor-dashboard",
+    component: DoctorDashboardComponent
+  },
+  {
+    path: "doctor-login",
+    component: DoctorLoginComponent
   },
 
   {
