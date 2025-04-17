@@ -38,6 +38,12 @@ export class HeaderComponent {
     console.log('Blogs dropdown toggled, isBlogsDropdownOpen:', this.isBlogsDropdownOpen);
     this.isBlogsDropdownOpen = !this.isBlogsDropdownOpen;
   }
+
+  isPharmacyDropdownOpen = false;
+  togglePharmacyDropdown() {
+    this.isPharmacyDropdownOpen = !this.isPharmacyDropdownOpen;
+  }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     const menuToggle = document.querySelector('.menu-toggle');
