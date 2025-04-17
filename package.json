@@ -35,10 +35,8 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@analogjs/vite-plugin-angular": "^1.15.1",
-=======
->>>>>>> origin/main
+
     "@angular-devkit/build-angular": "^19.2.7",
     "@angular/cli": "^19.2.7",
     "@angular/compiler-cli": "^19.2.6",

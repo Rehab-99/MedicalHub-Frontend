@@ -1,11 +1,9 @@
 import { Routes } from '@angular/router';
 import { DashboardLayoutComponent } from './components/dashboard/dashboard-layout/dashboard-layout.component';
 import { HomeComponent as DashboardHomeComponent } from './components/dashboard/home/home.component';
-import { HumanPharmacyComponent } from './components/dashboard/human-pharmacy/human-pharmacy.component';
 import { HumanClinicComponent } from './components/dashboard/human-clinic/human-clinic.component';
 import { HumanBlogComponent } from './components/dashboard/human-blog/human-blog.component';
 import { VetClinicComponent } from './components/dashboard/vet-clinic/vet-clinic.component';
-import { VetPharmacyComponent } from './components/dashboard/vet-pharmacy/vet-pharmacy.component';
 import { VetBlogComponent } from './components/dashboard/vet-blog/vet-blog.component';
 import { DoctorsComponent } from './components/dashboard/doctors/doctors.component';
 import { AppointmentsComponent } from './components/dashboard/appointments/appointments.component';
@@ -42,7 +40,6 @@ import { VetProductsComponent } from './components/dashboard/vet-products/vet-pr
 import { AddProductComponent } from './components/dashboard/add-product/add-product.component';
 import { EditProductComponent } from './components/dashboard/edit-product/edit-product.component';
 import { BookComponent } from './components/main-website/services/book/book.component';
-
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
@@ -60,6 +57,8 @@ import { VetComponent } from './components/main-website/doctors/vet/vet.componen
 import { HumanComponent } from './components/main-website/doctors/human/human.component';
 import { ClinicsComponent } from './components/main-website/clinics/clinics.component';
 import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors/clinic-doctors.component';
+import { HumanPharmacyComponent } from './components/main-website/pharmacy/human/human-pharmacy.component';
+import { VetPharmacyComponent } from './components/main-website/pharmacy/vet/vet-pharmacy.component';
 
 export const routes: Routes = [
   {
@@ -145,10 +144,6 @@ export const routes: Routes = [
         component: VetCategoryComponent
       },
       {
-        path: 'human-pharmacy',
-        component: HumanPharmacyComponent
-      },
-      {
         path: 'human-clinic',
         component: HumanClinicComponent
       },
@@ -175,10 +170,6 @@ export const routes: Routes = [
       { 
         path: 'edit-vet-clinic/:id', 
         component: EditVetClinicComponent 
-      },
-      {
-        path: 'vet-pharmacy',
-        component: VetPharmacyComponent
       },
       {
         path: 'vet-blog',
@@ -279,5 +270,13 @@ export const routes: Routes = [
         component: UserSettingsComponent
       }
     ]
+  },
+  { 
+    path: 'pharmacy/human', 
+    component: HumanPharmacyComponent 
+  },
+  { 
+    path: 'pharmacy/vet', 
+    component: VetPharmacyComponent 
   }
 ];

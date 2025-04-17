@@ -38,6 +38,26 @@ export class HeaderComponent {
     console.log('Blogs dropdown toggled, isBlogsDropdownOpen:', this.isBlogsDropdownOpen);
     this.isBlogsDropdownOpen = !this.isBlogsDropdownOpen;
   }
+
+  isPharmacyDropdownOpen = false;
+  togglePharmacyDropdown() {
+    console.log('Pharmacy dropdown toggled, current state:', this.isPharmacyDropdownOpen);
+    this.isPharmacyDropdownOpen = !this.isPharmacyDropdownOpen;
+    console.log('Pharmacy dropdown new state:', this.isPharmacyDropdownOpen);
+    
+    // Close other dropdowns when opening this one
+    if (this.isPharmacyDropdownOpen) {
+      this.isDoctorsDropdownOpen = false;
+      this.isBlogsDropdownOpen = false;
+      this.isUserMenuOpen = false;
+    }
+    
+    // Add a small delay to ensure the DOM has updated
+    setTimeout(() => {
+      console.log('Dropdown visibility after timeout:', this.isPharmacyDropdownOpen);
+    }, 100);
+  }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
     const menuToggle = document.querySelector('.menu-toggle');

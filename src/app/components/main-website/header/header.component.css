@@ -192,17 +192,32 @@
 .dropdown-menu {
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    min-width: 200px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    border-radius: 12px;
-    padding: 10px 0;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    min-width: 180px;
     z-index: 1000;
-    margin-top: 10px;
-    animation: slideDown 0.3s ease;
-    border: 1px solid rgba(52, 152, 219, 0.1);
+    border-radius: 5px;
+    padding: 0;
+    display: none; /* Hide by default */
+}
+
+.dropdown-menu.show {
+    display: block; /* Show when the show class is applied */
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 16px;
+    color: #007B8A;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.dropdown-menu a:hover {
+    background-color: #e6f4f4;
+    color: #005f6b;
 }
 
 /* Doctors Dropdown */
@@ -222,32 +237,6 @@
 .dropdown-toggle i {
     margin-left: 5px;
     font-size: 0.8rem;
-}
-
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    min-width: 180px;
-    z-index: 1000;
-    border-radius: 5px;
-    padding: 0;
-}
-
-.dropdown-menu a {
-    display: block;
-    padding: 10px 16px;
-    color: #007B8A;
-    text-decoration: none;
-    transition: background 0.2s;
-}
-
-.dropdown-menu a:hover {
-    background-color: #e6f4f4;
-    color: #005f6b;
 }
 
 @keyframes slideDown {
@@ -342,34 +331,19 @@
     .social-icons {
         display: none;
     }
-    .dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-toggle {
-  cursor: pointer;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: var(--white);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  display: block; /* المفروض تكون block لما تظهر */
-  z-index: 1000;
-}
-
-.dropdown-menu a {
-  display: block;
-  padding: 0.5rem 1rem;
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-.dropdown-menu a:hover {
-  background-color: var(--light-gray);
-}
+    
+    /* Mobile dropdown adjustments */
+    .dropdown-menu {
+        position: static;
+        transform: none;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        margin-top: 5px;
+    }
+    
+    .dropdown-toggle {
+        width: 100%;
+        text-align: left;
+    }
 }

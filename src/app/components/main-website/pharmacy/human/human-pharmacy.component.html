@@ -1,0 +1,117 @@
+<!-- Header -->
+<app-header></app-header>
+
+<main class="container mx-auto px-4 py-8">
+  <!-- Hero Section -->
+  <section class="hero-section mb-12">
+    <div class="relative h-[400px] rounded-lg overflow-hidden">
+      <img src="assets/images/human-pharmacy-hero.jpg" alt="Human Pharmacy" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="text-center text-white">
+          <h1 class="text-4xl md:text-5xl font-bold mb-4">Human Pharmacy</h1>
+          <p class="text-xl md:text-2xl">Quality medications and healthcare products for you and your family</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories-section mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-center">Browse by category</h2>
+    
+    <div class="categories-grid">
+      <ng-container *ngIf="!isLoading && !error && categories.length > 0; else loadingOrError">
+        <div class="category-card" *ngFor="let category of categories">
+          <div class="category-image">
+            <img [src]="category.image" 
+                 [alt]="category.name"
+                 (error)="handleImageError($event)"
+                 class="w-full h-full object-cover transition-transform duration-300">
+          </div>
+          <h3 class="category-name">{{category.name}}</h3>
+          <p class="category-description" *ngIf="category.description">{{category.description}}</p>
+        </div>
+      </ng-container>
+
+      <ng-template #loadingOrError>
+        <div class="loading-error-container">
+          <div *ngIf="isLoading" class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading categories...</p>
+          </div>
+          <div *ngIf="error" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>{{error}}</p>
+            <button (click)="retryLoading()" class="retry-button">
+              <i class="fas fa-sync-alt"></i> Retry
+            </button>
+          </div>
+          <div *ngIf="!isLoading && !error && categories.length === 0" class="no-categories">
+            <i class="fas fa-info-circle"></i>
+            <p>No categories found.</p>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="products-section mb-16">
+    <h2 class="text-3xl font-bold mb-8 text-center">Featured Products</h2>
+    
+    <ng-container *ngIf="!isLoading && !error && featuredProducts.length > 0; else noFeaturedProducts">
+      <div class="slider-container">
+        <button class="slider-arrow prev" (click)="prevSlide()">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="slider-wrapper">
+          <div class="slider-track" [style.transform]="'translateX(' + (-currentSlide * slideWidth) + 'px)'">
+            <div class="product-card" *ngFor="let product of featuredProducts">
+              <div class="product-image">
+                <img [src]="product.image" 
+                     [alt]="product.name"
+                     (error)="handleImageError($event)"
+                     class="w-full h-full object-cover transition-transform duration-300">
+              </div>
+              <div class="product-info">
+                <h3 class="product-name">{{product.name}}</h3>
+                <p class="product-description" *ngIf="product.description">{{product.description}}</p>
+                <p class="product-price">{{formatPrice(product.price)}}</p>
+                <button class="add-to-cart-btn">
+                  <i class="fas fa-shopping-cart mr-2"></i>
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <button class="slider-arrow next" (click)="nextSlide()">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <div class="slider-dots">
+        <span 
+          *ngFor="let dot of [].constructor(totalSlides); let i = index" 
+          class="slider-dot" 
+          [class.active]="currentSlide === i"
+          (click)="goToSlide(i)">
+        </span>
+      </div>
+    </ng-container>
+
+    <ng-template #noFeaturedProducts>
+      <div class="loading-error-container" *ngIf="!isLoading && !error">
+        <div class="no-products">
+          <i class="fas fa-box-open"></i>
+          <p>No featured products available at the moment.</p>
+        </div>
+      </div>
+    </ng-template>
+  </section>
+</main>
+
+<!-- Footer -->
+<app-footer></app-footer>
