@@ -21,4 +21,9 @@ export class AppointmentService {
   bookAppointment(data: Appointment): Observable<any> {
     return this.http.post(this.apiUrl, data);
   }
+  getAllAppointments(): Observable<any[]> {
+    return this.http.get<any[]>('http://127.0.0.1:8000/api/appointments');
+  }
+  
+  
 }
