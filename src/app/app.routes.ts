@@ -114,6 +114,8 @@ export const routes: Routes = [
 
      component:AppointmentComponent
   },
+  { path: 'appointment/:doctorId',
+     component: AppointmentComponent },
   {
     path: 'reset-password',
     component: ResetPasswordComponent

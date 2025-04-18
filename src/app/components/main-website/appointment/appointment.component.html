@@ -9,8 +9,12 @@
         <label for="doctor">Choose Doctor</label>
         <select id="doctor" name="doctor_id" [(ngModel)]="appointment.doctor_id" required>
           
-          <option *ngFor="let doc of doctors" [value]="doc.id">{{ doc.name }}</option>
+          <option value="" disabled>Select a doctor</option>
+          <option *ngFor="let doctor of doctors" [value]="doctor.id">
+            {{ doctor.name }}
+          </option>
         </select>
+        
       </div>
 
       <div class="form-group">

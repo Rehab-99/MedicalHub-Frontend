@@ -5,7 +5,7 @@ import { HeaderComponent } from '../../header/header.component';
 import { FooterComponent } from '../../footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { DoctorService } from '../../../../services/doctor.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-vet',
   standalone: true,
@@ -16,7 +16,7 @@ import { DoctorService } from '../../../../services/doctor.service';
 export class VetComponent implements OnInit {
   doctors: any[] = [];  // Changed from vets to doctors
 
-  constructor(private doctorService: DoctorService) {}  // Changed from vetService to doctorService
+  constructor(private doctorService: DoctorService, private router:Router) {}  // Changed from vetService to doctorService
 
   trackDoctor(index: number, doctor: any): number {  // Changed from trackVet to trackDoctor
     return doctor.id;
@@ -24,7 +24,8 @@ export class VetComponent implements OnInit {
 
   bookAppointment(doc: any) {
     console.log('Booking appointment with:', doc.name);
-    // TODO: route to appointment booking page or open modal
+    // Redirect to the appointment page with doctor's ID as a route parameter
+    this.router.navigate(['/appointment', doc.id]);
   }
   
   chatWithDoctor(doc: any) {
