@@ -5,7 +5,7 @@
     <div *ngIf="doctors.length > 0; else noDoctors" class="doctors-grid">
       <div *ngFor="let doc of doctors; trackBy: trackDoctor" class="doctor-card">
         <div class="doctor-image">
-          <img *ngIf="doc.image" [src]="doc.image" alt="{{ doc.name }}">
+          <img [src]="getImageUrl(doc.image)" [alt]="doc.name">
           <div *ngIf="!doc.image" class="image-placeholder">
             <i class="fas fa-user-md"></i>
           </div>
