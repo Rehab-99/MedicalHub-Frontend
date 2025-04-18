@@ -1,6 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+interface ClinicResponse {
+  data: {
+    id: number;
+    name: string;
+    description: string;
+    image?: string;
+    doctors?: any[];
+  };
+}
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +27,16 @@ export class ClinicService {
   }
 
   // Fetch a single clinic by ID
-  getClinic(id: number): Observable<any> {
-    console.log('Making API Call to:', `${this.apiUrl}/${id}`); // ✅ Debugging Log
-    return this.http.get(`${this.apiUrl}/${id}`);
+  getClinic(id: number): Observable<ClinicResponse> {
+    console.log('Making API Call to:', `${this.apiUrl}/${id}`);
+    return this.http.get<ClinicResponse>(`${this.apiUrl}/${id}`).pipe(
+      tap(response => {
+        console.log('API Response:', response);
+        if (response && response.data && response.data.doctors) {
+          console.log('Doctors in response:', response.data.doctors);
+        }
+      })
+    );
   }
 
   // Add a new clinic
