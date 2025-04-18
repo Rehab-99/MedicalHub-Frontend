@@ -1,0 +1,78 @@
+.custom-appointment-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+ 
+  padding: 20px;
+}
+
+.custom-appointment-form {
+  background-color: #ffffff;
+  border: 2px solid #007bff;
+  border-radius: 16px;
+  padding: 30px 40px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.15);
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #007bff;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-actions button[type="submit"] {
+  background-color: hsl(224, 51%, 34%);
+  color: #fff;
+}
+
+.form-actions button[type="submit"]:disabled {
+  background-color: hsl(224, 24%, 50%);
+  cursor: not-allowed;
+}
+
+.form-actions button[type="button"] {
+  background-color: #6c757d;
+  color: #fff;
+}
