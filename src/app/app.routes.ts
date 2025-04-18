@@ -41,7 +41,7 @@ import { ProfileComponent } from './components/main-website/profile/profile.comp
 import { VetComponent } from './components/main-website/doctors/vet/vet.component';
 import { HumanComponent } from './components/main-website/doctors/human/human.component';
 import { ClinicsComponent } from './components/main-website/clinics/clinics.component';
-import { ClinicDoctorsComponent } from './components/main-website/clinic-doctors/clinic-doctors.component';
+import { ClinicDoctorsComponent } from './components/main-website/clinics/clinic-doctors/clinic-doctors.component';
 import { VetBlogListComponent } from './components/main-website/blog/vet/vet-blog-list/vet-blog-list.component';
 import { HumanBlogAddComponent } from './components/main-website/blog/human/human-blog-add/human-blog-add.component';
 import { HumanBlogDetailComponent } from './components/main-website/blog/human/human-blog-detail/human-blog-detail.component';
@@ -97,7 +97,7 @@ export const routes: Routes = [
     component: ClinicsComponent 
   },
   { 
-    path: 'clinic-doctors',
+    path: 'clinics/:id/doctors',
     component: ClinicDoctorsComponent 
   },
   {

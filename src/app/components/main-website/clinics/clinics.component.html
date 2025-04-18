@@ -7,7 +7,7 @@
     <!-- sssssssssssssssssssssssssssssssssss -->
     
     <div class="clinics-grid">
-        <div class="clinic-card" *ngFor="let clinic of clinics" (click)="goToClinicDoctors(clinic.id)">
+        <div class="clinic-card" *ngFor="let clinic of clinics">
             <div class="clinic-image">
                 <img *ngIf="clinic.image" [src]="clinic.image" alt="{{ clinic.name }}" />
                 <div *ngIf="!clinic.image" class="image-placeholder">
@@ -17,7 +17,9 @@
             <div class="clinic-info">
                 <h3>{{ clinic.name }}</h3>
                 <p class="clinic-description">{{ clinic.description }}</p>
-                <button class="view-doctors-btn">View Doctors <i class="fas fa-arrow-right"></i></button>
+                <button class="view-doctors-btn" (click)="goToClinicDoctors(clinic.id)">
+                    View Doctors <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
         </div>
     </div>

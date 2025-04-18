@@ -54,8 +54,6 @@ export class ClinicsComponent implements OnInit {
     );
   }
 
-  
-
   goToClinicDoctors(clinicId: number) {
     this.router.navigate(['/clinics', clinicId, 'doctors']);
   }
