@@ -1,1 +1,26 @@
-<p>appointments works!</p>
+<div class="appointment-dashboard-wrapper">
+    <h2 class="dashboard-title">Appointments Dashboard</h2>
+    <div class="table-wrapper">
+      <table class="appointments-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>User Name</th>
+            <th>Doctor Name</th>
+            <th>Date</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let app of appointments; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ app.user?.name }}</td>
+            <td>{{ app.doctor?.name }}</td>
+            <td>{{ app.appointment_date }}</td>
+            <td>{{ app.appointment_time }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

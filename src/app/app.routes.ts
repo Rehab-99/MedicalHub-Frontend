@@ -36,7 +36,7 @@ import { DoctorDetailComponent } from './components/main-website/doctors/doctor-
 import { BlogListComponent } from './components/main-website/blog/blog-list/blog-list.component';
 import { BlogDetailComponent } from './components/main-website/blog/blog-detail/blog-detail.component';
 import { ContactPageComponent } from './components/main-website/contact/contact-page/contact-page.component';
-import { AppointmentFormComponent } from './components/main-website/appointments/appointment-form/appointment-form.component';
+// import { AppointmentFormComponent } from './components/main-website/appointments/appointment-form/appointment-form.component';
 import { ProfileComponent } from './components/main-website/profile/profile.component';
 import { VetComponent } from './components/main-website/doctors/vet/vet.component';
 import { HumanComponent } from './components/main-website/doctors/human/human.component';
@@ -69,6 +69,7 @@ import { DoctorDashboardComponent } from './doctor-dashboard/doctor-dashboard/do
 
 import { HumanPharmacyComponent as MainWebsiteHumanPharmacyComponent } from './components/main-website/pharmacy/human-pharmacy/human-pharmacy.component';
 import { VetPharmacyComponent as MainWebsiteVetPharmacyComponent } from './components/main-website/pharmacy/vet-pharmacy/vet-pharmacy.component';
+import { AppointmentComponent } from './components/main-website/appointment/appointment.component';
 
 export const routes: Routes = [
   {
@@ -108,6 +109,13 @@ export const routes: Routes = [
     path: 'book/:id',
     component: BookComponent
   },
+  {
+     path:'appointment',
+
+     component:AppointmentComponent
+  },
+  { path: 'appointment/:doctorId',
+     component: AppointmentComponent },
   {
     path: 'reset-password',
     component: ResetPasswordComponent

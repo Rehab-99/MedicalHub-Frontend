@@ -1,32 +1,96 @@
-<!-- editservice.component.html -->
-<form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+<div class="edit-service-container" *ngIf="service">
+  <h2>Edit Service</h2>
+  <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Service Name</label>
-      <input id="name" formControlName="name" class="form-control" />
+      <input
+        id="name"
+        [(ngModel)]="service.name"
+        name="name"
+        class="form-control"
+        placeholder="Enter service name"
+        required
+        minlength="5"
+      />
     </div>
-  
+
     <div class="form-group">
       <label for="description">Description</label>
-      <input id="description" formControlName="description" class="form-control" />
+      <textarea
+        id="description"
+        [(ngModel)]="service.description"
+        name="description"
+        class="form-control"
+        placeholder="Enter description"
+      ></textarea>
     </div>
-  
+
     <div class="form-group">
       <label for="price">Price</label>
-      <input id="price" formControlName="price" class="form-control" type="number" />
+      <input
+        id="price"
+        [(ngModel)]="service.price"
+        name="price"
+        class="form-control"
+        type="number"
+        placeholder="Enter price"
+      />
     </div>
-  
+
     <div class="form-group">
       <label for="duration">Duration (minutes)</label>
-      <input id="duration" formControlName="duration" class="form-control" type="number" />
+      <input
+        id="duration"
+        [(ngModel)]="service.duration"
+        name="duration"
+        class="form-control"
+        type="number"
+        placeholder="Enter duration"
+      />
     </div>
-  
+
+    <div class="form-group form-check">
+      <input
+        id="is_active"
+        [(ngModel)]="service.is_active"
+        name="is_active"
+        type="checkbox"
+        class="form-check-input"
+      />
+      <label for="is_active" class="form-check-label">Active</label>
+    </div>
+
+    <div class="form-group">
+      <label for="instructions">Instructions</label>
+      <textarea
+        id="instructions"
+        [(ngModel)]="service.instructions"
+        name="instructions"
+        class="form-control"
+        placeholder="Enter instructions"
+      ></textarea>
+    </div>
+
     <div class="form-group">
       <label for="image">Image</label>
-      <input id="image" type="file"  class="form-control" />
-
-      <img *ngIf="serviceForm.value.image" [src]="serviceForm.value.image" alt="Service Image" class="image-preview"/>
+      <input
+        id="image"
+        type="file"
+        class="form-control"
+        (change)="onFileSelected($event)"
+        accept="image/*"
+      />
+      <img
+        [src]="getImageUrl(service.image)"
+        alt="Service Image Preview"
+        class="image-preview"
+        style="max-width: 200px; margin-top: 10px;"
+      />
     </div>
-  
-    <button type="submit" class="btn btn-primary">Update Service</button>
+
+    <div class="form-actions mt-3">
+      <button type="submit" class="btn btn-success me-2">Update Service</button>
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    </div>
   </form>
-  
+</div>

@@ -5,11 +5,11 @@ import { catchError } from 'rxjs/operators';
 
 export interface Service {
   id: number;
-  name: string;
-  description: string;
-  price: string;
+  name: string|null;
+  description: string|null;
+  price: string|null;
   duration: number;
-  image: string;
+  image: string|File|null;
   instructions?: string;
   is_active: number;
   created_at: string;
@@ -45,10 +45,10 @@ export class ServiceService {
 
   
 
-  updateService(id: number, formData: FormData): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, formData).pipe(
-      catchError(this.handleError)
-    );
+  updateService(id: number, service: FormData): Observable<any> {
+    // Add _method=PUT to the FormData to simulate PUT request
+    service.append('_method', 'PUT');
+    return this.http.post(`${this.baseUrl}/${id}`, service);
   }
   
 
@@ -61,8 +61,14 @@ export class ServiceService {
 
   // Handle errors
   private handleError(error: any): Observable<never> {
-    console.error('Error occurred:', error);
-    return throwError(error.message || 'Server error');
-
+    console.error('Error details:', {
+      status: error.status,
+      statusText: error.statusText,
+      message: error.message,
+      errors: error.error // Server response (e.g., validation errors)
+    });
+    // Extract server error message if available
+    const errorMessage = error.error?.message || error.error?.error || error.message || 'Server error';
+    return throwError(() => new Error(errorMessage));
   }
 }
