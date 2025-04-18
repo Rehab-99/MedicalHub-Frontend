@@ -6,6 +6,8 @@ import { FooterComponent } from '../../footer/footer.component';
 import { PharmacyService } from '../../../../services/pharmacy.service';
 import { Category, CategoryResponse } from '../../../../models/category.model';
 import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-human-pharmacy',
@@ -21,7 +23,9 @@ export class HumanPharmacyComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
 
-  constructor(private pharmacyService: PharmacyService) {}
+  constructor(
+    private pharmacyService: PharmacyService,
+    private router: Router) {}
 
   ngOnInit(): void {
     this.loadCategories();
@@ -51,6 +55,9 @@ export class HumanPharmacyComponent implements OnInit {
     this.selectedCategory = category;
     // TODO: Implement product loading by category
   }
+  goToCategory(categoryId: number) {
+    this.router.navigate(['/category', categoryId]);
+  }
 
   images: string[] = [
     'assets/images/pharmacy/human/slide1.jpg',
@@ -59,6 +66,7 @@ export class HumanPharmacyComponent implements OnInit {
   ];
   
   currentSlide = 0;
+
 
   
   nextSlide() {

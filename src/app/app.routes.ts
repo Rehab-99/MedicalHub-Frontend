@@ -69,6 +69,7 @@ import { DoctorDashboardComponent } from './doctor-dashboard/doctor-dashboard/do
 
 import { HumanPharmacyComponent as MainWebsiteHumanPharmacyComponent } from './components/main-website/pharmacy/human-pharmacy/human-pharmacy.component';
 import { VetPharmacyComponent as MainWebsiteVetPharmacyComponent } from './components/main-website/pharmacy/vet-pharmacy/vet-pharmacy.component';
+import { CategoryProductsComponent } from './components/main-website/category-products/category-products.component';
 
 export const routes: Routes = [
   {
@@ -310,7 +311,7 @@ export const routes: Routes = [
       }
     ]
   },
- 
+
   { 
     path: 'pharmacy/human',
     component: MainWebsiteHumanPharmacyComponent 
@@ -319,5 +320,9 @@ export const routes: Routes = [
     path: 'pharmacy/vet',
     component: MainWebsiteVetPharmacyComponent 
   },
+  { path: 'category/:id', 
+    component: CategoryProductsComponent 
+  }
+
 
 ];
