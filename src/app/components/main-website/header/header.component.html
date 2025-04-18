@@ -41,6 +41,10 @@
                 <a routerLink="/pharmacy/vet" routerLinkActive="active" (click)="togglePharmacyDropdown()">Vet Pharmacy</a>
               </div>
             </div>
+            <a routerLink="/user/dashboard/cart" routerLinkActive="active" class="cart-link" *ngIf="isLoggedIn">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-badge" *ngIf="cartItemsCount > 0">{{cartItemsCount}}</span>
+            </a>
             <a routerLink="/login" routerLinkActive="active" class="login-btn" *ngIf="!isLoggedIn">Login</a>
             <div class="user-menu" *ngIf="isLoggedIn">
               <div class="user-profile" (click)="toggleUserMenu()">

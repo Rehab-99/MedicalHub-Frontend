@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -15,14 +16,22 @@ export class HeaderComponent {
   isLoggedIn = false;
   isUserMenuOpen = false;
   user: any = null;
+  cartItemsCount: number = 0;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private cartService: CartService
+  ) {
     this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
       this.isLoggedIn = loggedIn;
     });
 
     this.authService.currentUser$.subscribe((user: any) => {
       this.user = user;
+    });
+
+    this.cartService.getCartItems().subscribe((items: any[]) => {
+      this.cartItemsCount = items.length;
     });
   }
   isDoctorsDropdownOpen = false;
