@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface User {
   id: number;
@@ -10,6 +11,7 @@ interface User {
   role: string;
   created_at: string;
   provider?: string;
+  status: 'active' | 'archived';
 }
 
 interface ApiResponse {
@@ -31,7 +33,8 @@ export class UsersComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -70,6 +73,37 @@ export class UsersComponent implements OnInit {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
+    });
+  }
+
+  toggleUserStatus(user: User) {
+    const token = this.authService.getToken();
+    if (!token) {
+      this.toastr.error('Authentication token not found');
+      return;
+    }
+
+    const newStatus = user.status === 'active' ? 'archived' : 'active';
+    this.http.put(
+      `http://127.0.0.1:8000/api/users/${user.id}/status`,
+      { status: newStatus },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    ).subscribe({
+      next: (response: any) => {
+        user.status = newStatus;
+        this.toastr.success(`User status changed to ${newStatus}`);
+      },
+      error: (error) => {
+        console.error('Error updating user status:', error);
+        const errorMessage = error.error?.message || 'Failed to update user status';
+        this.toastr.error(errorMessage);
+      }
     });
   }
 }

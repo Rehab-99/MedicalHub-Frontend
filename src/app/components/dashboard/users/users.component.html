@@ -31,6 +31,7 @@
             <th><i class="fas fa-user-tag"></i> Role</th>
             <th><i class="fas fa-sign-in-alt"></i> Registration Method</th>
             <th><i class="fas fa-calendar-alt"></i> Registration Date</th>
+            <th><i class="fas fa-toggle-on"></i> Status</th>
           </tr>
         </thead>
         <tbody>
@@ -64,6 +65,14 @@
               <td>
                 <i class="fas fa-calendar"></i>
                 {{ formatDate(user.created_at) }}
+              </td>
+              <td>
+                <button class="status-toggle" 
+                        [ngClass]="{'active': user.status === 'active', 'archived': user.status === 'archived'}"
+                        (click)="toggleUserStatus(user)">
+                  <i class="fas" [class]="user.status === 'active' ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+                  {{ user.status === 'active' ? 'Active' : 'Archived' }}
+                </button>
               </td>
             </tr>
           }
