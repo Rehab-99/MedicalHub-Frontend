@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -22,7 +22,8 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private route: ActivatedRoute
   ) {
     this.resetForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -30,6 +31,13 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Check for token in query parameters
+    this.route.queryParams.subscribe(params => {
+      if (params['token']) {
+        // If token exists, redirect to update password page
+        this.router.navigate(['/password/update', params['token']]);
+      }
+    });
   }
 
   onSubmit() {

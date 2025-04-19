@@ -122,12 +122,12 @@ export const routes: Routes = [
     component: ResetPasswordComponent
   },
   {
-    path: 'register',
-    component: RegisterComponent
+    path: 'password/update/:token',
+    component: UpdatePasswordComponent
   },
   {
-    path: 'password/update',
-    component: UpdatePasswordComponent
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: 'dashboard',
@@ -334,7 +334,9 @@ export const routes: Routes = [
   },
   { path: 'category/:id', 
     component: CategoryProductsComponent 
+  },
+  {
+    path: 'update-password',
+    component: UpdatePasswordComponent
   }
-
-
 ];
