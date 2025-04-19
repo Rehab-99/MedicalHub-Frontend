@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reset-password',
@@ -11,13 +12,18 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit, OnDestroy {
   resetForm: FormGroup;
   isLoading = false;
   showSuccess = false;
   showError = false;
   errorMessage = '';
   apiUrl = 'http://127.0.0.1:8000/api/password/reset-link';
+  
+  // Timer related properties
+  countdown: number = 60;
+  isCountdownActive: boolean = false;
+  private countdownSubscription: Subscription | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -40,8 +46,29 @@ export class ResetPasswordComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    if (this.countdownSubscription) {
+      this.countdownSubscription.unsubscribe();
+    }
+  }
+
+  startCountdown() {
+    this.isCountdownActive = true;
+    this.countdown = 60;
+    
+    this.countdownSubscription = interval(1000).subscribe(() => {
+      this.countdown--;
+      if (this.countdown <= 0) {
+        this.isCountdownActive = false;
+        if (this.countdownSubscription) {
+          this.countdownSubscription.unsubscribe();
+        }
+      }
+    });
+  }
+
   onSubmit() {
-    if (this.resetForm.valid) {
+    if (this.resetForm.valid && !this.isCountdownActive) {
       this.isLoading = true;
       this.showError = false;
       this.showSuccess = false;
@@ -54,9 +81,7 @@ export class ResetPasswordComponent implements OnInit {
         next: (response) => {
           this.isLoading = false;
           this.showSuccess = true;
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 2000);
+          this.startCountdown();
         },
         error: (error) => {
           this.isLoading = false;

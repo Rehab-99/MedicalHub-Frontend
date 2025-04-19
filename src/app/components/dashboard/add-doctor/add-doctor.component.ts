@@ -7,6 +7,7 @@ import { environment } from '../../../../environments/environment';
 import Swal from 'sweetalert2';
 import { DoctorService } from '../../../services/doctor.service';
 import { ClinicService } from '../../../services/clinic.service';
+import { VetService } from '../../../services/vet.service';
 
 interface Clinic {
   id: number;
@@ -14,6 +15,7 @@ interface Clinic {
   description: string;
   created_at: string;
   updated_at: string;
+  is_human_clinic?: boolean;
 }
 
 interface Doctor {
@@ -59,7 +61,8 @@ export class AddDoctorComponent implements OnInit {
     password: '',
     password_confirmation: ''
   };
-  clinics: Clinic[] = [];
+  allClinics: Clinic[] = [];
+  filteredClinics: Clinic[] = [];
   roles: Role[] = [
     { value: 'human', label: 'Human Doctor' },
     { value: 'vet', label: 'Veterinarian' }
@@ -70,6 +73,7 @@ export class AddDoctorComponent implements OnInit {
   constructor(
     private doctorService: DoctorService,
     private clinicService: ClinicService,
+    private vetService: VetService,
     private router: Router
   ) {}
 
@@ -78,15 +82,70 @@ export class AddDoctorComponent implements OnInit {
   }
 
   fetchClinics() {
+    // Fetch human clinics
     this.clinicService.getClinics().subscribe(
       (response: { data: Clinic[] }) => {
-        this.clinics = response.data;
+        console.log('Human clinics:', response.data);
+        this.allClinics = response.data;
+        this.filteredClinics = [...this.allClinics];
       },
       (error: any) => {
-        console.error('Error fetching clinics:', error);
-        Swal.fire('Error', 'Failed to fetch clinics. Please try again.', 'error');
+        console.error('Error fetching human clinics:', error);
+        Swal.fire('Error', 'Failed to fetch human clinics. Please try again.', 'error');
       }
     );
+
+    // Fetch vet clinics
+    this.vetService.getVetClinics().subscribe(
+      (response: { data: Clinic[] }) => {
+        console.log('Vet clinics:', response.data);
+        this.allClinics = [...this.allClinics, ...response.data];
+        this.filteredClinics = [...this.allClinics];
+      },
+      (error: any) => {
+        console.error('Error fetching vet clinics:', error);
+        Swal.fire('Error', 'Failed to fetch vet clinics. Please try again.', 'error');
+      }
+    );
+  }
+
+  filterClinicsByRole() {
+    console.log('Current role:', this.doctor.role);
+    
+    if (!this.doctor.role) {
+      this.fetchClinics();
+      return;
+    }
+
+    if (this.doctor.role === 'human') {
+      // Fetch only human clinics
+      this.clinicService.getClinics().subscribe(
+        (response: { data: Clinic[] }) => {
+          console.log('Human clinics:', response.data);
+          this.filteredClinics = response.data;
+        },
+        (error: any) => {
+          console.error('Error fetching human clinics:', error);
+          Swal.fire('Error', 'Failed to fetch human clinics. Please try again.', 'error');
+        }
+      );
+    } else if (this.doctor.role === 'vet') {
+      // Fetch only vet clinics
+      this.vetService.getVetClinics().subscribe(
+        (response: { data: Clinic[] }) => {
+          console.log('Vet clinics:', response.data);
+          this.filteredClinics = response.data;
+        },
+        (error: any) => {
+          console.error('Error fetching vet clinics:', error);
+          Swal.fire('Error', 'Failed to fetch vet clinics. Please try again.', 'error');
+        }
+      );
+    }
+  }
+
+  onRoleChange() {
+    this.filterClinicsByRole();
   }
 
   onFileSelected(event: Event) {
