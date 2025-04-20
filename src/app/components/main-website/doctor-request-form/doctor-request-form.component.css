@@ -1,0 +1,133 @@
+/* Set a background color for the page */
+/* Set a background color for the page */
+body {
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Center the form container with more top spacing */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 120px); /* Adjust for header/footer height */
+    padding-top: 40px; /* Increased top padding */
+    padding-bottom: 20px;
+    box-sizing: border-box;
+}
+h4{
+    color:hsl(211, 66%, 21%) ;
+}
+/* Card styling - add margin-top for more space */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin-top: 30px; /* Additional space between header and card */
+}
+
+/* Rest of your CSS remains the same */
+.card-header {
+    
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 8px 8px 0 0;
+}
+
+
+
+.card-title {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+/* Form styling */
+form {
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+}
+
+/* Label styling */
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Form input fields styling */
+.form-control {
+    border-radius: 4px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 100%;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 5px #007bff80;
+}
+
+.form-control.invalid {
+    border-color: #dc3545;
+}
+
+/* Error messages styling */
+.form-group small {
+    color: #dc3545;
+    font-size: 0.9rem;
+}
+
+/* File input styling */
+input[type="file"] {
+    display: block;
+    margin-top: 10px;
+}
+
+/* Submit button styling */
+button[type="submit"] {
+    background-color: hsl(211, 66%, 21%);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Error messages styling */
+.text-danger {
+    font-size: 0.9rem;
+    color: #dc3545;
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .form-control {
+        padding: 8px;
+    }
+
+    button[type="submit"] {
+        padding: 12px;
+    }
+}

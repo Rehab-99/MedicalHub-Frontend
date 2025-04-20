@@ -1,0 +1,111 @@
+<app-header></app-header>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card" style="max-width: 800px; width: 100%;">
+    <div class="card-header">
+      <h4 class="card-title text-center"><i class="fas fa-user-md me-2"></i> Doctor Request Form</h4>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="doctorRequestForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="full_name">Full Name</label>
+          <input
+            id="full_name"
+            type="text"
+            class="form-control"
+            formControlName="full_name"
+            placeholder="Enter full name"
+          />
+          <div *ngIf="doctorRequestForm.get('full_name')?.invalid && doctorRequestForm.get('full_name')?.touched" class="text-danger">
+            Full Name is required and must be less than 255 characters.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            formControlName="email"
+            placeholder="Enter email"
+          />
+          <div *ngIf="doctorRequestForm.get('email')?.invalid && doctorRequestForm.get('email')?.touched" class="text-danger">
+            Please enter a valid email address.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input
+            id="phone"
+            type="text"
+            class="form-control"
+            formControlName="phone"
+            placeholder="Enter phone number"
+          />
+          <div *ngIf="doctorRequestForm.get('phone')?.invalid && doctorRequestForm.get('phone')?.touched" class="text-danger">
+            Phone number is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="specialization">Specialization</label>
+          <input
+            id="specialization"
+            type="text"
+            class="form-control"
+            formControlName="specialization"
+            placeholder="Enter specialization"
+          />
+          <div *ngIf="doctorRequestForm.get('specialization')?.invalid && doctorRequestForm.get('specialization')?.touched" class="text-danger">
+            Specialization is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+            <label for="card_image">Card Image (JPEG/PNG)</label>
+            <input type="file" 
+                   id="card_image" 
+                   class="form-control"
+                   (change)="onCardImageChange($event)"
+                   accept="image/jpeg, image/png">
+            <div *ngIf="doctorRequestForm.get('card_image')?.touched && doctorRequestForm.get('card_image')?.invalid" class="text-danger">
+              <small *ngIf="doctorRequestForm.get('card_image')?.hasError('required')">Card image is required.</small>
+              <small *ngIf="doctorRequestForm.get('card_image')?.hasError('invalidFileType')">Only JPEG/PNG files allowed.</small>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="certificate_pdf">Certificate PDF</label>
+            <input type="file" 
+                   id="certificate_pdf" 
+                   class="form-control"
+                   (change)="onCertificatePdfChange($event)"
+                   accept="application/pdf">
+            <div *ngIf="doctorRequestForm.get('certificate_pdf')?.touched && doctorRequestForm.get('certificate_pdf')?.invalid" class="text-danger">
+              <small *ngIf="doctorRequestForm.get('certificate_pdf')?.hasError('required')">Certificate PDF is required.</small>
+              <small *ngIf="doctorRequestForm.get('certificate_pdf')?.hasError('invalidFileType')">Only PDF files allowed.</small>
+            </div>
+          </div>
+
+        <div class="form-group">
+          <label for="notes">Additional Notes</label>
+          <textarea
+            id="notes"
+            class="form-control"
+            formControlName="notes"
+            rows="3"
+            placeholder="Enter any additional notes"
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3" [disabled]="doctorRequestForm.invalid">
+          <i class="fas fa-paper-plane me-2"></i> Submit Request
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

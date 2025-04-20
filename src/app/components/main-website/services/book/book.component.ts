@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../header/header.component';
 import { FooterComponent } from '../../footer/footer.component';
 import { AuthService } from '../../../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-book',
@@ -109,15 +110,31 @@ export class BookComponent implements OnInit {
       this.http.post('http://localhost:8000/api/servicesbooking', this.bookingForm.value)
         .subscribe({
           next: () => {
-            alert('Service booked successfully!');
-            this.router.navigate(['/']); // Redirect anywhere
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Service booked successfully!',
+              confirmButtonColor: '#3085d6'
+            }).then(() => {
+              this.router.navigate(['/']); // Redirect after confirmation
+            });
           },
           error: (err) => {
-            alert(err.error?.error || 'Failed to book service');
+            Swal.fire({
+              icon: 'error',
+              title: 'Booking Failed',
+              text: err.error?.error || 'Failed to book service',
+              confirmButtonColor: '#d33'
+            });
           }
         });
     } else {
-      alert('Please fill all the required fields.');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Incomplete Form',
+        text: 'Please fill all the required fields.',
+        confirmButtonColor: '#f0ad4e'
+      });
     }
   }
 }

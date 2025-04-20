@@ -72,6 +72,7 @@ import { HumanPharmacyComponent as MainWebsiteHumanPharmacyComponent } from './c
 import { VetPharmacyComponent as MainWebsiteVetPharmacyComponent } from './components/main-website/pharmacy/vet-pharmacy/vet-pharmacy.component';
 import { AppointmentComponent } from './components/main-website/appointment/appointment.component';
 import { CategoryProductsComponent } from './components/main-website/category-products/category-products.component';
+import { DoctorRequestFormComponent } from './components/main-website/doctor-request-form/doctor-request-form.component';
 export const routes: Routes = [
   {
     path: '',
@@ -114,6 +115,10 @@ export const routes: Routes = [
      path:'appointment',
 
      component:AppointmentComponent
+  },
+  {
+    path:'doctor-request',
+    component:DoctorRequestFormComponent
   },
   { path: 'appointment/:doctorId',
      component: AppointmentComponent },
