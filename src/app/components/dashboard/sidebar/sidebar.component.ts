@@ -88,6 +88,12 @@ export class SidebarComponent {
       route: '/dashboard/services'
     },
     {
+      title: 'Doctor-Requests',
+      icon: 'fas fa-user-md'
+,
+      route: '/dashboard/doctor-request'
+    },
+    {
       title: 'Settings',
       icon: 'fas fa-cog',
       route: '/dashboard/settings'

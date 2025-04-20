@@ -1,0 +1,61 @@
+<div class="appointment-dashboard-wrapper">
+    <h2 class="dashboard-title">Doctor Requests</h2>
+  
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <!-- Error Message -->
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  
+    <!-- Table -->
+    <div class="table-wrapper">
+      <table *ngIf="!loading && !error && doctorRequests.length" class="appointments-table">
+        <thead>
+          <tr>
+            <th scope="col">Full Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Specialization</th>
+            <th scope="col">Card Image</th>
+            <th scope="col">Certificate PDF</th>
+            <th scope="col">Notes</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of doctorRequests">
+            <td>{{ request.full_name }}</td>
+            <td>{{ request.email }}</td>
+            <td>{{ request.phone }}</td>
+            <td>{{ request.specialization }}</td>
+            <td>
+              <img
+                *ngIf="request.card_image"
+                [src]="doctorRequestService.getFileUrl(request.card_image)"
+                alt="Doctor Card"
+                style="max-width: 100px; max-height: 100px; object-fit: contain;"
+              />
+              <span *ngIf="!request.card_image">No Image</span>
+            </td>
+            <td>
+              <a *ngIf="request.certificate_pdf" [href]="doctorRequestService.getFileUrl(request.certificate_pdf)" target="_blank">View PDF</a>
+              <span *ngIf="!request.certificate_pdf">No PDF</span>
+            </td>
+            <td>{{ request.notes || 'No Notes' }}</td>
+         
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- No Data Message -->
+    <div *ngIf="!loading && !error && !doctorRequests.length" class="alert alert-info">
+      No doctor requests found.
+    </div>
+  </div>

@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { DashboardLayoutComponent } from './components/dashboard/dashboard-layout/dashboard-layout.component';
 import { HomeComponent as DashboardHomeComponent } from './components/dashboard/home/home.component';
@@ -73,6 +74,7 @@ import { VetPharmacyComponent as MainWebsiteVetPharmacyComponent } from './compo
 import { AppointmentComponent } from './components/main-website/appointment/appointment.component';
 import { CategoryProductsComponent } from './components/main-website/category-products/category-products.component';
 import { DoctorRequestFormComponent } from './components/main-website/doctor-request-form/doctor-request-form.component';
+import { DoctorRequestComponent } from './components/dashboard/doctor-request/doctor-request.component';
 export const routes: Routes = [
   {
     path: '',
@@ -150,6 +152,10 @@ export const routes: Routes = [
       {
         path: 'add-category',
         component: AddCategoryComponent
+      },
+      {
+        path:"doctor-request",
+        component:DoctorRequestComponent
       },
       {
         path: 'human-categories',
