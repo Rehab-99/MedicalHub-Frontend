@@ -6,6 +6,8 @@ import { FooterComponent } from '../../footer/footer.component';
 import { PharmacyService } from '../../../../services/pharmacy.service';
 import { Category, CategoryResponse } from '../../../../models/category.model';
 import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-vet-pharmacy',
@@ -21,7 +23,10 @@ export class VetPharmacyComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
 
-  constructor(private pharmacyService: PharmacyService) {}
+  constructor(private pharmacyService: PharmacyService,
+    private router: Router
+
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();
@@ -47,9 +52,8 @@ export class VetPharmacyComponent implements OnInit {
     });
   }
 
-  filterByCategory(category: Category) {
-    this.selectedCategory = category;
-    // TODO: Implement product loading by category
+  goToCategory(categoryId: number) {
+    this.router.navigate(['/category', categoryId]);
   }
 
 

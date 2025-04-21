@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { FooterComponent } from '../footer/footer.component';
+
 
 @Component({
   selector: 'app-category-products',
-  imports: [CommonModule],
+  imports: [CommonModule, FooterComponent],
   templateUrl: './category-products.component.html',
   styleUrl: './category-products.component.css'
 })
