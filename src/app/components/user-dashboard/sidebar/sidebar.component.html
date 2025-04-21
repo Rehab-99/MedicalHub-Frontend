@@ -7,11 +7,11 @@
         </a>
     </div>
 
-    <div class="doctor-profile-sidebar">
-        <img src="assets/images/doctor-avatar.jpg" alt="Dr. Richa Linda" class="doctor-avatar-sidebar">
+    <div class="doctor-profile-sidebar" *ngIf="doctor">
+        <img [src]="getImageUrl(doctor?.image)" [alt]="doctor?.name" class="doctor-avatar-sidebar">
         <div class="doctor-info-sidebar">
-            <h4>Dr. Richa Linda</h4>
-            <p class="doctor-specialty-sidebar">MD DM (Cardiology)</p>
+            <h4>{{ doctor?.name }}</h4>
+            <p class="doctor-specialty-sidebar">{{ doctor?.specialization }}</p>
         </div>
     </div>
 
