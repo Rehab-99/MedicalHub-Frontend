@@ -56,10 +56,12 @@
           name="stock"
           [(ngModel)]="product.stock"
           class="form-control"
-          [class.is-invalid]="submitted && !product.stock"
+          [class.is-invalid]="submitted && (product.stock === null || product.stock === undefined )"
+          min="0"
           required
+          
         />
-        <div class="invalid-feedback" *ngIf="submitted && !product.stock">
+        <div class="invalid-feedback" *ngIf="submitted && (product.stock === null || product.stock === undefined )">
           Stock is required
         </div>
       </div>

@@ -17,8 +17,8 @@ export class EditProductComponent implements OnInit {
   product = {
     name: '',
     description: '',
-    price: '',
-    stock: '',
+    price: 0,
+    stock: 0,
     category_id: '',
     image: null as File | null
   };
@@ -61,8 +61,8 @@ export class EditProductComponent implements OnInit {
           this.product = {
             name: product.name,
             description: product.description,
-            price: product.price,
-            stock: product.stock,
+            price: Number(product.price),
+            stock: Number(product.stock),
             category_id: product.category_id,
             image: null
           };
@@ -118,7 +118,13 @@ export class EditProductComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    if (!this.product.name || !this.product.price || !this.product.stock || !this.product.category_id) {
+    if (
+      !this.product.name ||
+      this.product.price < 0 ||
+      this.product.stock < 0 ||
+      !this.product.category_id
+    )
+     {
       Swal.fire({
         title: 'Error!',
         text: 'Please fill all required fields',
@@ -128,6 +134,8 @@ export class EditProductComponent implements OnInit {
     }
 
     this.loading = true;
+    this.product.price = Number(this.product.price);
+    this.product.stock = Number(this.product.stock);
     const formData = new FormData();
 
     // Append all product data to FormData

@@ -60,11 +60,12 @@
           name="stock"
           [(ngModel)]="product.stock"
           class="form-control"
-          [class.is-invalid]="submitted && !product.stock"
-          required
+          [class.is-invalid]="submitted && (product.stock === null || product.stock === undefined )"
           min="0"
+          required
+          
         />
-        <div class="invalid-feedback" *ngIf="submitted && !product.stock">
+        <div class="invalid-feedback" *ngIf="submitted && (product.stock === null || product.stock === undefined )">
           Stock is required
         </div>
       </div>
@@ -75,12 +76,12 @@
           id="category"
           name="category_id"
           [(ngModel)]="product.category_id"
-          class="form-control"
+          class="form-control custom-select"
           [class.is-invalid]="submitted && !product.category_id"
           required
         >
-          <option value="">Select a category</option>
-          <option *ngFor="let category of categories" [value]="category.id">
+          <option [ngValue]="''" disabled>Select a category</option>
+          <option *ngFor="let category of categories" [ngValue]="category.id">
             {{ category.name }}
           </option>
         </select>

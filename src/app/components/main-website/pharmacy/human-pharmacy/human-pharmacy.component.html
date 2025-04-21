@@ -53,7 +53,7 @@
                      (click)="goToCategory(category.id)">
                      <div class="category-image">
                         <img *ngIf="category.image" 
-                             [src]="'http://127.0.0.1:8000/storage/categories/' + category.image" 
+                             [src]="'http://127.0.0.1:8000/storage/' + category.image" 
                              [alt]="category.name">
                     </div>
                     
