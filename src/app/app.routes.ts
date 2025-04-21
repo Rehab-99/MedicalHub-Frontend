@@ -72,6 +72,7 @@ import { HumanPharmacyComponent as MainWebsiteHumanPharmacyComponent } from './c
 import { VetPharmacyComponent as MainWebsiteVetPharmacyComponent } from './components/main-website/pharmacy/vet-pharmacy/vet-pharmacy.component';
 import { AppointmentComponent } from './components/main-website/appointment/appointment.component';
 import { CategoryProductsComponent } from './components/main-website/category-products/category-products.component';
+import { AddPostComponent } from './doctor-dashboard/add-post/add-post.component';
 export const routes: Routes = [
   {
     path: '',
@@ -303,7 +304,10 @@ export const routes: Routes = [
     path: "doctor-login",
     component: DoctorLoginComponent
   },
-
+  {
+    path: "add-post",
+    component: AddPostComponent
+  },
   {
     path: 'user/dashboard',
     component: UserDashboardComponent,
