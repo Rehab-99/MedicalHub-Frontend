@@ -1,15 +1,16 @@
-<!-- Shopping Cart -->
 <div class="shopping-cart section">
   <div class="container">
     <h2 class="mb-4">Shopping Cart</h2>
     
     <!-- Loading State -->
     <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
       <p>Loading cart contents...</p>
     </div>
 
     <!-- Error State -->
     <div *ngIf="error" class="error-state">
+      <i class="fas fa-exclamation-circle"></i>
       <p>{{ error }}</p>
     </div>
     
@@ -17,102 +18,80 @@
     <div *ngIf="!isLoading && !error && cartItems.length === 0" class="empty-cart">
       <i class="fas fa-shopping-cart"></i>
       <h3>Your cart is empty</h3>
-      <p>You haven't added any products to your cart yet.</p>
-      <a routerLink="/products" class="btn">Start Shopping</a>
+      <p>Browse our products and add items to your cart</p>
+      <a routerLink="/products" class="btn">Explore Products</a>
     </div>
 
-    <!-- Cart Items -->
-    <div *ngIf="!isLoading && !error && cartItems.length > 0">
-      <div class="cart-list-head">
-        <!-- Cart List Title -->
-        <div class="cart-list-title">
-          <div class="row">
-            <div class="col-lg-2 col-md-2 col-12">
-              <p>Image</p>
-            </div>
-            <div class="col-lg-4 col-md-4 col-12">
-              <p>Product Name</p>
-            </div>
-            <div class="col-lg-2 col-md-2 col-12">
-              <p>Quantity</p>
-            </div>
-            <div class="col-lg-2 col-md-2 col-12">
-              <p>Price</p>
-            </div>
-            <div class="col-lg-2 col-md-2 col-12">
-              <p>Actions</p>
-            </div>
-          </div>
-        </div>
-        <!-- End Cart List Title -->
-
-        <!-- Cart Items List -->
-        <div class="cart-single-list" *ngFor="let item of cartItems">
-          <div class="row align-items-center">
-            <div class="col-lg-2 col-md-2 col-12">
-              <img [src]="item.image" [alt]="item.name" class="img-fluid">
-            </div>
-            <div class="col-lg-4 col-md-4 col-12">
-              <h5 class="product-name">{{ item.name }}</h5>
-              <p class="product-des">{{ item.description }}</p>
-            </div>
-            <div class="col-lg-2 col-md-2 col-12">
-              <div class="count-input">
-                <select class="form-control" [(ngModel)]="item.quantity" (change)="updateQuantity(item.productId, item.quantity)">
-                  <option *ngFor="let q of getQuantityOptions(10)" [value]="q">{{ q }}</option>
-                </select>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-2 col-12">
-              <p class="price">{{ item.total }} EGP</p>
-            </div>
-            <div class="col-lg-2 col-md-2 col-12">
-              <button (click)="removeItem(item.productId)" class="remove-item">
-                <i class="fas fa-trash-alt"></i>
-                <span>Remove</span>
+    <!-- Cart Items Table -->
+    <div *ngIf="!isLoading && !error && cartItems.length > 0" class="cart-table-container">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th class="product-image">Image</th>
+            <th class="product-info">Product</th>
+            <th class="product-quantity">Quantity</th>
+            <th class="product-price">Price</th>
+            <th class="product-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cartItems" class="cart-item">
+            <td class="product-image">
+              <img [src]="item.image" [alt]="item.name" class="product-img">
+            </td>
+            <td class="product-info">
+              <h4 class="product-title">{{ item.name }}</h4>
+              <p class="product-description">{{ item.description }}</p>
+            </td>
+            <td class="product-quantity">
+              <select class="quantity-select" [(ngModel)]="item.quantity" 
+                      (change)="updateQuantity(item.productId, item.quantity)">
+                <option *ngFor="let q of getQuantityOptions(10)" [value]="q">{{ q }}</option>
+              </select>
+            </td>
+            <td class="product-price">
+              {{ item.total | currency:'EGP':'symbol':'1.2-2' }}
+            </td>
+            <td class="product-actions">
+              <button class="remove-btn" (click)="removeItem(item.productId)">
+                <i class="fas fa-trash"></i>
+                Remove
               </button>
-            </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="cart-summary">
+        <div class="coupon-section">
+          <h4>Apply Discount</h4>
+          <div class="coupon-input">
+            <input type="text" placeholder="Enter promo code">
+            <button class="apply-btn">Apply</button>
           </div>
         </div>
-        <!-- End Cart Items List -->
-      </div>
-
-      <div class="row">
-        <div class="col-12">
-          <!-- Total Amount -->
-          <div class="total-amount">
-            <div class="row">
-              <div class="col-lg-8 col-md-6 col-12">
-                <div class="left">
-                  <div class="coupon">
-                    <form>
-                      <input name="Coupon" placeholder="Enter discount code">
-                      <div class="button">
-                        <button class="btn">Apply Code</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-6 col-12">
-                <div class="right">
-                  <ul>
-                    <li>Total<span>{{ cartTotal }} EGP</span></li>
-                    <li>Shipping<span>Free</span></li>
-                    <li class="last">Grand Total<span>{{ cartTotal }} EGP</span></li>
-                  </ul>
-                  <div class="button">
-                    <a routerLink="/checkout" class="btn">Checkout</a>
-                    <a routerLink="/products" class="btn btn-alt">Continue Shopping</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+        
+        <div class="total-section">
+          <h4>Order Summary</h4>
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span>{{ cartTotal | currency:'EGP':'symbol':'1.2-2' }}</span>
           </div>
-          <!--/ End Total Amount -->
+          <div class="total-row">
+            <span>Shipping</span>
+            <span>Free</span>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total</span>
+            <span>{{ cartTotal | currency:'EGP':'symbol':'1.2-2' }}</span>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="checkout-btn" routerLink="/checkout">Proceed to Checkout</button>
+            <button class="continue-btn" routerLink="/products">Continue Shopping</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!--/ End Shopping Cart -->
