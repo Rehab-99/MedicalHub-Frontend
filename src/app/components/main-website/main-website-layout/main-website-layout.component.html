@@ -9,22 +9,78 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title"><i class="fas fa-heartbeat"></i> Your Most Trusted Health Partner For Life.</h1>
-            <p class="hero-subtitle">We offer free consulting and the best project management for your ideas, 100% delivery guaranteed.</p>
-            <div class="hero-buttons">
-                <button class="btn btn-appointment" routerLink="/appointment"><i class="fas fa-calendar-check"></i> Appointment</button>
-                <button class="btn btn-services" routerLink="/services"><i class="fas fa-concierge-bell"></i> Services</button>
+    <div class="hero-slider">
+        <!-- Background Layer -->
+        <div class="slider-background"></div>
+        <!-- Human Section -->
+        <div class="hero-section" id="human-section" [ngClass]="{'active': currentSlide === 1}">
+            <div class="hero-content">
+                <h1 class="hero-title"><i class="fas fa-heartbeat"></i> A Warm Embrace for Your Wellbeing</h1>
+                <p class="hero-subtitle">At MedicalHub, we’re here to hold your hand through every step of your health journey with care and kindness.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-appointment" routerLink="/appointment"><i class="fas fa-calendar-check"></i> Appointment</button>
+                    <button class="btn btn-services" routerLink="/services"><i class="fas fa-concierge-bell"></i> Services</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.ctfassets.net/szez98lehkfm/3aFXjISnNZfF0MkUX6Z5rZ/af19d4cd2183c340fde85ef620db9d81/MyIC_Inline_79497" alt="Human Doctor" loading="eager">
             </div>
         </div>
-        <div class="hero-image">
-            <img src="https://images.ctfassets.net/szez98lehkfm/3aFXjISnNZfF0MkUX6Z5rZ/af19d4cd2183c340fde85ef620db9d81/MyIC_Inline_79497" alt="Medical Hub Hero Image">
+        <!-- Vet Section -->
+        <div class="hero-section" id="vet-section" [ngClass]="{'active': currentSlide === 2}">
+            <div class="hero-content">
+                <h1 class="hero-title"><i class="fas fa-paw"></i> Loving Care for Your Furry Friends</h1>
+                <p class="hero-subtitle">MedicalHub wraps your pets in a big hug, ensuring they get the gentle care they deserve.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-appointment" routerLink="/appointment"><i class="fas fa-calendar-check"></i> Appointment</button>
+                    <button class="btn btn-services" routerLink="/services"><i class="fas fa-concierge-bell"></i> Services</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img id="image" src="https://img.freepik.com/free-photo/close-up-veterinarian-taking-care-pet_23-2149143884.jpg?t=st=1745327603~exp=1745331203~hmac=a707bc5baa1ba74fb8f38c35a885e2f49149f037e3a037302974d05a0f471757&w=996" alt="Veterinary Doctor with Pet" loading="eager">
+
+            </div>
+        </div>
+        <!-- Navigation Dots -->
+        <div class="slider-dots">
+            <div class="dot" [ngClass]="{'active': currentSlide === 1}" (click)="setSlide(1)"></div>
+            <div class="dot" [ngClass]="{'active': currentSlide === 2}" (click)="setSlide(2)"></div>
         </div>
     </div>
 
-    <!-- Health Department Section -->
+    <!-- Medical Specialists Section -->
+    <section class="medical-specialists">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-heartbeat"></i> The Medical Specialists</h2>
+                <div class="title-line"></div>
+            </div>
+            <div class="doctors-grid">
+                <div class="doctor-card">
+                    <img class="images" src="https://thumbs.dreamstime.com/b/happy-male-doctor-standing-arms-crossed-portrait-against-white-background-vertical-shot-39366106.jpg" alt="Medical Hub Hero Image">
+                    <h3>Dr. Jack Rose</h3>
+                    <p>Cardiology</p>
+                </div>
+                <div class="doctor-card">
+                    <img class="images" src="https://img.freepik.com/fotos-premium/jovem-medica-morena-permanente-com-prancheta-e-sorrindo-no-hospital-medico-pronto-para-examinar-o-paciente_665183-8178.jpg" alt="Medical Hub Hero Image">
+                    <h3>Dr. Sara Smith</h3>
+                    <p>Neurology</p>
+                </div>
+                <div class="doctor-card">
+                    <img class="images" src="https://th.bing.com/th/id/R.45f34d9db5f8f45d0f95e00e83c152f6?rik=9YO1FpxXMIaabA&riu=http%3a%2f%2fmodeltheme.com%2fmt_medplus%2fwp-content%2fuploads%2f2016%2f10%2fdoctor-adam.png&ehk=S5ji5AtgGZZhqe7PV1dsCwoVcV8XmIYs4anfFPP%2fkSM%3d&risl=&pid=ImgRaw&r=0" alt="Medical Hub Hero Image">
+                    <h3>Dr. David Lewis</h3>
+                    <p>Orthopedics</p>
+                </div>
+                <div class="doctor-card">
+                    <img class="images" src="https://img.freepik.com/premium-photo/attractive-female-doctor-background_488220-38623.jpg" alt="Medical Hub Hero Image">
+                    <h3>Dr. Rose Parker</h3>
+                    <p>Pediatrics</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+            <!-- Health Department Section -->
     <section class="health-department">
         <div class="container">
             <div class="who-we-are-section">
@@ -72,38 +128,7 @@
         </div>
     </section>
 
-    <!-- Medical Specialists Section -->
-    <section class="medical-specialists">
-        <div class="container">
-            <div class="section-header">
-                <h2><i class="fas fa-heartbeat"></i> The Medical Specialists</h2>
-                <div class="title-line"></div>
-            </div>
-            <div class="doctors-grid">
-                <div class="doctor-card">
-                    <img class="images" src="https://thumbs.dreamstime.com/b/happy-male-doctor-standing-arms-crossed-portrait-against-white-background-vertical-shot-39366106.jpg" alt="Medical Hub Hero Image">
-                    <h3>Dr. Jack Rose</h3>
-                    <p>Cardiology</p>
-                </div>
-                <div class="doctor-card">
-                    <img class="images" src="https://img.freepik.com/fotos-premium/jovem-medica-morena-permanente-com-prancheta-e-sorrindo-no-hospital-medico-pronto-para-examinar-o-paciente_665183-8178.jpg" alt="Medical Hub Hero Image">
-                    <h3>Dr. Sara Smith</h3>
-                    <p>Neurology</p>
-                </div>
-                <div class="doctor-card">
-                    <img class="images" src="https://th.bing.com/th/id/R.45f34d9db5f8f45d0f95e00e83c152f6?rik=9YO1FpxXMIaabA&riu=http%3a%2f%2fmodeltheme.com%2fmt_medplus%2fwp-content%2fuploads%2f2016%2f10%2fdoctor-adam.png&ehk=S5ji5AtgGZZhqe7PV1dsCwoVcV8XmIYs4anfFPP%2fkSM%3d&risl=&pid=ImgRaw&r=0" alt="Medical Hub Hero Image">
-                    <h3>Dr. David Lewis</h3>
-                    <p>Orthopedics</p>
-                </div>
-                <div class="doctor-card">
-                    <img class="images" src="https://img.freepik.com/premium-photo/attractive-female-doctor-background_488220-38623.jpg" alt="Medical Hub Hero Image">
-                    <h3>Dr. Rose Parker</h3>
-                    <p>Pediatrics</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- Patient Testimonials Section -->
     <section class="testimonials">
         <div class="container">
