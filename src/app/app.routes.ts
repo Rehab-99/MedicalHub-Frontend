@@ -75,6 +75,7 @@ import { AppointmentComponent } from './components/main-website/appointment/appo
 import { CategoryProductsComponent } from './components/main-website/category-products/category-products.component';
 import { DoctorRequestFormComponent } from './components/main-website/doctor-request-form/doctor-request-form.component';
 import { DoctorRequestComponent } from './components/dashboard/doctor-request/doctor-request.component';
+import { PaymentComponent } from './payment/payment.component';
 export const routes: Routes = [
   {
     path: '',
@@ -331,6 +332,10 @@ export const routes: Routes = [
       {
         path: 'checkout',
         component: CheckoutComponent
+      },
+      {
+        path: 'payment',
+        component: PaymentComponent
       }
     ]
   },
