@@ -1,4 +1,17 @@
 <section class="custom-accordion">
+  <!-- Popup Message -->
+  <div *ngIf="showPopup" class="popup-overlay">
+    <div class="popup" [ngClass]="{'success': popupType === 'success', 'error': popupType === 'error'}">
+      <div class="popup-content">
+        <div class="popup-icon">
+          <i *ngIf="popupType === 'success'" class="fas fa-check-circle"></i>
+          <i *ngIf="popupType === 'error'" class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="popup-message">{{ popupMessage }}</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Billing Address -->
   <div class="accordion-box">
     <input type="checkbox" id="billing-toggle" class="accordion-toggle">
@@ -67,5 +80,57 @@
         </div>
       </form>
     </div>
+  </div>
+
+  <!-- Payment Method -->
+  <div class="accordion-box">
+    <input type="checkbox" id="payment-toggle" class="accordion-toggle">
+    <label for="payment-toggle" class="accordion-header">Payment Method</label>
+    <div class="accordion-body">
+      <form>
+        <div class="form-grid">
+          <div class="form-row">
+            <select name="payment_method" [(ngModel)]="checkoutData.payment_method">
+              <option value="">Select Payment Method</option>
+              <option value="credit_card">Credit Card</option>
+              <option value="paypal">PayPal</option>
+              <option value="bank_transfer">Bank Transfer</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Summary -->
+  <div class="accordion-box">
+    <input type="checkbox" id="summary-toggle" class="accordion-toggle" checked>
+    <label for="summary-toggle" class="accordion-header">Order Summary</label>
+    <div class="accordion-body">
+      <div class="order-summary">
+        <div *ngIf="cartItems.length === 0" class="empty-cart">
+          Your cart is empty
+        </div>
+        <div class="summary-item" *ngFor="let item of cartItems">
+          <div class="item-details">
+            <span class="item-name">{{item.name || 'Product ' + item.productId}}</span>
+            <span class="item-quantity">x{{item.quantity}}</span>
+          </div>
+          <span class="item-price">${{item.price * item.quantity}}</span>
+        </div>
+        <div class="summary-total">
+          <span>Total:</span>
+          <span>${{totalPrice}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Button -->
+  <div class="checkout-button-container">
+    <button class="checkout-button" (click)="processCheckout()" [disabled]="isLoading || cartItems.length === 0">
+      <span *ngIf="!isLoading">Complete Checkout</span>
+      <span *ngIf="isLoading" class="loading-spinner"></span>
+    </button>
   </div>
 </section>

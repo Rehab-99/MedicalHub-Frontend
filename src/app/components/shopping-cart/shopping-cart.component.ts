@@ -48,7 +48,10 @@ export class ShoppingCartComponent implements OnInit {
       next: (items) => {
         console.log('Received cart items:', items);
         this.cartItems = items;
-        this.calculateTotal();
+        this.cartService.getTotal().subscribe(total => {
+          this.cartTotal = total;
+          console.log('Updated cart total:', this.cartTotal);
+        });
         this.isLoading = false;
       },
       error: (error) => {
@@ -70,15 +73,18 @@ export class ShoppingCartComponent implements OnInit {
   updateQuantity(productId: number, quantity: number): void {
     console.log('Updating quantity for product:', productId, 'to:', quantity);
     this.cartService.updateQuantity(productId, quantity);
+    this.cartService.getTotal().subscribe(total => {
+      this.cartTotal = total;
+      console.log('Updated cart total after quantity change:', this.cartTotal);
+    });
   }
 
   removeItem(productId: number): void {
     console.log('Removing product:', productId);
     this.cartService.removeItem(productId);
-  }
-
-  calculateTotal(): void {
-    this.cartTotal = this.cartService.getTotal();
-    console.log('Calculated cart total:', this.cartTotal);
+    this.cartService.getTotal().subscribe(total => {
+      this.cartTotal = total;
+      console.log('Updated cart total after removal:', this.cartTotal);
+    });
   }
 } 
