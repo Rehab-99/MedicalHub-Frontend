@@ -80,15 +80,20 @@ export class SidebarComponent implements OnInit {
 
   startChat() {
     if (this.doctor) {
+      this.showChatWindow = true;
       this.http.post(`${this.baseUrl}/chat/start`, { doctor_id: this.doctor.id })
         .subscribe({
           next: (response: any) => {
-            this.showChatWindow = true;
+            console.log('Chat started successfully');
           },
           error: (error) => {
             console.error('Error starting chat:', error);
           }
         });
     }
+  }
+
+  closeChat() {
+    this.showChatWindow = false;
   }
 } 

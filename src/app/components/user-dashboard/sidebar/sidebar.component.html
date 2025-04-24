@@ -47,5 +47,6 @@
 <app-chat-window 
     *ngIf="showChatWindow && doctor" 
     [doctorId]="doctor.id"
-    [doctorName]="doctor.name">
+    [doctorName]="doctor.name"
+    (closeChat)="closeChat()">
 </app-chat-window> 
