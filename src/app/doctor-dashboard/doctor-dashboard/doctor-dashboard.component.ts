@@ -10,12 +10,11 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./doctor-dashboard.component.css']
 })
 export class DoctorDashboardComponent implements OnInit {
-  doctorName = ''; // Name of the logged-in doctor
+  doctorName = '';
 
   ngOnInit(): void {
-    // Load doctor info from localStorage or API
     const doctor = JSON.parse(localStorage.getItem('doctor') || '{}');
-    this.doctorName = doctor.name || 'Dr. Ahmed'; // Replace with real data
+    this.doctorName = doctor.name || 'Dr. Ahmed';
   }
 
   logout() {

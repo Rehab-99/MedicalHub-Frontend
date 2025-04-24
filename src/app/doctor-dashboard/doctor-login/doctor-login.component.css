@@ -180,3 +180,6 @@ body {
   h2{
     color: #fffefe;
   }
+  span{
+    margin: 10px;
+  }
