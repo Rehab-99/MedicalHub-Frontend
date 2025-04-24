@@ -6,11 +6,13 @@ import { DoctorService } from '../../../services/doctor.service';
 import { AppointmentService } from '../../../services/appointment.service';
 import { AuthService } from '../../../services/auth.service';
 import { environment } from '../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { ChatWindowComponent } from '../../chat/chat-window.component';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ChatWindowComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
@@ -19,12 +21,14 @@ export class SidebarComponent implements OnInit {
   doctor: any = null;
   baseUrl = environment.apiUrl;
   currentUserId: number | null = null;
+  showChatWindow: boolean = false;
 
   constructor(
     private router: Router,
     private doctorService: DoctorService,
     private appointmentService: AppointmentService,
-    private authService: AuthService
+    private authService: AuthService,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -72,5 +76,19 @@ export class SidebarComponent implements OnInit {
 
   isActive(route: string): boolean {
     return this.currentRoute === route;
+  }
+
+  startChat() {
+    if (this.doctor) {
+      this.http.post(`${this.baseUrl}/chat/start`, { doctor_id: this.doctor.id })
+        .subscribe({
+          next: (response: any) => {
+            this.showChatWindow = true;
+          },
+          error: (error) => {
+            console.error('Error starting chat:', error);
+          }
+        });
+    }
   }
 } 

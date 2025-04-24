@@ -12,6 +12,9 @@
         <div class="doctor-info-sidebar">
             <h4>{{ doctor?.name }}</h4>
             <p class="doctor-specialty-sidebar">{{ doctor?.specialization }}</p>
+            <button class="chat-button" (click)="startChat()">
+                <i class="fas fa-comments"></i> Start Chat
+            </button>
         </div>
     </div>
 
@@ -36,4 +39,10 @@
         <p><small>Extend your membership</small></p>
         <button class="btn btn-renew">Create New</button>
     </div>
-</aside> 
+</aside>
+
+<app-chat-window 
+    *ngIf="showChatWindow && doctor" 
+    [doctorId]="doctor.id"
+    [doctorName]="doctor.name">
+</app-chat-window> 
