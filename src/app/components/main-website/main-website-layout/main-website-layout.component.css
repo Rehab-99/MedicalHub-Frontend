@@ -34,7 +34,15 @@ html, body {
     border-radius: 8px; /* Unified radius */
     border: 3px solid var(--scrollbarBG);
 }
-
+.testimonial-card .rating {
+    color: #f7c948; /* لون النجوم */
+    margin: 10px 0;
+    font-size: 1.2rem;
+  }
+  .testimonial-card .text-muted {
+    color: #ccc !important; /* لون النجوم الغير مضيئة */
+  }
+  
 /* Scroll to Top Button */
 .scroll-to-top {
     position: fixed;

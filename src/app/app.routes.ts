@@ -75,6 +75,7 @@ import { AppointmentComponent } from './components/main-website/appointment/appo
 import { CategoryProductsComponent } from './components/main-website/category-products/category-products.component';
 import { DoctorRequestFormComponent } from './components/main-website/doctor-request-form/doctor-request-form.component';
 import { DoctorRequestComponent } from './components/dashboard/doctor-request/doctor-request.component';
+import { FeedbackComponent } from './components/main-website/feedback/feedback.component';
 export const routes: Routes = [
   {
     path: '',
@@ -108,6 +109,10 @@ export const routes: Routes = [
   {
     path: 'services',
     component: ServiceDetailComponent
+  },
+  {
+   path:'feedback',
+   component:FeedbackComponent
   },
   {
     path: 'book/:id',
