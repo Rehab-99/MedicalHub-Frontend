@@ -2,18 +2,19 @@
 <div class="blog-container">
   <div class="blog-header">
     <h2>Vet Blogs</h2>
-    <button class="btn" routerLink="/blog/vet/add">Add New Vet Blog</button>
   </div>
+
+ 
 
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
   <div class="blogs-grid">
     <div *ngFor="let post of vetBlogPosts" class="blog-card" (click)="viewPost(post.id)">
       <div class="card-header">
-        <img [src]="post.doctorImage || 'assets/default-doctor.png'" alt="Doctor Image" class="doctor-image" />
+        <img [src]="post.doctor?.image ? 'http://127.0.0.1:8000/storage/' + post.doctor.image : 'assets/default-doctor.png'" alt="Doctor Image" class="doctor-image" />
         <div class="doctor-info">
-          <p class="doctor-name">{{ post.doctorName || 'Unknown Doctor' }}</p>
-          <p class="date">{{ post.date | date:'mediumDate' }}</p>
+          <p class="doctor-name">{{ post.doctor?.name || 'Unknown Doctor' }}</p>
+          <p class="date">{{ post.created_at | date:'mediumDate' }}</p>
         </div>
       </div>
       <div class="card-body">
@@ -26,9 +27,13 @@
     </div>
   </div>
 
+  <!-- تصميم جديد لما مافيش بوستات -->
   <div *ngIf="vetBlogPosts.length === 0 && !errorMessage" class="no-posts">
-    <p>No vet blog posts available yet.</p>
+    <div class="no-posts-container">
+      <i class="fas fa-book-open no-posts-icon"></i>
+      <h3>No Vet Blog Posts Available</h3>
+      <p>Check back later or add a new post to get started!</p>
+    </div>
   </div>
 </div>
-
 <app-footer></app-footer>

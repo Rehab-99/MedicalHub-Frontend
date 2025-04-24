@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -11,11 +11,10 @@ import { PostService } from '../../services/blog/post.service';
   templateUrl: './add-post.component.html',
   styleUrls: ['./add-post.component.css']
 })
-export class AddPostComponent {
+export class AddPostComponent implements OnInit {
   addPostForm: FormGroup;
   isSubmitting = false;
   errorMessage: string | null = null;
-  doctorId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -29,10 +28,15 @@ export class AddPostComponent {
       image: [null],
       sections: this.fb.array([])
     });
+  }
 
-    // Extract doctor_id from localStorage
-    const doctor = JSON.parse(localStorage.getItem('doctor') || '{}');
-    this.doctorId = doctor.id || null;
+  ngOnInit() {
+    // Check if token exists
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.errorMessage = 'You need to log in to add a post.';
+      console.error('No authentication token found');
+    }
   }
 
   get sections(): FormArray {
@@ -80,16 +84,18 @@ export class AddPostComponent {
   }
 
   onSubmit() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.errorMessage = 'Cannot submit post: Please log in.';
+      this.isSubmitting = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
     this.isSubmitting = true;
     this.errorMessage = null;
 
     const formData = new FormData();
-    // Add doctor_id to FormData if available
-    if (this.doctorId) {
-      formData.append('doctor_id', this.doctorId.toString());
-    } else {
-      console.warn('No doctor_id found in localStorage');
-    }
     formData.append('title', this.addPostForm.get('title')?.value || '');
     formData.append('content', this.addPostForm.get('content')?.value || '');
     const postImage = this.addPostForm.get('image')?.value;

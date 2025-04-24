@@ -1,4 +1,4 @@
-<h2>Vet Blog Posts (Dashboard View)</h2>
+<h2>Vet Blog Posts</h2>
 
 <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
@@ -6,7 +6,8 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Actions</th>
+      <th>Doctor Name</th>
+      <th>Date</th>
     </tr>
   </thead>
   <tbody>
@@ -14,20 +15,16 @@
       <td>
         <a [routerLink]="['/blog/vet', post.id]">{{ post.title }}</a>
       </td>
-      <td>
-        <a [routerLink]="['/edit-blog', post.id]" class="edit-btn">
-          <i class="fas fa-edit"></i> Edit
-        </a>
-        
-        
-        <button (click)="deletePost(post.id)" class="delete-btn">
-          <i class="fas fa-trash-alt"></i> Delete
-        </button>
-      </td>
+      <td>{{ post.doctor?.name || 'Unknown Doctor' }}</td>
+      <td>{{ post.created_at | date:'mediumDate' }}</td>
     </tr>
   </tbody>
 </table>
 
 <div *ngIf="vetPosts.length === 0 && !errorMessage" class="empty">
-  <p>No blog posts found.</p>
+  <div class="empty-container">
+    <i class="fas fa-book-open empty-icon"></i>
+    <h3>No Vet Blog Posts Available</h3>
+    <p>No posts have been added yet.</p>
+  </div>
 </div>

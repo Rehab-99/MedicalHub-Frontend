@@ -66,4 +66,22 @@
     text-align: center;
     margin: 20px 0;
   }
-  
+  /* الملف موجود أصلًا، بس ضيفي ده */
+.comments-link {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.view-comments-btn {
+  background-color: #3498db;
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.view-comments-btn:hover {
+  background-color: #2980b9;
+}
