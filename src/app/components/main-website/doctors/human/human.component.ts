@@ -58,4 +58,26 @@ export class HumanComponent implements OnInit {
       });
     });
   }
+
+  images: string[] = [
+    'assets/images/pharmacy/human/slide1.jpg',
+    'assets/images/pharmacy/human/slide2.jpg',
+    
+  ];
+  
+  currentSlide = 0;
+
+  
+  nextSlide() {
+    this.currentSlide = (this.currentSlide + 1) % this.images.length;
+  }
+  
+  goToSlide(index: number) {
+    this.currentSlide = index;
+  }
+  
+  scrollToCategories() {
+    const el = document.querySelector('.main-content');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
 }

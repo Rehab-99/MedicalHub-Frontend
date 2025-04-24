@@ -1,6 +1,23 @@
 <div class="page-wrapper">
   <app-header></app-header>
-
+  <!-- Hero Section with Image Slider -->
+<section class="hero-section">
+  <div class="slider-container">
+    <div class="slide" *ngFor="let img of images; let i = index" [class.active]="i === currentSlide">
+      <img [src]="img" [alt]="'Slide ' + (i + 1)">
+    </div>
+    <div class="hero-content">
+      <h1>Welcome to Veterinary Doctors</h1>
+      <p>Care for your pets with trusted medications</p>
+      <button (click)="scrollToCategories()">Browse Veterinary</button>
+    </div>
+    <div class="slider-controls">
+      <span *ngFor="let img of images; let i = index" 
+            (click)="goToSlide(i)" 
+            [class.active]="i === currentSlide"></span>
+    </div>
+  </div>
+</section>
   <div class="main-content">
     <h1 class="page-title">Veterinary Doctors</h1>
     <div *ngIf="doctors.length > 0; else noDoctors" class="doctors-grid">

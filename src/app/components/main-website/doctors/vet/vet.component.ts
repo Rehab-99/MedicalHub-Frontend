@@ -38,4 +38,26 @@ export class VetComponent implements OnInit {
       this.doctors = response.data;
     });
   }
+
+
+  images: string[] = [
+    'assets/images/pharmacy/vet/slide5.jpg',
+    'assets/images/pharmacy/vet/slide6.jpg'
+  ];
+  
+  currentSlide = 0;
+
+  
+  nextSlide() {
+    this.currentSlide = (this.currentSlide + 1) % this.images.length;
+  }
+  
+  goToSlide(index: number) {
+    this.currentSlide = index;
+  }
+  
+  scrollToCategories() {
+    const el = document.querySelector('.main-content');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
 }
