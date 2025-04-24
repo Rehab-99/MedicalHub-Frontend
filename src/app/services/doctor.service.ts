@@ -36,7 +36,9 @@ export class DoctorService {
     return this.http.get(`${this.apiUrl}?role=human`);
   }
   
-
+  getLatestDoctors(limit: number = 4): Observable<any> {
+    return this.http.get(`${this.apiUrl}?latest=${limit}`);
+  }
   deleteDoctor(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }

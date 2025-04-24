@@ -33,7 +33,7 @@ html, body {
 ::-webkit-scrollbar-thumb {
     background-color: var(--thumbBG);
     border-radius: 8px; /* Unified radius */
-    border: .5px solid var(--scrollbarBG);
+    border: 3px solid var(--scrollbarBG);
 }
 
 /* Scroll to Top Button */
@@ -80,14 +80,13 @@ html, body {
 /* Sections */
 section {
     padding: 3rem 1rem; /* Unified section padding */
-    margin-bottom: 1rem; /* Unified margin */
+    margin-bottom: .2rem; /* Unified margin */
 }
 
 /* Grids */
 .content-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5rem; /* Unified gap */
 }
 
 /* Forms */
@@ -95,7 +94,7 @@ input, select {
     width: 100%;
     padding: 0.75rem 1.5rem; /* Unified padding */
     margin: 0.5rem 0; /* Unified margin */
-    border: .5px solid #B0C4DE; /* Light blue */
+    border: 1px solid #B0C4DE; /* Light blue */
     border-radius: 8px; /* Unified radius */
     font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
@@ -137,7 +136,8 @@ input, select {
     color: white;
     border-radius: 8px;
     opacity: 0;
-    transform: scale(0.98);
+    z-index: 0;
+    transform: scale(0.911);
     transition: opacity 1s ease-in-out, transform 1s ease-in-out;
     transition-delay: 0.2s;
     will-change: opacity, transform;
@@ -179,10 +179,9 @@ input, select {
     background-color: #4682B4;
     transform: scale(1.2);
 }
-
 .hero-content {
     flex: 1;
-    margin-left: 60px;
+    margin-left: 120px;
 }
 
 .hero-title {
@@ -219,6 +218,7 @@ input, select {
     transition: all 0.3s ease;
     border: none;
     color: #333333;
+
 }
 
 .btn-appointment {
@@ -228,7 +228,7 @@ input, select {
 .btn-services {
     background-color: transparent;
     color: white;
-    border: 1px solid white;
+    border: 2px solid white;
 }
 
 .btn:hover {
@@ -311,7 +311,7 @@ input, select {
 .more-about-btn {
     background-color: transparent;
     color: #1E90FF;
-    border:1px solid #1E90FF;
+    border: 2px solid #1E90FF;
     padding: 0.75rem 1.5rem; /* Unified padding */
     border-radius: 8px; /* Unified radius */
     font-size: 0.95rem;
@@ -356,6 +356,7 @@ input, select {
 .service-icon i {
     font-size: 1.8rem;
     color: white;
+    
 }
 
 .service-card h4 {

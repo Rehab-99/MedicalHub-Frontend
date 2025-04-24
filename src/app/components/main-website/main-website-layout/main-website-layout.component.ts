@@ -3,6 +3,8 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
+import { DoctorService } from '../../../services/doctor.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-main-website-layout',
@@ -18,26 +20,61 @@ import { FooterComponent } from '../footer/footer.component';
 })
 export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
   isScrollButtonVisible = false;
-  currentSlide = 1; // 1 for Human, 2 for Vet
+  currentSlide = 1;
   private slideInterval: any;
   private imagesLoaded = false;
 
-  // Preload images
   private images = [
     'https://images.ctfassets.net/szez98lehkfm/3aFXjISnNZfF0MkUX6Z5rZ/af19d4cd2183c340fde85ef620db9d81/MyIC_Inline_79497',
-    'https://th.bing.com/th/id/https://img.freepik.com/free-photo/close-up-veterinarian-taking-care-pet_23-2149143884.jpg?t=st=1745327603~exp=1745331203~hmac=a707bc5baa1ba74fb8f38c35a885e2f49149f037e3a037302974d05a0f471757&w=996.nU3o0Lpjewx98yAtl0CFpgHaKP?rs=1&pid=ImgDetMain',
+    'https://img.freepik.com/free-photo/close-up-veterinarian-taking-care-pet_23-2149143884.jpg'
   ];
 
+  latestDoctors: any[] = [];
+  baseUrl = environment.apiUrl;
+
+  constructor(private doctorService: DoctorService) {}
+
   ngOnInit() {
-    // Preload images and start auto-slide after they're loaded
     this.preloadImages().then(() => {
       this.imagesLoaded = true;
       this.startAutoSlide();
     });
+
+    this.loadLatestDoctors();
+  }
+
+  private preloadImages(): Promise<void> {
+    const promises = this.images.map((image) => {
+      return new Promise<void>((resolve, reject) => {
+        const img = new Image();
+        img.src = image;
+        img.onload = () => resolve();
+        img.onerror = () => {
+          console.error(`Failed to preload image: ${image}`);
+          resolve(); // Resolve even on error to continue loading other images
+        };
+      });
+    });
+    return Promise.all(promises).then(() => {}); // Return void
+  }
+
+  loadLatestDoctors() {
+    this.doctorService.getLatestDoctors(4).subscribe({
+      next: (response) => {
+        this.latestDoctors = response.data || response;
+        console.log('Latest doctors loaded:', this.latestDoctors);
+        this.latestDoctors.forEach(doctor => {
+          console.log('Doctor:', doctor.name, 'Image Path:', doctor.image, 'URL:', this.getImageUrl(doctor.image));
+        });
+      },
+      error: (error) => {
+        console.error('Error loading latest doctors:', error);
+        this.latestDoctors = [];
+      }
+    });
   }
 
   ngOnDestroy() {
-    // Clean up interval on component destroy
     if (this.slideInterval) {
       clearInterval(this.slideInterval);
     }
@@ -56,28 +93,30 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
   }
 
   setSlide(slide: number) {
-    if (!this.imagesLoaded) return; // Prevent slide change until images are loaded
+    if (!this.imagesLoaded) return;
     this.currentSlide = slide;
-    // Reset auto-slide timer after manual interaction
     this.resetAutoSlide();
   }
 
-  private preloadImages(): Promise<void> {
-    const promises = this.images.map(src => {
-      return new Promise<void>((resolve) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = () => resolve();
-        img.onerror = () => resolve(); // Resolve even if image fails to load
-      });
-    });
-    return Promise.all(promises).then(() => {});
+  getImageUrl(imagePath: string | null): string {
+    if (!imagePath) {
+      console.log('No image path provided for doctor, using placeholder');
+      return 'https://via.placeholder.com/100';
+    }
+    if (imagePath.startsWith('http')) {
+      console.log('Full image URL:', imagePath);
+      return imagePath;
+    }
+    const storageUrl = this.baseUrl.replace('/api', '');
+    const fullUrl = `${storageUrl}/storage/${imagePath}`;
+    console.log('Constructed image URL:', fullUrl);
+    return fullUrl;
   }
 
   private startAutoSlide() {
     this.slideInterval = setInterval(() => {
       this.currentSlide = this.currentSlide === 1 ? 2 : 1;
-    }, 10000); // 10 seconds per slide
+    }, 10000);
   }
 
   private resetAutoSlide() {

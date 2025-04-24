@@ -1,0 +1,44 @@
+.blog-container {
+    padding: 20px;
+  }
+  
+  .post-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .post-table th,
+  .post-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .post-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .post-row:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .post-row a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .post-row a:hover {
+    text-decoration: underline;
+  }
+  
+  .error {
+    color: red;
+    margin-bottom: 20px;
+  }
+  
+  .empty {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+  }

@@ -73,6 +73,7 @@ import { VetPharmacyComponent as MainWebsiteVetPharmacyComponent } from './compo
 import { AppointmentComponent } from './components/main-website/appointment/appointment.component';
 import { CategoryProductsComponent } from './components/main-website/category-products/category-products.component';
 import { AddPostComponent } from './doctor-dashboard/add-post/add-post.component';
+import { DoctorBlogComponent } from './doctor-dashboard/doctor-blog/doctor-blog.component';
 export const routes: Routes = [
   {
     path: '',
@@ -308,6 +309,9 @@ export const routes: Routes = [
     path: "add-post",
     component: AddPostComponent
   },
+  { path: 'doctor-blog',
+     component: DoctorBlogComponent },
+
   {
     path: 'user/dashboard',
     component: UserDashboardComponent,
