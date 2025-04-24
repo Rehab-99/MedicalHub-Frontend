@@ -5,7 +5,6 @@ import { HeaderComponent } from '../../../header/header.component';
 import { FooterComponent } from '../../../footer/footer.component';
 import { PostService } from '../../../../../services/blog/post.service';
 import { BlogService } from '../../../../../services/blog/blog.service';
-import { DoctorService } from '../../../../../services/doctor.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -20,12 +19,10 @@ export class HumanBlogListComponent implements OnInit, OnDestroy {
   humanBlogPosts: any[] = [];
   errorMessage: string | null = null;
   private subscription: Subscription = new Subscription();
-  doctorNames: { [key: number]: string } = {};
 
   constructor(
     private postService: PostService,
     private blogService: BlogService,
-    private doctorService: DoctorService,
     private router: Router,
     private datePipe: DatePipe
   ) {}
@@ -44,15 +41,14 @@ export class HumanBlogListComponent implements OnInit, OnDestroy {
   }
 
   getAllHumanPosts() {
-    this.postService.getAllPosts().subscribe({
+    this.postService.getAllPosts('human').subscribe({
       next: (res) => {
         this.humanBlogPosts = res.data;
-        console.log(this.humanBlogPosts);
+        console.log('Human Blog Posts:', this.humanBlogPosts);
         this.errorMessage = null;
-        this.fetchDoctorNames();
       },
       error: (err: any) => {
-        console.error('Error fetching posts:', err);
+        console.error('Error fetching human posts:', err);
         if (err.status === 401) {
           this.errorMessage = 'Please log in to view posts';
           setTimeout(() => {
@@ -62,21 +58,6 @@ export class HumanBlogListComponent implements OnInit, OnDestroy {
           this.errorMessage = 'Failed to load posts. Please try again later.';
         }
       },
-    });
-  }
-
-  fetchDoctorNames() {
-    this.humanBlogPosts.forEach((post) => {
-      if (post.doctor_id) {
-        this.doctorService.getDoctorById(post.doctor_id).subscribe({
-          next: (doctor: { name: string }) => {
-            this.doctorNames[post.doctor_id] = doctor.name;
-          },
-          error: (err) => {
-            console.error('Error fetching doctor:', err);
-          },
-        });
-      }
     });
   }
 

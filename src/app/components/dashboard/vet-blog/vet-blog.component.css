@@ -1,71 +1,76 @@
 .post-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .post-table thead {
-    background-color: #1976d2;
-    color: white;
-  }
-  
-  .post-table th, .post-table td {
-    padding: 12px 16px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  
-  
-  .post-table a {
-    color: #1976d2;
-    text-decoration: none;
-    font-weight: 500;
-  }
-  
-  
-  
-  /* Action Buttons */
-  .edit-btn, .delete-btn {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-  }
-  
-  .edit-btn {
-    background-color: #1976d2;
-    color: white !important;     
-    margin-right: 8px;
-  }
-  
-  .delete-btn {
-    background-color: #d32f2f;
-    color: white;
-  }
-  
-  .edit-btn i,
-  .delete-btn i {
-    margin-right: 5px;
-  }
-  
-  /* Error & Empty Styles */
-  .error {
-    color: red;
-    font-weight: bold;
-    margin-top: 10px;
-  }
-  
-  .empty {
-    margin-top: 20px;
-    text-align: center;
-    color: #666;
-  }
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-table thead {
+  background-color: #1976d2;
+  color: white;
+}
+
+.post-table th,
+.post-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.post-table a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.post-table a:hover {
+  text-decoration: underline;
+}
+
+/* Error & Empty Styles */
+.error {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  margin-top: 20px;
+}
+
+.empty-container {
+  text-align: center;
+  background-color: #f8fbff;
+  border: 1px solid #d6e4f0;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+  width: 100%;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  color: #1976d2;
+  margin-bottom: 1rem;
+}
+
+.empty-container h3 {
+  color: #34495e;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-container p {
+  color: #7f8c8d;
+  font-size: 1rem;
+  margin: 0;
+}
