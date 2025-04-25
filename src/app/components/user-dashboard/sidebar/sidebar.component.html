@@ -7,13 +7,13 @@
         </a>
     </div>
 
-    <div class="doctor-profile-sidebar" *ngIf="doctor">
+    <div class="doctor-profile-sidebar" *ngFor="let doctor of doctors">
         <img [src]="getImageUrl(doctor?.image)" [alt]="doctor?.name" class="doctor-avatar-sidebar">
         <div class="doctor-info-sidebar">
             <h4>{{ doctor?.name }}</h4>
             <p class="doctor-specialty-sidebar">{{ doctor?.specialization }}</p>
-            <button class="chat-button" (click)="startChat()">
-                <i class="fas fa-comments"></i> Start Chat
+            <button class="chat-button" (click)="startChat(doctor)">
+                <i class="fas fa-comments"></i> {{ isChatActive(doctor.id) ? 'Open Chat' : 'Start Chat' }}
             </button>
         </div>
     </div>
@@ -44,9 +44,14 @@
     </div>
 </aside>
 
-<app-chat-window 
-    *ngIf="showChatWindow && doctor" 
-    [doctorId]="doctor.id"
-    [doctorName]="doctor.name"
-    (closeChat)="closeChat()">
-</app-chat-window> 
+<!-- Chat windows for each doctor -->
+<ng-container *ngFor="let doctor of doctors">
+    <app-chat-window 
+        *ngIf="isChatActive(doctor.id)" 
+        [doctorId]="doctor.id"
+        [doctorName]="doctor.name"
+        (closeChat)="closeChat(doctor.id)"
+        [style.right.px]="(doctors.indexOf(doctor) * 400) + 20"
+        [style.bottom.px]="20">
+    </app-chat-window>
+</ng-container> 
