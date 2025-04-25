@@ -30,6 +30,7 @@ export class CheckoutComponent implements OnInit {
   showPopup: boolean = false;
   popupMessage: string = '';
   popupType: 'success' | 'error' = 'success';
+  orderId: number | null = null;
 
   constructor(
     private checkoutService: CheckoutService,
@@ -98,25 +99,27 @@ export class CheckoutComponent implements OnInit {
 
     this.checkoutService.processCheckout(this.checkoutData).subscribe({
       next: (response) => {
-        console.log('Checkout successful:', response);
-        // Clear the cart first
-        this.cartService.clearCart().subscribe({
-          next: () => {
-            console.log('Cart cleared successfully');
-            this.cartItems = []; // Clear local cart items
-            this.totalPrice = 0; // Reset total price
-            this.showMessage('Order placed successfully!', 'success');
-          },
-          error: (error: HttpErrorResponse) => {
-            console.error('Error clearing cart:', error);
-            this.showMessage('Order placed but cart clearing failed.', 'error');
-          }
-        });
+        console.log('Checkout response:', response);
+        this.orderId = response.id;
+        this.isLoading = false;
+        
+        if (this.checkoutData.payment_method === 'stripe') {
+          console.log('Redirecting to Stripe payment page with order ID:', this.orderId);
+          // Redirect to Stripe payment page
+          this.router.navigate(['/payments', this.orderId, 'stripe']).then(success => {
+            if (!success) {
+              console.error('Failed to navigate to payment page');
+              this.showMessage('Failed to redirect to payment page. Please try again.', 'error');
+            }
+          });
+        } else {
+          this.showMessage('Order placed successfully!', 'success');
+        }
       },
       error: (error: HttpErrorResponse) => {
-        console.error('Checkout failed:', error);
-        this.showMessage('Checkout failed. Please try again.', 'error');
+        console.error('Checkout error:', error);
         this.isLoading = false;
+        this.showMessage('Failed to process checkout. Please try again.', 'error');
       }
     });
   }

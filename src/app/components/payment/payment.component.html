@@ -1,0 +1,20 @@
+<div class="account-login section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2">
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+
+        <form (submit)="handleSubmit($event)">
+          <div #paymentElement id="payment-element"></div>
+
+          <button type="submit" class="btn btn-primary mt-3" [disabled]="isLoading">
+            <div *ngIf="isLoading" class="spinner">Processing...</div>
+            <span *ngIf="!isLoading">Pay now</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> 

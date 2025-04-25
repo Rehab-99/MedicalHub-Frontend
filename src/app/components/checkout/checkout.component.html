@@ -92,9 +92,8 @@
           <div class="form-row">
             <select name="payment_method" [(ngModel)]="checkoutData.payment_method">
               <option value="">Select Payment Method</option>
-              <option value="credit_card">Credit Card</option>
-              <option value="paypal">PayPal</option>
-              <option value="bank_transfer">Bank Transfer</option>
+              <option value="stripe">Credit Card (Stripe)</option>
+              <option value="cash">Cash on Delivery</option>
             </select>
           </div>
         </div>
