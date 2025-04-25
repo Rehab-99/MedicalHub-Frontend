@@ -84,6 +84,8 @@ import { FeedbackComponent } from './components/main-website/feedback/feedback.c
 import { AddPostComponent } from './doctor-dashboard/add-post/add-post.component';
 import { DoctorBlogComponent } from './doctor-dashboard/doctor-blog/doctor-blog.component';
 import { CommentsComponent } from './components/main-website/comments/comments.component';
+import { PaymentComponent } from './components/payment/payment.component';
+import { OrderConfirmationComponent } from './components/order-confirmation/order-confirmation.component';
 
 >>>>>>> 63327ec853cd34531b41df5381411327bedb89ba
 export const routes: Routes = [
@@ -382,5 +384,17 @@ export const routes: Routes = [
   {
     path: 'update-password',
     component: UpdatePasswordComponent
+  },
+  {
+    path: 'payments/:order/stripe',
+    component: PaymentComponent
+  },
+  {
+    path: 'payments/:order/stripe/confirm',
+    component: PaymentComponent
+  },
+  {
+    path: 'order-confirmation',
+    component: OrderConfirmationComponent
   }
 ];

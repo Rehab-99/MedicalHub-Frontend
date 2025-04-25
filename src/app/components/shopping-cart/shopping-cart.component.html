@@ -19,7 +19,7 @@
       <i class="fas fa-shopping-cart"></i>
       <h3>Your cart is empty</h3>
       <p>Browse our products and add items to your cart</p>
-      <a routerLink="/products" class="btn">Explore Products</a>
+      <a routerLink="/pharmacy/human" class="btn">Explore Products</a>
     </div>
 
     <!-- Cart Items Table -->
@@ -53,7 +53,7 @@
               {{ item.total | currency:'EGP':'symbol':'1.2-2' }}
             </td>
             <td class="product-actions">
-              <button class="remove-btn" (click)="removeItem(item.productId)">
+              <button class="remove-btn" (click)="removeItem(item.id)">
                 <i class="fas fa-trash"></i>
                 Remove
               </button>
@@ -88,7 +88,7 @@
           
           <div class="action-buttons">
             <button class="checkout-btn" routerLink="/user/dashboard/checkout">Proceed to Checkout</button>
-            <button class="continue-btn" routerLink="/products">Continue Shopping</button>
+            <button class="continue-btn" routerLink="/pharmacy/human">Continue Shopping</button>
           </div>
         </div>
       </div>

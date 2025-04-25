@@ -18,10 +18,11 @@ import { ChatWindowComponent } from '../../chat/chat-window.component';
 })
 export class SidebarComponent implements OnInit {
   currentRoute: string = '';
-  doctor: any = null;
   baseUrl = environment.apiUrl;
   currentUserId: number | null = null;
-  showChatWindow: boolean = false;
+  appointments: any[] = [];
+  doctors: any[] = [];
+  activeChats: { [key: number]: boolean } = {};
 
   constructor(
     private router: Router,
@@ -42,21 +43,38 @@ export class SidebarComponent implements OnInit {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.currentUserId = user.id;
-        this.loadLatestAppointment();
+        this.loadAllAppointments();
       }
     });
   }
 
-  loadLatestAppointment() {
+  loadAllAppointments() {
     if (this.currentUserId) {
       this.appointmentService.getAllAppointments().subscribe(appointments => {
-        // Filter appointments for the current user and get the latest one
+        // Filter appointments for the current user
         const userAppointments = appointments.filter((app: any) => app.user_id === this.currentUserId);
+  
+        // If appointments exist, fetch all related doctor details
         if (userAppointments.length > 0) {
-          const latestAppointment = userAppointments[userAppointments.length - 1];
-          // Fetch doctor details
-          this.doctorService.getDoctorById(latestAppointment.doctor_id).subscribe(response => {
-            this.doctor = response.data;
+          // Optional: Sort by date/time if needed
+          userAppointments.sort((a: any, b: any) => {
+            const dateA = new Date(`${a.appointment_date}T${a.appointment_time}`);
+            const dateB = new Date(`${b.appointment_date}T${b.appointment_time}`);
+            return dateB.getTime() - dateA.getTime(); // Newest first
+          });
+  
+          // Store appointments for display
+          this.appointments = userAppointments;
+  
+          // Optionally, fetch doctor info for all appointments (avoid duplicates)
+          const uniqueDoctorIds = [...new Set(userAppointments.map(app => app.doctor_id))];
+  
+          this.doctors = [];
+  
+          uniqueDoctorIds.forEach(id => {
+            this.doctorService.getDoctorById(id).subscribe(res => {
+              this.doctors.push(res.data);
+            });
           });
         }
       });
@@ -78,22 +96,27 @@ export class SidebarComponent implements OnInit {
     return this.currentRoute === route;
   }
 
-  startChat() {
-    if (this.doctor) {
-      this.showChatWindow = true;
-      this.http.post(`${this.baseUrl}/chat/start`, { doctor_id: this.doctor.id })
+  startChat(doctor: any) {
+    if (doctor) {
+      this.activeChats[doctor.id] = true;
+      this.http.post(`${this.baseUrl}/chat/start`, { doctor_id: doctor.id })
         .subscribe({
           next: (response: any) => {
-            console.log('Chat started successfully');
+            console.log('Chat started successfully with doctor:', doctor.name);
           },
           error: (error) => {
             console.error('Error starting chat:', error);
+            this.activeChats[doctor.id] = false;
           }
         });
     }
   }
+  
+  closeChat(doctorId: number) {
+    this.activeChats[doctorId] = false;
+  }
 
-  closeChat() {
-    this.showChatWindow = false;
+  isChatActive(doctorId: number): boolean {
+    return this.activeChats[doctorId] || false;
   }
 } 
