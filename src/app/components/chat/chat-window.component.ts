@@ -22,8 +22,9 @@ import { FormsModule } from '@angular/forms';
       </div>
       <div class="chat-input">
         <input type="text" [(ngModel)]="newMessage" placeholder="Type your message..." (keyup.enter)="sendMessage()">
-        <button (click)="sendMessage()">Send</button>
+        <button [disabled]="isSending" (click)="sendMessage()">{{ isSending ? 'Sending...' : 'Send' }}</button>
       </div>
+      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
     </div>
   `,
   styles: [`
@@ -163,9 +164,20 @@ import { FormsModule } from '@angular/forms';
       transition: all 0.3s ease;
     }
 
-    .chat-input button:hover {
+    .chat-input button:hover:not(:disabled) {
       background: #0b5ed7;
       transform: translateY(-1px);
+    }
+
+    .chat-input button:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.8em;
+      padding: 5px 15px;
     }
 
     /* Scrollbar styling */
@@ -196,35 +208,48 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
   isOpen: boolean = true;
   messages: any[] = [];
   newMessage: string = '';
+  isSending: boolean = false;
+  errorMessage: string = '';
   baseUrl = environment.apiUrl;
-  conversationId: string = '1';
   private refreshInterval: any;
   private shouldScroll: boolean = true;
+  conversationId: string | null = null;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     if (this.doctorId) {
-      this.loadMessages();
-      this.startMessageRefresh();
+      this.startConversation();
     }
   }
 
-  ngAfterViewChecked() {
-    if (this.shouldScroll) {
-      this.scrollToBottom();
-    }
-  }
+  private startConversation() {
+    this.http.post(`${this.baseUrl}/chat/start`, { doctor_id: this.doctorId })
+      .subscribe({
+        next: (response: any) => {
+          console.log('Start conversation response:', response); // helpful for debugging
+          const conversationId = response?.data?.id;
 
-  private scrollToBottom(): void {
-    try {
-      this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
-    } catch(err) { }
+          if (conversationId) {
+            this.conversationId = conversationId;
+            this.loadMessages();
+            this.startMessageRefresh();
+          } else {
+            console.error('No conversation ID in response:', response);
+            this.errorMessage = 'Failed to start conversation. Please try again.';
+          }
+        },
+        error: (error) => {
+          console.error('Error starting conversation:', error);
+          this.errorMessage = 'Error starting conversation: ' + error.message;
+        }
+      });
   }
+  
 
   private startMessageRefresh() {
     this.refreshInterval = setInterval(() => {
-      if (this.isOpen) {
+      if (this.isOpen && this.conversationId) {
         this.loadMessages();
       }
     }, 5000); // Refresh every 5 seconds
@@ -237,23 +262,63 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
   }
 
   loadMessages() {
-    this.http.get(`${this.baseUrl}/chat/messages/${this.doctorId}`).subscribe({
-      next: (response: any) => {
-        if (response.data) {
-          this.messages = response.data.map((msg: any) => ({
-            id: msg.id,
-            message: msg.message,
-            sender_type: msg.sender_type,
-            created_at: new Date(msg.created_at),
-            sender: msg.sender
-          }));
+    if (this.conversationId) {
+      this.http.get(`${this.baseUrl}/chat/messages/${this.conversationId}`)
+        .subscribe({
+          next: (response: any) => {
+            if (response.data) {
+              this.messages = response.data;
+              this.shouldScroll = true;
+            }
+          },
+          error: (error) => {
+            console.error('Error loading messages:', error);
+            this.errorMessage = 'Error loading messages: ' + error.message;
+          }
+        });
+    }
+  }
+
+  sendMessage() {
+    if (this.newMessage.trim() && this.conversationId) {
+      this.isSending = true;
+      this.errorMessage = '';
+      const tempMessage = {
+        message: this.newMessage,
+        sender_type: 'user',
+        created_at: new Date(),
+        sender: { name: 'You' }
+      };
+      this.messages.push(tempMessage);
+      this.shouldScroll = true;
+
+      this.http.post(`${this.baseUrl}/chat/send`, {
+        conversation_id: this.conversationId,
+        message: this.newMessage
+      }).subscribe({
+        next: (response: any) => {
+          console.log('Send message response:', response); // Debug
+          if (response.message === 'Message sent successfully') {
+            this.newMessage = '';
+          } else {
+            this.errorMessage = 'Failed to send message. Please try again.';
+            this.messages = this.messages.filter(msg => msg !== tempMessage);
+            this.shouldScroll = true;
+          }
+          this.isSending = false;
+        },
+        error: (error) => {
+          console.error('Error sending message:', error);
+          this.errorMessage = 'Error sending message: ' + (error.message || 'Unknown error');
+          this.messages = this.messages.filter(msg => msg !== tempMessage);
           this.shouldScroll = true;
+          this.isSending = false;
         }
-      },
-      error: (error) => {
-        console.error('Error loading messages:', error);
-      }
-    });
+      });
+    } else {
+      this.errorMessage = 'Please enter a message and ensure chat is active.';
+      console.log('Cannot send: newMessage=', this.newMessage, 'conversationId июнт: ', 'conversationId=', this.conversationId);
+    }
   }
 
   handleClose() {
@@ -262,42 +327,19 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
     this.closeChat.emit();
   }
 
-  sendMessage() {
-    if (this.newMessage.trim() && this.doctorId) {
-      // Add the message to the UI immediately
-      this.messages.push({
-        message: this.newMessage,
-        sender_type: 'user',
-        created_at: new Date(),
-        sender: {
-          name: 'You'
-        }
-      });
-      
-      this.shouldScroll = true;
-      
-      // Send the message to the server
-      this.http.post(`${this.baseUrl}/chat/send`, {
-        conversation_id: this.conversationId,
-        message: this.newMessage
-      }).subscribe({
-        next: (response: any) => {
-          console.log('Message sent successfully:', response);
-          if (response.success) {
-            console.log('Message confirmed by server');
-          }
-        },
-        error: (error) => {
-          console.error('Error sending message:', error);
-        }
-      });
-
-      // Clear the input field
-      this.newMessage = '';
+  ngAfterViewChecked() {
+    if (this.shouldScroll) {
+      this.scrollToBottom();
     }
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
   ngOnDestroy() {
     this.stopMessageRefresh();
   }
-} 
+}
