@@ -106,17 +106,18 @@ export class CartService {
     });
   }
 
-  removeItem(productId: number): void {
+  removeItem(cartItemId: number): void {
     const headers = this.getHeaders();
-    this.http.delete(`http://localhost:8000/api/cart/remove/${productId}`, { headers })
-      .subscribe({
-        next: () => {
-          this.getCartItems();
-        },
-        error: (error) => {
-          console.error('Error removing item:', error);
-        }
-      });
+    this.http.delete(`http://localhost:8000/api/cart/remove/${cartItemId}`, { 
+      headers
+    }).subscribe({
+      next: () => {
+        this.getCartItems();
+      },
+      error: (error) => {
+        console.error('Error removing item:', error);
+      }
+    });
   }
 
   getTotal(): Observable<number> {
