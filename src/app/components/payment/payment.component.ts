@@ -1,8 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PaymentService } from '../../services/payment.service';
+import { CartService } from '../../services/cart.service';
 import { loadStripe, Stripe, StripeElements } from '@stripe/stripe-js';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -22,13 +23,16 @@ export class PaymentComponent implements OnInit {
   isLoading = false;
   errorMessage: string = '';
   clientSecret: string = '';
+  isConfirmationPage = false;
 
   // Stripe public key from backend
   private readonly stripePublicKey = 'pk_test_51REdqh4G94LRAOydMDcGvERRCV7snk6EdwN5g217aIF7ULYL1nLwiYb1Xgnu5aR2nTbT1osbmS60J6XnNgGLoZOj00Z24z4TCv';
 
   constructor(
     private route: ActivatedRoute,
-    private paymentService: PaymentService
+    private router: Router,
+    private paymentService: PaymentService,
+    private cartService: CartService
   ) {}
 
   async ngOnInit() {
@@ -41,11 +45,97 @@ export class PaymentComponent implements OnInit {
       if (!this.orderId) {
         throw new Error('Order ID is missing');
       }
+
+      // Check if we're on the confirmation page
+      this.isConfirmationPage = this.router.url.includes('/stripe/confirm');
       
-      await this.initializeStripe();
+      if (this.isConfirmationPage) {
+        await this.handlePaymentConfirmation();
+      } else {
+        await this.initializeStripe();
+      }
     } catch (error) {
       console.error('Error in ngOnInit:', error);
       this.errorMessage = 'Failed to initialize payment. Please try again.';
+    }
+  }
+
+  private async handlePaymentConfirmation() {
+    try {
+      this.isLoading = true;
+      const paymentIntentParam = new URLSearchParams(window.location.search).get('payment_intent');
+      const clientSecret = new URLSearchParams(window.location.search).get('client_secret');
+      
+      if (!paymentIntentParam) {
+        throw new Error('Payment intent ID is missing from URL');
+      }
+
+      if (!clientSecret) {
+        throw new Error('Client secret is missing from URL');
+      }
+
+      // Initialize Stripe if not already initialized
+      if (!this.stripe) {
+        const stripe = await loadStripe(this.stripePublicKey);
+        if (!stripe) {
+          throw new Error('Failed to initialize Stripe');
+        }
+        this.stripe = stripe;
+      }
+
+      // First, retrieve the payment intent status from Stripe using the client secret
+      const result = await this.stripe.retrievePaymentIntent(clientSecret);
+      
+      if (!result || !result.paymentIntent) {
+        throw new Error('Could not retrieve payment intent status');
+      }
+
+      const { paymentIntent } = result;
+      console.log('Payment intent status:', paymentIntent.status);
+
+      // Check the payment intent status
+      switch (paymentIntent.status) {
+        case 'succeeded':
+          try {
+            // Payment is successful, confirm with our backend
+            console.log('Confirming payment with backend...');
+            const response = await this.paymentService.confirmPayment(this.orderId, paymentIntentParam).toPromise();
+            console.log('Backend confirmation response:', response);
+
+            if (response && response.success) {
+              // Clear the cart after successful payment
+              await this.cartService.clearCart().toPromise();
+              
+              // Redirect to success page
+              this.router.navigate(['/order-confirmation'], { 
+                queryParams: { 
+                  status: 'success',
+                  order: this.orderId
+                }
+              });
+            } else {
+              throw new Error(response?.message || 'Payment confirmation failed');
+            }
+          } catch (error) {
+            console.error('Backend confirmation error:', error);
+            throw new Error('Failed to confirm payment with backend. Please contact support.');
+          }
+          break;
+        case 'processing':
+          this.errorMessage = 'Payment is still processing. Please wait a moment and refresh the page.';
+          break;
+        case 'requires_payment_method':
+          this.errorMessage = 'Payment failed. Please try again with a different payment method.';
+          break;
+        default:
+          this.errorMessage = `Payment failed with status: ${paymentIntent.status}. Please try again.`;
+          break;
+      }
+    } catch (error) {
+      console.error('Payment confirmation error:', error);
+      this.errorMessage = error instanceof Error ? error.message : 'Failed to confirm payment. Please try again.';
+    } finally {
+      this.isLoading = false;
     }
   }
 
@@ -125,29 +215,14 @@ export class PaymentComponent implements OnInit {
       const result = await this.stripe.confirmPayment({
         elements: this.elements,
         confirmParams: {
-          return_url: `${window.location.origin}/payments/${this.orderId}/stripe/confirm?payment_intent=${paymentIntentId}`,
+          return_url: `${window.location.origin}/payments/${this.orderId}/stripe/confirm?payment_intent=${paymentIntentId}&client_secret=${this.clientSecret}`,
         },
-        redirect: 'if_required'
+        redirect: 'always'  // Changed to always redirect
       });
 
-      console.log('Payment confirmation result:', result);
-
-      if (result.error) {
-        console.error('Payment error:', result.error);
-        this.errorMessage = result.error.message || 'An unknown error occurred';
-      } else {
-        console.log('Payment confirmation successful');
-        if (result.paymentIntent) {
-          console.log('Payment intent status:', result.paymentIntent.status);
-          if (result.paymentIntent.status === 'succeeded') {
-            console.log('Payment succeeded');
-            // Payment succeeded, handle accordingly
-          } else if (result.paymentIntent.status === 'requires_action') {
-            console.log('Payment requires action');
-            // Payment requires additional action, handle accordingly
-          }
-        }
-      }
+      // This code will only run if redirect fails
+      console.error('Payment confirmation failed to redirect:', result);
+      this.errorMessage = 'Failed to process payment. Please try again.';
     } catch (error) {
       console.error('Payment error:', error);
       this.errorMessage = 'An error occurred while processing your payment.';

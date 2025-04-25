@@ -408,3 +408,14 @@ h2 {
   90% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-20px); }
 }
+
+.stripe-payment-form {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+#payment-element {
+  margin-bottom: 1rem;
+}

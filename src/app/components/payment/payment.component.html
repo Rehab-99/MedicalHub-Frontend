@@ -6,14 +6,26 @@
           {{ errorMessage }}
         </div>
 
-        <form (submit)="handleSubmit($event)">
-          <div #paymentElement id="payment-element"></div>
+        <!-- Payment Form -->
+        <div *ngIf="!isConfirmationPage">
+          <h2 class="text-center mb-4">Payment Details</h2>
+          <form (submit)="handleSubmit($event)">
+            <div #paymentElement id="payment-element"></div>
 
-          <button type="submit" class="btn btn-primary mt-3" [disabled]="isLoading">
-            <div *ngIf="isLoading" class="spinner">Processing...</div>
-            <span *ngIf="!isLoading">Pay now</span>
-          </button>
-        </form>
+            <button type="submit" class="btn btn-primary mt-3 w-100" [disabled]="isLoading">
+              <div *ngIf="isLoading" class="spinner">Processing...</div>
+              <span *ngIf="!isLoading">Pay now</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Confirmation Page -->
+        <div *ngIf="isConfirmationPage" class="text-center">
+          <div *ngIf="isLoading" class="spinner-container">
+            <div class="spinner"></div>
+            <p>Confirming your payment...</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -37,9 +37,11 @@ export class PaymentService {
     );
   }
 
-  confirmPayment(orderId: number): Observable<any> {
-    console.log('Confirming payment for order:', orderId);
-    return this.http.get(`${this.apiUrl}/payments/${orderId}/stripe/confirm`).pipe(
+  confirmPayment(orderId: number, paymentIntentId: string): Observable<any> {
+    console.log('Confirming payment for order:', orderId, 'with payment intent:', paymentIntentId);
+    return this.http.post(`${this.apiUrl}/payments/${orderId}/stripe/confirm`, {
+      payment_intent: paymentIntentId
+    }).pipe(
       tap(response => console.log('Payment confirmation response:', response)),
       catchError((error: HttpErrorResponse) => {
         console.error('Error confirming payment:', error);

@@ -82,6 +82,7 @@ import { AddPostComponent } from './doctor-dashboard/add-post/add-post.component
 import { DoctorBlogComponent } from './doctor-dashboard/doctor-blog/doctor-blog.component';
 import { CommentsComponent } from './components/main-website/comments/comments.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { OrderConfirmationComponent } from './components/order-confirmation/order-confirmation.component';
 
 export const routes: Routes = [
   {
@@ -383,5 +384,9 @@ export const routes: Routes = [
   {
     path: 'payments/:order/stripe/confirm',
     component: PaymentComponent
+  },
+  {
+    path: 'order-confirmation',
+    component: OrderConfirmationComponent
   }
 ];
