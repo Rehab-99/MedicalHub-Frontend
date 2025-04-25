@@ -10,12 +10,19 @@
       <li><a routerLink="/doctor-patients"><i class="fas fa-users"></i> Patients</a></li>
       <li><a routerLink="/doctor-reports"><i class="fas fa-file-medical-alt"></i> Reports</a></li>
       <li><a routerLink="/add-post"><i class="fas fa-pen-to-square"></i> Add Post</a></li>
-      <li><a routerLink="/doctor-blog"><i class="fas fa-blog"></i> My Blog</a></li>
+      <li><a routerLink="/doctor-blog"><i class="fas fa-newspaper"></i> Blog Corner</a></li>
     </ul>
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
   </aside>
 
   <main class="main-content">
-    <h1>Welcome, {{ doctorName }}!</h1>
+    <div class="welcome-section">
+      <img *ngIf="doctorImage" [src]="doctorImage" alt="Doctor Profile" class="doctor-profile-img">
+      <i *ngIf="!doctorImage" class="fas fa-user-circle doctor-profile-icon"></i>
+      <h1>Welcome {{ getFormattedName() }}</h1>
+    </div>
     <div class="cards">
       <div class="card">
         <i class="fas fa-user-md fa-2x"></i>
@@ -43,9 +50,9 @@
         <p>Write and share medical posts</p>
       </div>
       <div class="card">
-        <i class="fas fa-blog fa-2x"></i>
-        <h3>My Blog</h3>
-        <p>View your posts</p>
+        <i class="fas fa-newspaper fa-2x"></i>
+        <h3>Blog </h3>
+        <p>Your Published Posts</p>
       </div>
     </div>
   </main>

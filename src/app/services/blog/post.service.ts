@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
+import { BlogService } from './blog.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,10 @@ import { catchError } from 'rxjs/operators';
 export class PostService {
   private apiUrl = 'http://127.0.0.1:8000/api/posts';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private blogService: BlogService
+  ) {}
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
@@ -22,7 +26,8 @@ export class PostService {
 
   getAllPosts(role?: string): Observable<any> {
     const headers = this.getAuthHeaders();
-    const url = role ? `${this.apiUrl}?role=${role}` : this.apiUrl; // إضافة role كـ query parameter
+    const url = role ? `${this.apiUrl}?role=${role}` : this.apiUrl;
+    console.log(`Fetching posts for role: ${role || 'all'} from ${url}`);
     return this.http.get(url, { headers }).pipe(
       catchError(error => this.handleError(error))
     );
@@ -30,7 +35,12 @@ export class PostService {
 
   createPost(postData: FormData): Observable<any> {
     const headers = this.getAuthHeaders();
+    console.log('Sending POST request to create post:', [...postData.entries()]);
     return this.http.post(this.apiUrl, postData, { headers }).pipe(
+      tap((response) => {
+        console.log('Post created, notifying BlogService:', response);
+        this.blogService.notifyPostsUpdated();
+      }),
       catchError(error => this.handleError(error))
     );
   }
@@ -44,7 +54,7 @@ export class PostService {
 
   updatePost(id: number, postData: FormData): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.put(`${this.apiUrl}/${id}`, postData, { headers }).pipe(
+    return this.http.post(`${this.apiUrl}/${id}`, postData, { headers }).pipe(
       catchError(error => this.handleError(error))
     );
   }
