@@ -73,9 +73,19 @@ import { HumanPharmacyComponent as MainWebsiteHumanPharmacyComponent } from './c
 import { VetPharmacyComponent as MainWebsiteVetPharmacyComponent } from './components/main-website/pharmacy/vet-pharmacy/vet-pharmacy.component';
 import { AppointmentComponent } from './components/main-website/appointment/appointment.component';
 import { CategoryProductsComponent } from './components/main-website/category-products/category-products.component';
+
 import { DoctorRequestFormComponent } from './components/main-website/doctor-request-form/doctor-request-form.component';
 import { DoctorRequestComponent } from './components/dashboard/doctor-request/doctor-request.component';
+<<<<<<< HEAD
 import { PaymentComponent } from './payment/payment.component';
+=======
+import { FeedbackComponent } from './components/main-website/feedback/feedback.component';
+
+import { AddPostComponent } from './doctor-dashboard/add-post/add-post.component';
+import { DoctorBlogComponent } from './doctor-dashboard/doctor-blog/doctor-blog.component';
+import { CommentsComponent } from './components/main-website/comments/comments.component';
+
+>>>>>>> 63327ec853cd34531b41df5381411327bedb89ba
 export const routes: Routes = [
   {
     path: '',
@@ -109,6 +119,10 @@ export const routes: Routes = [
   {
     path: 'services',
     component: ServiceDetailComponent
+  },
+  {
+   path:'feedback',
+   component:FeedbackComponent
   },
   {
     path: 'book/:id',
@@ -315,6 +329,20 @@ export const routes: Routes = [
     path: "doctor-login",
     component: DoctorLoginComponent
   },
+  {
+    path: 'blog/vet/:id/comments',
+    component: CommentsComponent
+  },
+  {
+    path: 'blog/human/:id/comments',
+    component: CommentsComponent
+  },
+  {
+    path: "add-post",
+    component: AddPostComponent
+  },
+  { path: 'doctor-blog',
+     component: DoctorBlogComponent },
 
   {
     path: 'user/dashboard',

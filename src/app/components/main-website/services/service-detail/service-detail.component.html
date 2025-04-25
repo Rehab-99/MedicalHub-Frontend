@@ -1,4 +1,17 @@
 <app-header></app-header>
+<div class="hero-slider">
+  <!-- Human Section -->
+  <div class="hero-section active" style="background-image: url('https://img.freepik.com/free-vector/group-doctors-care-covid-19_24877-62369.jpg?ga=GA1.1.750494425.1738695196&semt=ais_hybrid&w=740');">
+    <div class="hero-content">
+      <h1 class="hero-title"><i class="fas fa-heartbeat"></i> Our Services Are Always Here For You </h1>
+      <p class="hero-subtitle">Find the best doctors for your health needs with our comprehensive directory.</p>
+      <div class="hero-buttons">
+        
+        <button class="btn btn-services" (click)="navigateToServices()"><i class="fas fa-search"></i> Find Service</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="services-container">
   <div *ngIf="loading" class="loading-spinner">

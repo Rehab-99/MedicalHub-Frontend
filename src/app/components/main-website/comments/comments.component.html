@@ -1,0 +1,63 @@
+<div class="comments-section">
+    <h3>Comments</h3>
+  
+    <!-- Form for adding a new comment -->
+    <div class="comment-form" *ngIf="isLoggedIn; else notLoggedIn">
+      <textarea
+        [(ngModel)]="newComment"
+        placeholder="Write your comment here..."
+        class="comment-input input-field"
+        rows="4"
+      ></textarea>
+      <button
+        (click)="submitComment()"
+        [disabled]="!newComment.trim()"
+        class="submit-btn btn btn-primary"
+      >
+        Post Comment
+      </button>
+    </div>
+  
+    <!-- Message for non-logged-in users -->
+    <ng-template #notLoggedIn>
+      <div class="not-logged-in">
+        <p>Please <a (click)="goToLogin()">log in</a> to post a comment.</p>
+      </div>
+    </ng-template>
+  
+    <!-- List of comments -->
+    <div class="comments-list" *ngIf="comments.length > 0; else noComments">
+      <div *ngFor="let comment of comments" class="comment-item card">
+        <div class="user-image-container">
+          <img
+            *ngIf="comment.user?.image"
+            [src]="'http://127.0.0.1:8000/storage/' + comment.user.image"
+            alt="User Image"
+            class="user-image user-avatar"
+          />
+          <i *ngIf="!comment.user?.image" class="fas fa-user-circle user-icon"></i>
+        </div>
+        <div class="comment-content">
+          <div class="comment-header">
+            <span class="user-name">{{ comment.user?.name || 'Anonymous' }}</span>
+            <span class="comment-date">{{ comment.created_at | date:'mediumDate' }}</span>
+            <button
+              *ngIf="isLoggedIn && currentUserId === comment.user?.id"
+              (click)="deleteComment(comment.id)"
+              class="delete-btn btn btn-danger"
+            >
+              Delete
+            </button>
+          </div>
+          <p class="comment-text">{{ comment.comment }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- No comments message -->
+    <ng-template #noComments>
+      <div class="no-comments text-center">
+        <p>No comments yet. Be the first to comment!</p>
+      </div>
+    </ng-template>
+  </div>

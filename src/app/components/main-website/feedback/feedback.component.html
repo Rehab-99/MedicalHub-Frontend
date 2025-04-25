@@ -1,0 +1,59 @@
+<app-header></app-header>
+<!-- feedback.component.html -->
+<div class="feedback-wrapper">
+  <div class="feedback-card">
+    <h3 class="feedback-title">Give Your Feedback</h3>
+
+    <form #form="ngForm" (ngSubmit)="submitFeedback(form)">
+      <!-- Type -->
+      <div class="feedback-group">
+        <label class="feedback-label">Feedback Type</label>
+        <select class="feedback-select" name="type" [(ngModel)]="feedbackData.type" required>
+          <option value="website">Website</option>
+          <option value="doctor">Doctor</option>
+        </select>
+      </div>
+
+      <!-- Doctor ID -->
+      <div class="feedback-group" *ngIf="feedbackData.type === 'doctor'">
+        <label class="feedback-label">Doctor:</label>
+        <select
+          class="feedback-select"
+          name="doctor_id"
+          [(ngModel)]="feedbackData.doctor_id"
+          required
+        >
+          <option value="" disabled selected>Select a doctor</option>
+          <option *ngFor="let doctor of doctors" [value]="doctor.id">
+            {{ doctor.name }}
+          </option>
+        </select>
+      </div>
+      
+
+      <!-- Star Rating -->
+      <div class="feedback-group">
+        <label class="feedback-label">Rating</label>
+        <div class="feedback-stars">
+          <i *ngFor="let star of [1,2,3,4,5]"
+             class="star-icon"
+             [ngClass]="{ 'filled': star <= feedbackData.rating!, 'empty': star > feedbackData.rating! }"
+             (click)="feedbackData.rating = star">
+          </i>
+        </div>
+      </div>
+
+      <!-- Comment -->
+      <div class="feedback-group">
+        <label class="feedback-label">Comment</label>
+        <textarea class="feedback-textarea" name="comment" [(ngModel)]="feedbackData.comment" maxlength="1000" rows="3" placeholder="Write your comment..."></textarea>
+      </div>
+
+      <!-- Submit -->
+      <div class="feedback-actions">
+        <button class="feedback-button" type="submit">Submit Feedback</button>
+      </div>
+    </form>
+  </div>
+</div>
+<app-footer></app-footer>

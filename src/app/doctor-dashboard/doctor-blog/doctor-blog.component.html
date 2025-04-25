@@ -1,0 +1,24 @@
+<div class="blog-container">
+    <h2>My Blog Posts</h2>
+  
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  
+    <table class="post-table" *ngIf="posts.length > 0">
+      <thead>
+        <tr>
+          <th>Title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let post of posts" class="post-row">
+          <td>
+            <a [routerLink]="['/blog/post', post.id]">{{ post.title }}</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="posts.length === 0 && !errorMessage" class="empty">
+      <p>No blog posts found.</p>
+    </div>
+  </div>

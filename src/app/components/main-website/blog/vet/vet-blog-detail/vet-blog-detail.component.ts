@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PostService } from '../../../../../services/blog/post.service';
 import { DoctorService } from '../../../../../services/doctor.service';
 import { DatePipe, CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../../header/header.component';
 import { FooterComponent } from '../../../footer/footer.component';
-import { CommentsComponent } from '../../comments/comments.component'; // أضف هنا
+import { CommentsComponent } from '../../../comments/comments.component'; // أضف هنا
 
 @Component({
   selector: 'app-vet-blog-detail',
@@ -13,7 +13,7 @@ import { CommentsComponent } from '../../comments/comments.component'; // أضف
   templateUrl: './vet-blog-detail.component.html',
   styleUrls: ['./vet-blog-detail.component.css'],
   providers: [DatePipe],
-  imports: [CommonModule, HeaderComponent, FooterComponent, CommentsComponent], // أضف CommentsComponent
+  imports: [CommonModule, HeaderComponent, FooterComponent, RouterModule, CommentsComponent], // أضف CommentsComponent
 })
 export class VetBlogDetailComponent implements OnInit {
   post: any;

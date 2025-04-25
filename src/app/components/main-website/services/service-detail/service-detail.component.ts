@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HeaderComponent } from '../../header/header.component';
 import { FooterComponent } from '../../footer/footer.component';
 import { HttpClient } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-service-detail',
@@ -22,7 +22,8 @@ export class ServiceDetailComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -48,5 +49,8 @@ export class ServiceDetailComponent implements OnInit {
 
   selectService(service: any): void {
     this.selectedService = service;
+  }
+  navigateToServices() {
+    this.router.navigate(['/services']);
   }
 }

@@ -11,7 +11,7 @@ export class PostService {
 
   constructor(private http: HttpClient) {}
 
-  private getAuthHeaders() {
+  private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found in localStorage');
@@ -20,9 +20,10 @@ export class PostService {
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
-  getAllPosts(): Observable<any> {
+  getAllPosts(role?: string): Observable<any> {
     const headers = this.getAuthHeaders();
-    return this.http.get(this.apiUrl, { headers }).pipe(
+    const url = role ? `${this.apiUrl}?role=${role}` : this.apiUrl; // إضافة role كـ query parameter
+    return this.http.get(url, { headers }).pipe(
       catchError(error => this.handleError(error))
     );
   }
@@ -41,7 +42,6 @@ export class PostService {
     );
   }
 
-
   updatePost(id: number, postData: FormData): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.put(`${this.apiUrl}/${id}`, postData, { headers }).pipe(
@@ -49,14 +49,12 @@ export class PostService {
     );
   }
 
- 
   deletePost(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.delete(`${this.apiUrl}/${id}`, { headers }).pipe(
       catchError(error => this.handleError(error))
     );
   }
-
 
   private handleError(error: any) {
     console.error('PostService Error:', error);
