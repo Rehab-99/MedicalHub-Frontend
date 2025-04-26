@@ -1,154 +1,167 @@
 .appointments-container {
-    padding: 2rem;
-    background-color: var(--background-light);
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  .appointments-container h2 {
-    color: #1c6a9f;
-    margin-bottom: 1.5rem;
-  }
-  
-  .loading {
-    text-align: center;
-    padding: 2rem;
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-  }
-  
-  .loading i {
-    font-size: 1.5rem;
-    margin-right: 10px;
-    color: var(--primary-color);
-  }
-  
-  .appointments-table {
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 6px 18px var(--card-shadow);
-    overflow: hidden;
-    border: 1px solid #e0f2f1;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  thead {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-  }
-  
-  th {
-    padding: 1rem;
-    text-align: left;
-    font-weight: 500;
-  }
-  
-  tbody tr {
-    border-bottom: 1px solid #e0f2f1;
-    transition: background-color 0.3s ease;
-  }
-  
-  tbody tr:hover {
-    background-color: rgba(var(--primary-color), 0.1);
-  }
-  
-  td {
-    padding: 1rem;
-    color: var(--text-secondary);
-  }
-  
-  .patient-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .patient-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--primary-color);
-  }
-  
-  .patient-icon {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    font-size: 1.5rem;
-    text-align: center;
-  }
-  
-  .no-appointments {
-    text-align: center;
-    padding: 2rem;
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 6px 18px var(--card-shadow);
-    border: 1px solid #e0f2f1;
-  }
-  
-  .no-appointments i {
-    font-size: 2rem;
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-  }
-  
-  .no-appointments p {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-  }
-  
-  .back-section {
-    margin-top: 1.5rem;
-    text-align: left;
-  }
-  
-  .back-btn {
-    display: flex;
-    align-items: center;
-    padding: 0.8rem 1.2rem;
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .back-btn i {
-    margin-right: 8px;
-  }
-  
-  .back-btn:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-2px);
-  }
-  
-  .back-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .cancel-btn {
-    padding: 0.5rem 1rem;
-    background-color: #ef4444; /* Red for cancel */
-    color: var(--text-light);
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .cancel-btn:hover {
-    background-color: #dc2626; /* Darker red */
-  }
+  padding: 2rem;
+  background-color: var(--background-light);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.appointments-container h2 {
+  color: #1c6a9f;
+  margin-bottom: 1.5rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.loading i {
+  font-size: 1.5rem;
+  margin-right: 10px;
+  color: var(--primary-color);
+}
+
+.appointments-table {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px var(--card-shadow);
+  overflow: hidden;
+  border: 1px solid #e0f2f1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: var(--primary-color);
+  color: var(--text-light);
+}
+
+th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 500;
+}
+
+tbody tr {
+  border-bottom: 1px solid #e0f2f1;
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+  background-color: rgba(var(--primary-color), 0.1);
+}
+
+td {
+  padding: 1rem;
+  color: var(--text-secondary);
+}
+
+.patient-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.patient-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-color);
+}
+
+.patient-icon {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.no-appointments {
+  text-align: center;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px var(--card-shadow);
+  border: 1px solid #e0f2f1;
+}
+
+.no-appointments i {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.no-appointments p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.back-section {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-btn i {
+  margin-right: 8px;
+}
+
+.back-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.back-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn {
+  padding: 0.5rem 1rem;
+  background-color: #ef4444; /* Red for cancel */
+  color: var(--text-light);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #dc2626; /* Darker red */
+}
+.chat-button {
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  transition: background-color 0.3s;
+} 

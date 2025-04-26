@@ -9,24 +9,26 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="chat-window" *ngIf="isOpen">
-      <div class="chat-header">
-        <h3>Chat with {{ doctorName }}</h3>
-        <button class="close-button" (click)="handleClose()">×</button>
-      </div>
-      <div class="chat-messages" #messagesContainer>
-        <div *ngFor="let message of messages" class="message" [ngClass]="{'sent': message.sender_type === 'user', 'received': message.sender_type === 'doctor'}">
+  <div class="chat-window" *ngIf="isOpen">
+    <div class="chat-header">
+      <h3>Chat with {{ doctorName }}</h3>
+      <button class="close-button" (click)="handleClose()">×</button>
+    </div>
+    <div class="chat-messages" #messagesContainer>
+        <div *ngFor="let message of messages" class="message" [ngClass]="{'sent': message.sender_type === (userId ? 'doctor' : 'user'), 'received': message.sender_type !== (userId ? 'doctor' : 'user')}">
+         
           <div class="message-content">{{ message.message }}</div>
           <div class="message-time">{{ message.created_at | date:'shortTime' }}</div>
         </div>
       </div>
-      <div class="chat-input">
-        <input type="text" [(ngModel)]="newMessage" placeholder="Type your message..." (keyup.enter)="sendMessage()">
-        <button [disabled]="isSending" (click)="sendMessage()">{{ isSending ? 'Sending...' : 'Send' }}</button>
-      </div>
-      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    
+    <div class="chat-input">
+      <input type="text" [(ngModel)]="newMessage" placeholder="Type your message..." (keyup.enter)="sendMessage()">
+      <button [disabled]="isSending" (click)="sendMessage()">{{ isSending ? 'Sending...' : 'Send' }}</button>
     </div>
-  `,
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  </div>
+`,
   styles: [`
     .chat-window {
       position: fixed;
@@ -121,7 +123,38 @@ import { FormsModule } from '@angular/forms';
       word-break: break-word;
       line-height: 1.4;
     }
+.message {
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+    }
 
+    .sent {
+      align-items: flex-end;
+    }
+
+    .sent .message-content {
+      background-color: #007bff; /* Blue for sender */
+      color: #fff;
+      border-radius: 10px 10px 0 10px;
+      padding: 8px 12px;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
+
+    .received {
+      align-items: flex-start;
+    }
+
+    .received .message-content {
+      background-color: #ffffff; /* White for receiver */
+      color: #333;
+      border: 1px solid #ddd;
+      border-radius: 10px 10px 10px 0;
+      padding: 8px 12px;
+      max-width: 70%;
+      word-wrap: break-word;
+    }
     .message-time {
       font-size: 0.75em;
       opacity: 0.7;
@@ -202,6 +235,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
   @Input() doctorId: number | null = null;
+  @Input() userId: number | null = null;
   @Input() doctorName: string = '';
   @Output() closeChat = new EventEmitter<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
@@ -218,41 +252,50 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    if (this.doctorId) {
+    console.log('ChatWindowComponent initialized with:', {
+      doctorId: this.doctorId,
+      userId: this.userId,
+      doctorName: this.doctorName
+    });
+    if (this.doctorId || this.userId) {
       this.startConversation();
+    } else {
+      console.error('Cannot start chat: Both doctorId and userId are missing');
+      this.errorMessage = 'Cannot start chat: Invalid configuration';
     }
   }
 
   private startConversation() {
-    this.http.post(`${this.baseUrl}/chat/start`, { doctor_id: this.doctorId })
+    const payload = this.userId ? { user_id: this.userId, doctor_id: this.doctorId } : { doctor_id: this.doctorId };
+    console.log('Starting conversation with payload:', payload);
+    this.http.post(`${this.baseUrl}/chat/start`, payload)
       .subscribe({
         next: (response: any) => {
-          console.log('Start conversation response:', response); // helpful for debugging
+          console.log('Conversation response:', JSON.stringify(response, null, 2));
           const conversationId = response?.data?.id;
-
           if (conversationId) {
             this.conversationId = conversationId;
+            console.log('Conversation ID set:', conversationId);
             this.loadMessages();
             this.startMessageRefresh();
           } else {
             console.error('No conversation ID in response:', response);
-            this.errorMessage = 'Failed to start conversation. Please try again.';
+            this.errorMessage = 'Failed to start conversation: No conversation ID returned';
           }
         },
         error: (error) => {
           console.error('Error starting conversation:', error);
-          this.errorMessage = 'Error starting conversation: ' + error.message;
+          this.errorMessage = 'Error starting conversation: ' + (error.message || 'Unknown error');
         }
       });
   }
-  
 
   private startMessageRefresh() {
     this.refreshInterval = setInterval(() => {
       if (this.isOpen && this.conversationId) {
         this.loadMessages();
       }
-    }, 5000); // Refresh every 5 seconds
+    }, 5000);
   }
 
   private stopMessageRefresh() {
@@ -273,7 +316,7 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
           },
           error: (error) => {
             console.error('Error loading messages:', error);
-            this.errorMessage = 'Error loading messages: ' + error.message;
+            this.errorMessage = 'Error loading messages: ' + (error.message || 'Unknown error');
           }
         });
     }
@@ -285,19 +328,19 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
       this.errorMessage = '';
       const tempMessage = {
         message: this.newMessage,
-        sender_type: 'user',
+        sender_type: this.userId ? 'doctor' : 'user',
         created_at: new Date(),
-        sender: { name: 'You' }
+       
       };
       this.messages.push(tempMessage);
       this.shouldScroll = true;
 
       this.http.post(`${this.baseUrl}/chat/send`, {
         conversation_id: this.conversationId,
-        message: this.newMessage
+        message: this.newMessage,
+        sender_type: this.userId ? 'doctor' : 'user'
       }).subscribe({
         next: (response: any) => {
-          console.log('Send message response:', response); // Debug
           if (response.message === 'Message sent successfully') {
             this.newMessage = '';
           } else {
@@ -317,10 +360,8 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
       });
     } else {
       this.errorMessage = 'Please enter a message and ensure chat is active.';
-      console.log('Cannot send: newMessage=', this.newMessage, 'conversationId июнт: ', 'conversationId=', this.conversationId);
     }
   }
-
   handleClose() {
     this.isOpen = false;
     this.stopMessageRefresh();

@@ -3,13 +3,16 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AppointmentService } from '../../services/appointment.service';
 import { LoginDoctorService } from '../../services/login-doctor.service';
-import Swal from 'sweetalert2';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import Swal from 'sweetalert2';
+import { ChatWindowComponent } from '../../components/chat/chat-window.component';
+
 
 @Component({
   selector: 'app-doctor-appointment',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,ChatWindowComponent],
   templateUrl: './doctor-appointment.component.html',
   styleUrls: ['./doctor-appointment.component.css'],
 })
@@ -17,38 +20,32 @@ export class DoctorAppointmentComponent implements OnInit {
   appointments: any[] = [];
   isLoading = false;
   baseUrl = environment.apiUrl;
+  activeChats: { [key: number]: boolean } = {}; // Track active chats by patient ID
+  doctorId: number | null = null;
 
   constructor(
     private appointmentService: AppointmentService,
     private loginDoctorService: LoginDoctorService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
     const doctor = this.loginDoctorService.getDoctor();
-    console.log('Doctor from LoginDoctorService:', doctor); // للتشخيص
     if (doctor && doctor.id) {
+      this.doctorId = doctor.id;
       this.fetchAppointments(doctor.id);
     } else {
       Swal.fire('Error', 'Unable to load doctor information. Please login again.', 'error');
       this.router.navigate(['/doctor-login']);
     }
   }
-
   fetchAppointments(doctorId: number) {
-    console.log('Fetching appointments for doctor ID:', doctorId); // للتشخيص
     this.isLoading = true;
     this.appointmentService.getDoctorAppointments(doctorId).subscribe({
       next: (response: any) => {
         this.appointments = response.data || response;
-        console.log('Appointments received:', this.appointments); // للتشخيص
-        // تحقق إن كل المواعيد للدكتور ده
-        const invalidAppointments = this.appointments.filter(appt => appt.doctor_id !== doctorId);
-        if (invalidAppointments.length > 0) {
-          console.warn('Warning: Found appointments for other doctors:', invalidAppointments);
-        } else {
-          console.log('All appointments are for the correct doctor ID:', doctorId);
-        }
+        console.log('Appointments:', JSON.stringify(this.appointments, null, 2));
         this.isLoading = false;
       },
       error: (error) => {
@@ -95,4 +92,35 @@ export class DoctorAppointmentComponent implements OnInit {
       }
     });
   }
+
+  startChat(patient: any) {
+    console.log('startChat called with patient:', patient);
+    if (patient && patient.id && this.doctorId) {
+      this.activeChats[patient.id] = true;
+      console.log('activeChats updated:', JSON.stringify(this.activeChats));
+      this.http.post(`${this.baseUrl}/chat/start`, { user_id: patient.id, doctor_id: this.doctorId })
+        .subscribe({
+          next: (response: any) => {
+            console.log('Chat started successfully with patient:', patient.name, 'Response:', response);
+          },
+          error: (error) => {
+            console.error('Error starting chat:', error);
+            this.activeChats[patient.id] = false;
+            console.log('activeChats reverted:', JSON.stringify(this.activeChats));
+          }
+        });
+    } else {
+      console.error('Cannot start chat: Invalid patient or doctorId', { patient, doctorId: this.doctorId });
+    }
+  }
+  
+  isChatActive(patientId: number): boolean {
+    console.log('isChatActive called with patientId:', patientId, 'activeChats:', JSON.stringify(this.activeChats));
+    return this.activeChats[patientId] || false;
+  }
+  closeChat(patientId: number) {
+    this.activeChats[patientId] = false;
+  }
+
+
 }
