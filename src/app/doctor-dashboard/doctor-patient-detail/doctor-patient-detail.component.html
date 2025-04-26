@@ -1,0 +1,115 @@
+<div class="patient-detail-container">
+    <h2>Patient Details</h2>
+  
+    <div class="loading" *ngIf="isLoading">
+      <i class="fas fa-spinner fa-spin"></i> Loading patient details...
+    </div>
+  
+    <div class="patient-profile" *ngIf="patient && !isLoading" [@fadeIn]>
+      <div class="patient-header">
+        <img *ngIf="patient.image" [src]="getImageUrl(patient.image)" alt="{{ patient.name }}" class="patient-img" />
+        <i *ngIf="!patient.image" class="fas fa-user-circle patient-icon"></i>
+        <h3>{{ patient.name || 'Unknown Patient' }}</h3>
+      </div>
+      <div class="patient-info">
+        <p *ngIf="patient.phone"><strong>Phone:</strong> {{ patient.phone }}</p>
+        <p *ngIf="patient.address"><strong>Address:</strong> {{ patient.address }}</p>
+        <p *ngIf="patient.email"><strong>Email:</strong> {{ patient.email }}</p>
+        <p><strong>Total Appointments:</strong> {{ patient.appointments_count || 0 }}</p>
+        <p *ngIf="patient.appointments?.length"><strong>Last Visit:</strong> {{ patient.appointments[0].appointment_date }} {{ patient.appointments[0].appointment_time }}</p>
+        <div class="notes-section" *ngIf="patient.notes">
+          <strong>Notes:</strong>
+          <textarea readonly>{{ patient.notes }}</textarea>
+        </div>
+        <div class="action-buttons">
+          <button class="book-btn" (click)="openBookingModal()">
+            <i class="fas fa-calendar-plus"></i> Book Appointment
+          </button>
+          <button class="note-btn" (click)="openNotesModal()">
+            <i class="fas fa-sticky-note"></i> {{ patient.notes ? 'Edit Notes' : 'Add Notes' }}
+          </button>
+          <button class="delete-btn" (click)="deleteNotes()" [disabled]="!patient.notes" title="Delete Note">
+            <i class="fas fa-trash"></i>
+          </button>
+          <a *ngIf="patient.phone" [href]="'tel:' + patient.phone" class="call-btn">
+            <i class="fas fa-phone"></i> Call
+          </a>
+          <a *ngIf="patient.email" [href]="'mailto:' + patient.email" class="email-btn">
+            <i class="fas fa-envelope"></i> Email
+          </a>
+        </div>
+      </div>
+    </div>
+  
+    <div class="appointments-timeline" *ngIf="appointments.length > 0 && !isLoading; else noAppointments">
+      <h3>Appointment History</h3>
+      <div class="timeline">
+        <div class="timeline-item" *ngFor="let appointment of appointments" [@fadeIn]>
+          <div class="timeline-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="timeline-content">
+            <p><strong>Date:</strong> {{ appointment.appointment_date }}</p>
+            <p><strong>Time:</strong> {{ appointment.appointment_time }}</p>
+            <p><strong>Notes:</strong> {{ appointment.notes || 'No notes' }}</p>
+            <p><strong>Status:</strong> {{ appointment.status }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <ng-template #noAppointments>
+      <div class="no-appointments" *ngIf="!isLoading">
+        <i class="fas fa-calendar-times"></i>
+        <p>No appointments found for this patient.</p>
+      </div>
+    </ng-template>
+  
+    <div class="back-section">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back to Patients
+      </button>
+    </div>
+  
+    <!-- Booking Modal -->
+    <div class="modal" *ngIf="showBookingModal">
+      <div class="modal-content">
+        <h3>Book Appointment</h3>
+        <form (ngSubmit)="submitBooking()">
+          <div class="form-group">
+            <label for="appointment_date">Date</label>
+            <input type="date" id="appointment_date" [(ngModel)]="bookingForm.appointment_date" name="appointment_date" required />
+          </div>
+          <div class="form-group">
+            <label for="appointment_time">Time</label>
+            <input type="time" id="appointment_time" [(ngModel)]="bookingForm.appointment_time" name="appointment_time" required />
+          </div>
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea id="notes" [(ngModel)]="bookingForm.notes" name="notes" rows="4"></textarea>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="cancel-btn" (click)="closeBookingModal()">Cancel</button>
+            <button type="submit" class="submit-btn">Book</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Notes Modal -->
+    <div class="modal" *ngIf="showNotesModal">
+      <div class="modal-content">
+        <h3>{{ patient.notes ? 'Edit Notes' : 'Add Notes' }} for {{ patient.name }}</h3>
+        <form (ngSubmit)="saveNotes()">
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea id="notes" [(ngModel)]="notesInput" name="notes" rows="5" placeholder="Enter notes about the patient..."></textarea>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="cancel-btn" (click)="closeNotesModal()">Cancel</button>
+            <button type="submit" class="submit-btn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

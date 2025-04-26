@@ -16,7 +16,7 @@ export interface Appointment {
   providedIn: 'root',
 })
 export class AppointmentService {
-  private apiUrl = 'http://localhost:8000/api'; // Base API URL
+  private apiUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -30,6 +30,14 @@ export class AppointmentService {
 
   getDoctorAppointments(doctorId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/doctor-appointments?doctor_id=${doctorId}`);
+  }
+
+  getDoctorPatients(doctorId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/doctor-patients?doctor_id=${doctorId}`);
+  }
+
+  updatePatientNotes(patientId: number, notes: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/doctor-patients/${patientId}/notes`, { notes });
   }
 
   cancelAppointment(appointmentId: number): Observable<any> {

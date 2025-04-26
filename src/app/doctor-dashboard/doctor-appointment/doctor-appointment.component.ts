@@ -18,6 +18,7 @@ import { ChatWindowComponent } from '../../components/chat/chat-window.component
 })
 export class DoctorAppointmentComponent implements OnInit {
   appointments: any[] = [];
+  upcomingAppointments: any[] = []; // لتخزين المواعيد القريبة
   isLoading = false;
   baseUrl = environment.apiUrl;
   activeChats: { [key: number]: boolean } = {}; // Track active chats by patient ID
@@ -45,7 +46,29 @@ export class DoctorAppointmentComponent implements OnInit {
     this.appointmentService.getDoctorAppointments(doctorId).subscribe({
       next: (response: any) => {
         this.appointments = response.data || response;
+
         console.log('Appointments:', JSON.stringify(this.appointments, null, 2));
+
+        console.log('Appointments received:', this.appointments); // للتشخيص
+
+        // تحقق إن كل المواعيد للدكتور ده
+        const invalidAppointments = this.appointments.filter(appt => appt.doctor_id !== doctorId);
+        if (invalidAppointments.length > 0) {
+          console.warn('Warning: Found appointments for other doctors:', invalidAppointments);
+        } else {
+          console.log('All appointments are for the correct doctor ID:', doctorId);
+        }
+
+        // فلترة المواعيد القريبة (خلال 24 ساعة)
+        this.upcomingAppointments = this.appointments.filter(appt => {
+          const appointmentDateTime = new Date(`${appt.appointment_date}T${appt.appointment_time}`);
+          const now = new Date();
+          const in24Hours = new Date(now.getTime() + 24 * 60 * 60 * 1000); // الوقت بعد 24 ساعة
+          return appointmentDateTime >= now && appointmentDateTime <= in24Hours;
+        });
+        console.log('Upcoming appointments within 24 hours:', this.upcomingAppointments); // للتشخيص
+
+
         this.isLoading = false;
       },
       error: (error) => {
@@ -82,6 +105,8 @@ export class DoctorAppointmentComponent implements OnInit {
         this.appointmentService.cancelAppointment(appointmentId).subscribe({
           next: () => {
             this.appointments = this.appointments.filter(appt => appt.id !== appointmentId);
+            // إعادة فلترة المواعيد القريبة بعد الإلغاء
+            this.upcomingAppointments = this.upcomingAppointments.filter(appt => appt.id !== appointmentId);
             Swal.fire('Cancelled!', 'The appointment has been cancelled.', 'success');
           },
           error: (error) => {
