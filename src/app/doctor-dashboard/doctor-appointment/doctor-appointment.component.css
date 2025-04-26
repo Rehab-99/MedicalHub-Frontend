@@ -1,5 +1,5 @@
 .appointments-container {
-<<<<<<< HEAD
+
   padding: 2rem;
   background-color: var(--background-light);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -357,4 +357,4 @@ td {
   .cancel-btn:hover {
     background-color: #dc2626; /* Darker red */
   }
->>>>>>> doctor-dashboard4
+
