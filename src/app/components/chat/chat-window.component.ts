@@ -9,24 +9,26 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="chat-window" *ngIf="isOpen">
-      <div class="chat-header">
-        <h3>Chat with {{ doctorName }}</h3>
-        <button class="close-button" (click)="handleClose()">×</button>
-      </div>
-      <div class="chat-messages" #messagesContainer>
-        <div *ngFor="let message of messages" class="message" [ngClass]="{'sent': message.sender_type === 'user', 'received': message.sender_type === 'doctor'}">
-          <div class="message-content">{{ message.message }}</div>
-          <div class="message-time">{{ message.created_at | date:'shortTime' }}</div>
-        </div>
-      </div>
-      <div class="chat-input">
-        <input type="text" [(ngModel)]="newMessage" placeholder="Type your message..." (keyup.enter)="sendMessage()">
-        <button [disabled]="isSending" (click)="sendMessage()">{{ isSending ? 'Sending...' : 'Send' }}</button>
-      </div>
-      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div class="chat-window" *ngIf="isOpen">
+    <div class="chat-header">
+      <h3>Chat with {{ isDoctor ? 'Patient' : 'Doctor' }} {{ recipientName }}</h3>
+      <button class="close-button" (click)="handleClose()">×</button>
     </div>
-  `,
+    <div class="chat-messages" #messagesContainer>
+      <div *ngFor="let message of messages" class="message" 
+           [ngClass]="{'sent': message.sender_type === (isDoctor ? 'doctor' : 'user'), 
+                      'received': message.sender_type === (isDoctor ? 'user' : 'doctor')}">
+        <div class="message-content">{{ message.message }}</div>
+        <div class="message-time">{{ message.created_at | date:'shortTime' }}</div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" [(ngModel)]="newMessage" placeholder="Type your message..." (keyup.enter)="sendMessage()">
+      <button [disabled]="isSending" (click)="sendMessage()">{{ isSending ? 'Sending...' : 'Send' }}</button>
+    </div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  </div>
+`,
   styles: [`
     .chat-window {
       position: fixed;
@@ -203,8 +205,14 @@ import { FormsModule } from '@angular/forms';
 export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
   @Input() doctorId: number | null = null;
   @Input() doctorName: string = '';
+  @Input() userId: number | null = null;  // Add @Input for userId
+  @Input() userName: string = ''; 
   @Output() closeChat = new EventEmitter<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+  @Input() isDoctor: boolean = false;
+@Input() patientId: number | null = null;
+@Input() patientName: string = '';
+recipientName: string = '';
   isOpen: boolean = true;
   messages: any[] = [];
   newMessage: string = '';
@@ -218,29 +226,29 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    if (this.doctorId) {
+    this.recipientName = this.isDoctor ? this.patientName : this.doctorName;
+    if (this.isDoctor ? this.patientId : this.doctorId) {
       this.startConversation();
     }
   }
 
   private startConversation() {
-    this.http.post(`${this.baseUrl}/chat/start`, { doctor_id: this.doctorId })
+    const payload = this.isDoctor 
+      ? { patient_id: this.patientId }
+      : { doctor_id: this.doctorId };
+  
+    this.http.post(`${this.baseUrl}/chat/start`, payload)
       .subscribe({
         next: (response: any) => {
-          console.log('Start conversation response:', response); // helpful for debugging
           const conversationId = response?.data?.id;
-
           if (conversationId) {
             this.conversationId = conversationId;
             this.loadMessages();
-            this.startMessageRefresh();
           } else {
-            console.error('No conversation ID in response:', response);
             this.errorMessage = 'Failed to start conversation. Please try again.';
           }
         },
         error: (error) => {
-          console.error('Error starting conversation:', error);
           this.errorMessage = 'Error starting conversation: ' + error.message;
         }
       });
@@ -285,39 +293,28 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
       this.errorMessage = '';
       const tempMessage = {
         message: this.newMessage,
-        sender_type: 'user',
+        sender_type: this.isDoctor ? 'doctor' : 'user',
         created_at: new Date(),
-        sender: { name: 'You' }
       };
       this.messages.push(tempMessage);
       this.shouldScroll = true;
-
+  
       this.http.post(`${this.baseUrl}/chat/send`, {
         conversation_id: this.conversationId,
-        message: this.newMessage
+        message: this.newMessage,
+        is_doctor: this.isDoctor
       }).subscribe({
-        next: (response: any) => {
-          console.log('Send message response:', response); // Debug
-          if (response.message === 'Message sent successfully') {
-            this.newMessage = '';
-          } else {
-            this.errorMessage = 'Failed to send message. Please try again.';
-            this.messages = this.messages.filter(msg => msg !== tempMessage);
-            this.shouldScroll = true;
-          }
+        next: () => {
+          this.newMessage = '';
           this.isSending = false;
         },
         error: (error) => {
-          console.error('Error sending message:', error);
           this.errorMessage = 'Error sending message: ' + (error.message || 'Unknown error');
           this.messages = this.messages.filter(msg => msg !== tempMessage);
           this.shouldScroll = true;
           this.isSending = false;
         }
       });
-    } else {
-      this.errorMessage = 'Please enter a message and ensure chat is active.';
-      console.log('Cannot send: newMessage=', this.newMessage, 'conversationId июнт: ', 'conversationId=', this.conversationId);
     }
   }
 
