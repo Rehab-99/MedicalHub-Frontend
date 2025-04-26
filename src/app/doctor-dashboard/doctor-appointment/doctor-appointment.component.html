@@ -1,5 +1,16 @@
 <div class="appointments-container">
-    <h2>My Appointments</h2>
+    <h2>Doctor Appointments</h2>
+  
+    <!-- تنبيه المواعيد القريبة -->
+    <div class="upcoming-alert" *ngIf="upcomingAppointments.length > 0">
+      <i class="fas fa-bell"></i>
+      <span>You have {{ upcomingAppointments.length }} upcoming appointment(s) within the next 24 hours:</span>
+      <ul>
+        <li *ngFor="let appt of upcomingAppointments">
+          <span class="patient-name">{{ appt.user?.name || 'Unknown Patient' }}</span> at {{ appt.appointment_date }} {{ appt.appointment_time }}
+        </li>
+      </ul>
+    </div>
   
     <div class="loading" *ngIf="isLoading">
       <i class="fas fa-spinner fa-spin"></i> Loading appointments...
@@ -12,7 +23,9 @@
             <th>Date</th>
             <th>Time</th>
             <th>Patient</th>
+            <th>Doctor</th>
             <th>Notes</th>
+            <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -27,7 +40,9 @@
                 <span>{{ appointment.user?.name || 'Unknown Patient' }}</span>
               </div>
             </td>
+            <td>{{ appointment.doctor?.name || 'Unknown Doctor' }}</td>
             <td>{{ appointment.notes || 'No notes' }}</td>
+            <td>{{ appointment.status }}</td>
             <td>
               <button class="cancel-btn" (click)="cancelAppointment(appointment.id)">Cancel</button>
             </td>
@@ -39,7 +54,7 @@
     <ng-template #noAppointments>
       <div class="no-appointments" *ngIf="!isLoading">
         <i class="fas fa-calendar-times"></i>
-        <p>No appointments scheduled.</p>
+        <p>No appointments found.</p>
       </div>
     </ng-template>
   

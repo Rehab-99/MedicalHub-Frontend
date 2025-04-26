@@ -1,0 +1,75 @@
+<div class="patients-container">
+    <h2>Patients</h2>
+  
+    <div class="search-bar">
+      <input type="text" [(ngModel)]="searchQuery" (input)="filterPatients()" placeholder="Search by patient name..." />
+      <i class="fas fa-search"></i>
+    </div>
+  
+    <div class="loading" *ngIf="isLoading">
+      <i class="fas fa-spinner fa-spin"></i> Loading patients...
+    </div>
+  
+    <div class="patients-grid" *ngIf="paginatedPatients.length > 0 && !isLoading; else noPatients">
+      <div class="patient-card" *ngFor="let patient of paginatedPatients" [@fadeIn]>
+        <div class="patient-info">
+          <img *ngIf="patient.image" [src]="getImageUrl(patient.image)" alt="{{ patient.name }}" class="patient-img" />
+          <i *ngIf="!patient.image" class="fas fa-user-circle patient-icon"></i>
+          <div class="patient-details">
+            <div class="patient-header">
+              <h3>{{ patient.name || 'Unknown Patient' }}</h3>
+              <span class="status-badge" [ngClass]="{'active': isPatientActive(patient)}">
+                {{ isPatientActive(patient) ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+            <p>Appointments: {{ patient.appointments_count || 0 }}</p>
+            <p *ngIf="patient.appointments?.length">Last Appointment: {{ patient.appointments[0].appointment_date }} {{ patient.appointments[0].appointment_time }}</p>
+            <div class="action-buttons">
+              <button class="view-btn" [routerLink]="['/doctor-patient', patient.id]">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <button class="note-btn" (click)="openNotesModal(patient)">
+                <i class="fas fa-sticky-note"></i> Add Note
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <ng-template #noPatients>
+      <div class="no-patients" *ngIf="!isLoading">
+        <i class="fas fa-user-times"></i>
+        <p>No patients found.</p>
+      </div>
+    </ng-template>
+  
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button [disabled]="currentPage === 1" (click)="prevPage()">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next</button>
+    </div>
+  
+    <div class="back-section">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </button>
+    </div>
+  
+    <!-- Notes Modal -->
+    <div class="modal" *ngIf="showNotesModal">
+      <div class="modal-content">
+        <h3>Add/Edit Notes for {{ selectedPatient?.name }}</h3>
+        <form (ngSubmit)="saveNotes()">
+          <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea id="notes" [(ngModel)]="notesInput" name="notes" rows="5" placeholder="Enter notes about the patient..."></textarea>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="cancel-btn" (click)="closeNotesModal()">Cancel</button>
+            <button type="submit" class="submit-btn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

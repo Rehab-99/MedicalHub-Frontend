@@ -86,6 +86,8 @@ import { OrderConfirmationComponent } from './components/order-confirmation/orde
 import { DoctorProfileComponent } from './doctor-dashboard/doctor-profile/doctor-profile.component';
 import { DoctorProfileEditComponent } from './doctor-dashboard/doctor-profile-edit/doctor-profile-edit.component';
 import { DoctorAppointmentComponent } from './doctor-dashboard/doctor-appointment/doctor-appointment.component';
+import { DoctorPatientDetailComponent } from './doctor-dashboard/doctor-patient-detail/doctor-patient-detail.component';
+import { DoctorPatientComponent } from './doctor-dashboard/doctor-patient/doctor-patient.component';
 
 export const routes: Routes = [
   {
@@ -353,6 +355,12 @@ export const routes: Routes = [
       path: 'doctor-profile/edit',
       component: DoctorProfileEditComponent
     },
+    { path: 'doctor-patient', 
+      component:  DoctorPatientComponent
+     },
+    { path: 'doctor-patient/:id',
+       component: DoctorPatientDetailComponent 
+      },
     // أضف هذا المسار إذا لم يكن موجوداً
 {
   path: 'doctor-appointments',

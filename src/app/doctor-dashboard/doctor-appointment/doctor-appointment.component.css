@@ -9,6 +9,43 @@
     margin-bottom: 1.5rem;
   }
   
+  .upcoming-alert {
+    background-color: rgba(var(--primary-color), 0.1);
+    border: 1px solid #e0f2f1;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px var(--card-shadow);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  
+  .upcoming-alert i {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-right: 10px;
+  }
+  
+  .upcoming-alert span {
+    font-size: 1.1rem;
+  }
+  
+  .upcoming-alert ul {
+    margin-top: 0.5rem;
+    padding-left: 2rem;
+  }
+  
+  .upcoming-alert li {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .upcoming-alert .patient-name {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+  
   .loading {
     text-align: center;
     padding: 2rem;
