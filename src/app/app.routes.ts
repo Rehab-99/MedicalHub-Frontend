@@ -83,6 +83,9 @@ import { DoctorBlogComponent } from './doctor-dashboard/doctor-blog/doctor-blog.
 import { CommentsComponent } from './components/main-website/comments/comments.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { OrderConfirmationComponent } from './components/order-confirmation/order-confirmation.component';
+import { DoctorProfileComponent } from './doctor-dashboard/doctor-profile/doctor-profile.component';
+import { DoctorProfileEditComponent } from './doctor-dashboard/doctor-profile-edit/doctor-profile-edit.component';
+import { DoctorAppointmentComponent } from './doctor-dashboard/doctor-appointment/doctor-appointment.component';
 
 export const routes: Routes = [
   {
@@ -340,8 +343,21 @@ export const routes: Routes = [
     component: AddPostComponent
   },
   { path: 'doctor-blog',
-     component: DoctorBlogComponent },
-
+     component: DoctorBlogComponent 
+    },
+    {
+      path: 'doctor-profile',
+      component: DoctorProfileComponent
+    } ,
+    {
+      path: 'doctor-profile/edit',
+      component: DoctorProfileEditComponent
+    },
+    // أضف هذا المسار إذا لم يكن موجوداً
+{
+  path: 'doctor-appointments',
+  component: DoctorAppointmentComponent
+},
   {
     path: 'user/dashboard',
     component: UserDashboardComponent,
