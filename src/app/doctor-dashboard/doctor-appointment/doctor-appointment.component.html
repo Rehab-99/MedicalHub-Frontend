@@ -1,6 +1,15 @@
 <div class="appointments-container">
 
   <h2>My Appointments</h2>
+  <div class="upcoming-alert" *ngIf="upcomingAppointments.length > 0">
+    <i class="fas fa-bell"></i>
+    <span>You have {{ upcomingAppointments.length }} upcoming appointment(s) within the next 24 hours:</span>
+    <ul>
+      <li *ngFor="let appt of upcomingAppointments">
+        <span class="patient-name">{{ appt.user?.name || 'Unknown Patient' }}</span> at {{ appt.appointment_date }} {{ appt.appointment_time }}
+      </li>
+    </ul>
+  </div>
 
   <div class="loading" *ngIf="isLoading">
     <i class="fas fa-spinner fa-spin"></i> Loading appointments...
@@ -67,69 +76,10 @@
   </ng-container>
 </div>
 
-    <h2>Doctor Appointments</h2>
+   
   
     <!-- تنبيه المواعيد القريبة -->
-    <div class="upcoming-alert" *ngIf="upcomingAppointments.length > 0">
-      <i class="fas fa-bell"></i>
-      <span>You have {{ upcomingAppointments.length }} upcoming appointment(s) within the next 24 hours:</span>
-      <ul>
-        <li *ngFor="let appt of upcomingAppointments">
-          <span class="patient-name">{{ appt.user?.name || 'Unknown Patient' }}</span> at {{ appt.appointment_date }} {{ appt.appointment_time }}
-        </li>
-      </ul>
-    </div>
+   
   
-    <div class="loading" *ngIf="isLoading">
-      <i class="fas fa-spinner fa-spin"></i> Loading appointments...
-    </div>
-  
-    <div class="appointments-table" *ngIf="appointments.length > 0 && !isLoading; else noAppointments">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Patient</th>
-            <th>Doctor</th>
-            <th>Notes</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let appointment of appointments">
-            <td>{{ appointment.appointment_date }}</td>
-            <td>{{ appointment.appointment_time }}</td>
-            <td>
-              <div class="patient-info">
-                <img *ngIf="appointment.user?.image" [src]="getImageUrl(appointment.user.image)" alt="{{ appointment.user.name }}" class="patient-img" />
-                <i *ngIf="!appointment.user?.image" class="fas fa-user-circle patient-icon"></i>
-                <span>{{ appointment.user?.name || 'Unknown Patient' }}</span>
-              </div>
-            </td>
-            <td>{{ appointment.doctor?.name || 'Unknown Doctor' }}</td>
-            <td>{{ appointment.notes || 'No notes' }}</td>
-            <td>{{ appointment.status }}</td>
-            <td>
-              <button class="cancel-btn" (click)="cancelAppointment(appointment.id)">Cancel</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  
-    <ng-template #noAppointments>
-      <div class="no-appointments" *ngIf="!isLoading">
-        <i class="fas fa-calendar-times"></i>
-        <p>No appointments found.</p>
-      </div>
-    </ng-template>
-  
-    <div class="back-section">
-      <button class="back-btn" (click)="goBack()">
-        <i class="fas fa-arrow-left"></i> Back to Dashboard
-      </button>
-    </div>
-
+    
 

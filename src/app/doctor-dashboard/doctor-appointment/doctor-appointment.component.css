@@ -166,12 +166,7 @@ td {
   gap: 2px;
   transition: background-color 0.3s;
 } 
-.chat-button:hover {
-    padding: 2rem;
-    background-color: var(--background-light);
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
+
   .appointments-container h2 {
     color: #1c6a9f;
     margin-bottom: 1.5rem;
