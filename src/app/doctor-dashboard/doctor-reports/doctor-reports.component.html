@@ -1,0 +1,310 @@
+<p>doctor-reports works!</p>
+<div class="reports-container">
+    <!-- Header -->
+    <div class="reports-header">
+      <h2>Doctor Reports Dashboard</h2>
+      <div class="reports-filter">
+        <select class="form-select" [(ngModel)]="filterPeriod" (ngModelChange)="applyFilter()">
+          <option value="month">This Month</option>
+          <option value="week">This Week</option>
+          <option value="all">All Time</option>
+        </select>
+      </div>
+    </div>
+  
+    <!-- Tabs -->
+    <ul class="reports-tabs">
+      <li [class.active]="activeTab === 'appointments'" (click)="activeTab = 'appointments'">
+        <i class="fas fa-calendar-alt"></i> Appointments
+      </li>
+      <li [class.active]="activeTab === 'patients'" (click)="activeTab = 'patients'">
+        <i class="fas fa-users"></i> Patients
+      </li>
+      <li [class.active]="activeTab === 'notes'" (click)="activeTab = 'notes'">
+        <i class="fas fa-sticky-note"></i> Notes
+      </li>
+      <li [class.active]="activeTab === 'demographics'" (click)="activeTab = 'demographics'">
+        <i class="fas fa-chart-pie"></i> Demographics
+      </li>
+      <li [class.active]="activeTab === 'satisfaction'" (click)="activeTab = 'satisfaction'">
+        <i class="fas fa-star"></i> Satisfaction
+      </li>
+    </ul>
+  
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading reports...</p>
+    </div>
+  
+    <!-- Appointments Tab -->
+    <div *ngIf="activeTab === 'appointments' && !isLoading" class="tab-content">
+      <div class="stats-grid">
+        <!-- Appointment Stats Card -->
+        <div class="stats-card">
+          <div class="stats-card-header">
+            <h3>Appointments Overview</h3>
+          </div>
+          <div class="stats-card-body">
+            <div class="stat-item">
+              <span class="stat-label">Total Appointments</span>
+              <span class="stat-value">{{ appointmentStats.total }}</span>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-info">
+                <span>Pending: {{ appointmentStats.pending }}</span>
+                <span>{{ appointmentStats.total ? (appointmentStats.pending / appointmentStats.total * 100).toFixed(1) : 0 }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill pending" [style.width]="appointmentStats.total ? (appointmentStats.pending / appointmentStats.total * 100) + '%' : '0%'"></div>
+              </div>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-info">
+                <span>Confirmed: {{ appointmentStats.confirmed }}</span>
+                <span>{{ appointmentStats.total ? (appointmentStats.confirmed / appointmentStats.total * 100).toFixed(1) : 0 }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill confirmed" [style.width]="appointmentStats.total ? (appointmentStats.confirmed / appointmentStats.total * 100) + '%' : '0%'"></div>
+              </div>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-info">
+                <span>Completed: {{ appointmentStats.completed }}</span>
+                <span>{{ appointmentStats.total ? (appointmentStats.completed / appointmentStats.total * 100).toFixed(1) : 0 }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill completed" [style.width]="appointmentStats.total ? (appointmentStats.completed / appointmentStats.total * 100) + '%' : '0%'"></div>
+              </div>
+            </div>
+            
+            <div class="stat-item">
+              <span class="stat-label">Peak Hours</span>
+              <span class="stat-value">{{ appointmentStats.peakHours.join(', ') || 'None' }}</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Daily Appointments Card -->
+        <div class="stats-card">
+          <div class="stats-card-header">
+            <h3>Appointments by Date</h3>
+          </div>
+          <div class="stats-card-body">
+            <div class="appointments-calendar">
+              <div *ngFor="let day of appointmentStats.daily" class="calendar-day">
+                <div class="day-date">{{ day.date }}</div>
+                <div class="day-count">{{ day.count }} appointments</div>
+              </div>
+              <div *ngIf="appointmentStats.daily.length === 0" class="no-data">
+                No appointments for this period
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Patients Tab -->
+    <div *ngIf="activeTab === 'patients' && !isLoading" class="tab-content">
+      <div class="stats-grid">
+        <!-- Patient Stats Card -->
+        <div class="stats-card">
+          <div class="stats-card-header">
+            <h3>Patient Engagement</h3>
+          </div>
+          <div class="stats-card-body">
+            <div class="stat-item">
+              <span class="stat-label">Total Patients</span>
+              <span class="stat-value">{{ patientStats.total }}</span>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-info">
+                <span>New Patients: {{ patientStats.newPatients }}</span>
+                <span>{{ patientStats.total ? (patientStats.newPatients / patientStats.total * 100).toFixed(1) : 0 }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill new-patients" [style.width]="patientStats.total ? (patientStats.newPatients / patientStats.total * 100) + '%' : '0%'"></div>
+              </div>
+            </div>
+            
+            <div class="stat-item">
+              <span class="stat-label">Avg Visits per Patient</span>
+              <span class="stat-value">{{ patientStats.avgVisits | number:'1.1-1' }}</span>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-info">
+                <span>Active Patients: {{ patientStats.activePatients }}</span>
+                <span>{{ patientStats.total ? (patientStats.activePatients / patientStats.total * 100).toFixed(1) : 0 }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill active-patients" [style.width]="patientStats.total ? (patientStats.activePatients / patientStats.total * 100) + '%' : '0%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Patients List Card -->
+        <div class="stats-card">
+          <div class="stats-card-header">
+            <h3>Recent Patients</h3>
+          </div>
+          <div class="stats-card-body">
+            <div class="patients-list">
+              <div *ngFor="let patient of patients.slice(0, 5)" class="patient-item">
+                <div class="patient-name">{{ patient.name || 'Unknown Patient' }}</div>
+                <div class="patient-visits">{{ patient.appointments_count || 0 }} visits</div>
+              </div>
+              <div *ngIf="patients.length === 0" class="no-data">
+                No patients available
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Notes Tab -->
+    <div *ngIf="activeTab === 'notes' && !isLoading" class="tab-content">
+      <div class="stats-card">
+        <div class="stats-card-header">
+          <h3>Notes Activity</h3>
+        </div>
+        <div class="stats-card-body">
+          <div class="stat-item">
+            <span class="stat-label">Total Notes</span>
+            <span class="stat-value">{{ notesStats.total }}</span>
+          </div>
+          
+          <div class="stat-item">
+            <span class="stat-label">Patients Without Notes</span>
+            <span class="stat-value">{{ notesStats.patientsWithoutNotes }}</span>
+          </div>
+          
+          <div class="notes-list">
+            <div *ngFor="let note of notesStats.recentNotes" class="note-item">
+              <div class="note-header">
+                <span class="note-patient">{{ note.patientName }}</span>
+                <span class="note-date">{{ note.date | date:'mediumDate' }}</span>
+              </div>
+              <div class="note-content">{{ note.notes }}</div>
+            </div>
+            <div *ngIf="notesStats.recentNotes.length === 0" class="no-data">
+              No recent notes available
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Demographics Tab -->
+    <div *ngIf="activeTab === 'demographics' && !isLoading" class="tab-content">
+      <div class="stats-grid">
+        <!-- Age Groups Card -->
+        <div class="stats-card">
+          <div class="stats-card-header">
+            <h3>Age Distribution</h3>
+          </div>
+          <div class="stats-card-body">
+            <div *ngFor="let ageGroup of ageGroups" class="progress-item">
+              <div class="progress-info">
+                <span>{{ ageGroup }}: {{ demographicStats.ageGroups[ageGroup] }}</span>
+                <span>{{ patientStats.total ? (demographicStats.ageGroups[ageGroup] / patientStats.total * 100).toFixed(1) : 0 }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill age-group" [style.width]="patientStats.total ? (demographicStats.ageGroups[ageGroup] / patientStats.total * 100) + '%' : '0%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Gender Card -->
+        <div class="stats-card">
+          <div class="stats-card-header">
+            <h3>Gender Distribution</h3>
+          </div>
+          <div class="stats-card-body">
+            <div class="progress-item">
+              <div class="progress-info">
+                <span>Male: {{ demographicStats.gender.male }}</span>
+                <span>{{ patientStats.total ? (demographicStats.gender.male / patientStats.total * 100).toFixed(1) : 0 }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill male" [style.width]="patientStats.total ? (demographicStats.gender.male / patientStats.total * 100) + '%' : '0%'"></div>
+              </div>
+            </div>
+            
+            <div class="progress-item">
+              <div class="progress-info">
+                <span>Female: {{ demographicStats.gender.female }}</span>
+                <span>{{ patientStats.total ? (demographicStats.gender.female / patientStats.total * 100).toFixed(1) : 0 }}%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill female" [style.width]="patientStats.total ? (demographicStats.gender.female / patientStats.total * 100) + '%' : '0%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Satisfaction Tab -->
+    <div *ngIf="activeTab === 'satisfaction' && !isLoading" class="tab-content">
+      <div class="stats-card">
+        <div class="stats-card-header">
+          <h3>Patient Satisfaction</h3>
+        </div>
+        <div class="stats-card-body">
+          <div class="stat-item">
+            <span class="stat-label">Average Rating</span>
+            <span class="stat-value">{{ satisfactionStats.averageRating | number:'1.1-1' }}/5</span>
+          </div>
+          
+          <div class="stat-item">
+            <span class="stat-label">Complaints</span>
+            <span class="stat-value">{{ satisfactionStats.complaints }}</span>
+          </div>
+          
+          <div class="feedback-section">
+            <h4>Best Feedback</h4>
+            <div *ngFor="let fb of satisfactionStats.bestFeedback" class="feedback-item positive">
+              <div class="feedback-header">
+                <span class="feedback-patient">{{ fb.patientName }}</span>
+                <span class="feedback-rating">{{ fb.rating }}/5</span>
+              </div>
+              <div class="feedback-comment">{{ fb.comment }}</div>
+            </div>
+            <div *ngIf="satisfactionStats.bestFeedback.length === 0" class="no-data">
+              No positive feedback available
+            </div>
+          </div>
+          
+          <div class="feedback-section">
+            <h4>Areas for Improvement</h4>
+            <div *ngFor="let fb of satisfactionStats.worstFeedback" class="feedback-item negative">
+              <div class="feedback-header">
+                <span class="feedback-patient">{{ fb.patientName }}</span>
+                <span class="feedback-rating">{{ fb.rating }}/5</span>
+              </div>
+              <div class="feedback-comment">{{ fb.comment }}</div>
+            </div>
+            <div *ngIf="satisfactionStats.worstFeedback.length === 0" class="no-data">
+              No negative feedback available
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Back Button -->
+    <div class="reports-footer">
+      <button class="back-btn" (click)="router.navigate(['/doctor-dashboard'])">
+        <i class="fas fa-chevron-left"></i> Back to Dashboard
+      </button>
+    </div>
+  </div>
