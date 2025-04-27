@@ -237,6 +237,7 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
   @Input() doctorId: number | null = null;
   @Input() userId: number | null = null;
   @Input() doctorName: string = '';
+  @Input() conversationId: string | null = null;
   @Output() closeChat = new EventEmitter<void>();
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
   isOpen: boolean = true;
@@ -247,7 +248,7 @@ export class ChatWindowComponent implements OnDestroy, AfterViewChecked {
   baseUrl = environment.apiUrl;
   private refreshInterval: any;
   private shouldScroll: boolean = true;
-  conversationId: string | null = null;
+  
 
   constructor(private http: HttpClient) {}
 
