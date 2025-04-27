@@ -374,14 +374,6 @@ export const routes: Routes = [
       {
         path: 'settings',
         component: UserSettingsComponent
-      },
-      {
-        path: 'cart',
-        component: ShoppingCartComponent
-      },
-      {
-        path: 'checkout',
-        component: CheckoutComponent
       }
     ]
   },
@@ -412,5 +404,13 @@ export const routes: Routes = [
   {
     path: 'order-confirmation',
     component: OrderConfirmationComponent
+  },
+  {
+    path: 'shopping-cart',
+    component: ShoppingCartComponent
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent
   }
 ];

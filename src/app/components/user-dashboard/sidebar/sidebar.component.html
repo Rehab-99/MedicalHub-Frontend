@@ -24,9 +24,6 @@
                 <a routerLink="/user/dashboard"><i class="fas fa-user-injured"></i> Patient</a>
             </li>
 
-            <li [class.active]="isActive('/user/dashboard/cart')">
-                <a routerLink="/user/dashboard/cart"><i class="fas fa-shopping-cart"></i> Shopping Cart</a>
-            </li>
            
             <li [class.active]="isActive('/user/dashboard/settings')">
                 <a routerLink="/user/dashboard/settings"><i class="fas fa-cog"></i> Settings</a>
@@ -37,11 +34,7 @@
         </ul>
     </nav>
 
-    <div class="membership-info">
-        <p><strong>20 Days Left</strong></p>
-        <p><small>Extend your membership</small></p>
-        <button class="btn btn-renew">Create New</button>
-    </div>
+
 </aside>
 
 <!-- Chat windows for each doctor -->
