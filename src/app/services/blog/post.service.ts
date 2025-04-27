@@ -17,28 +17,27 @@ export class PostService {
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('No token found in localStorage');
-      return new HttpHeaders();
-    }
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   getAllPosts(role?: string): Observable<any> {
     const headers = this.getAuthHeaders();
-    const url = role ? `${this.apiUrl}?role=${role}` : this.apiUrl;
-    console.log(`Fetching posts for role: ${role || 'all'} from ${url}`);
+    const url = role ? `${this.apiUrl}?role=${role}` : `${this.apiUrl}?all=true`;
     return this.http.get(url, { headers }).pipe(
       catchError(error => this.handleError(error))
     );
   }
 
+  getDoctorPosts(doctorId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}?doctor_id=${doctorId}`, { headers }).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
   createPost(postData: FormData): Observable<any> {
     const headers = this.getAuthHeaders();
-    console.log('Sending POST request to create post:', [...postData.entries()]);
     return this.http.post(this.apiUrl, postData, { headers }).pipe(
       tap((response) => {
-        console.log('Post created, notifying BlogService:', response);
         this.blogService.notifyPostsUpdated();
       }),
       catchError(error => this.handleError(error))
@@ -55,6 +54,9 @@ export class PostService {
   updatePost(id: number, postData: FormData): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.post(`${this.apiUrl}/${id}`, postData, { headers }).pipe(
+      tap(() => {
+        this.blogService.notifyPostsUpdated();
+      }),
       catchError(error => this.handleError(error))
     );
   }
@@ -62,8 +64,23 @@ export class PostService {
   deletePost(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.delete(`${this.apiUrl}/${id}`, { headers }).pipe(
+      tap(() => {
+        this.blogService.notifyPostsUpdated();
+      }),
       catchError(error => this.handleError(error))
     );
+  }
+  getCurrentDoctorPosts(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/my-posts`, { headers }).pipe(
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  
+
+  uploadImage(formData: FormData): Observable<any> {
+    return this.http.post('/api/upload-image', formData);
   }
 
   private handleError(error: any) {

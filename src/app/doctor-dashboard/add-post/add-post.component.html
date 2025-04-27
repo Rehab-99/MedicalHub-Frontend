@@ -1,87 +1,65 @@
 <div class="add-post-container">
-    <h2><i class="fas fa-plus-circle"></i> Add New Post</h2>
-    <form [formGroup]="addPostForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="post-title"><i class="fas fa-heading"></i> Post Title</label>
-        <input
-          id="post-title"
-          formControlName="title"
-          type="text"
-          placeholder="Enter post title"
-        >
+  <h2>Add New Post</h2>
+  <form [formGroup]="addPostForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="post-title">Post Title</label>
+      <input
+        id="post-title"
+        formControlName="title"
+        type="text"
+        placeholder="Enter post title"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="post-content">Post Content</label>
+      <div class="editor-toolbar">
+        <button type="button" (click)="formatText('bold')">Bold</button>
+        <button type="button" (click)="formatText('italic')">Italic</button>
+        <button type="button" (click)="formatText('underline')">Underline</button>
+        <select (change)="onFontSizeChange($event)">
+          <option value="">Font Size</option>
+          <option value="1">10px</option>
+          <option value="2">12px</option>
+          <option value="3">16px</option>
+          <option value="4">20px</option>
+          <option value="5">24px</option>
+        </select>
+        <input type="color" (change)="onColorChange($event)" title="Font Color">
+        <button type="button" (click)="formatText('justifyLeft')">Align Left</button>
+        <button type="button" (click)="formatText('justifyCenter')">Align Center</button>
+        <button type="button" (click)="formatText('justifyRight')">Align Right</button>
+        <input type="file" accept="image/*" (change)="insertImage($event)" id="insert-image" style="display: none;">
+        <button type="button" (click)="triggerInsertImage()">Insert Image</button>
       </div>
-  
-      <div class="form-group">
-        <label for="post-content"><i class="fas fa-paragraph"></i> Post Content</label>
-        <textarea
-          id="post-content"
-          formControlName="content"
-          placeholder="Enter post content"
-        ></textarea>
-      </div>
-  
-      <div class="form-group">
-        <label for="post-image"><i class="fas fa-image"></i> Post Image (Optional)</label>
-        <input
-          id="post-image"
-          type="file"
-          accept="image/*"
-          (change)="onPostImageChange($event)"
-        >
-      </div>
-  
-      <div formArrayName="sections">
-        <div *ngFor="let section of sections.controls; let i=index" [formGroupName]="i" class="section">
-          <div class="section-header">
-            <h3><i class="fas fa-layer-group"></i> Section {{ i + 1 }}</h3>
-            <button type="button" class="remove-section" (click)="removeSection(i)">
-              <i class="fas fa-trash"></i> Remove
-            </button>
-          </div>
-  
-          <div class="form-group">
-            <label for="section-title-{{i}}"><i class="fas fa-heading"></i> Section Title</label>
-            <input
-              id="section-title-{{i}}"
-              formControlName="title"
-              type="text"
-              placeholder="Enter section title"
-            >
-          </div>
-  
-          <div class="form-group">
-            <label for="section-content-{{i}}"><i class="fas fa-paragraph"></i> Section Content</label>
-            <textarea
-              id="section-content-{{i}}"
-              formControlName="content"
-              placeholder="Enter section content"
-            ></textarea>
-          </div>
-  
-          <div class="form-group">
-            <label for="section-image-{{i}}"><i class="fas fa-image"></i> Section Image (Optional)</label>
-            <input
-              id="section-image-{{i}}"
-              type="file"
-              accept="image/*"
-              (change)="onSectionImageChange($event, i)"
-            >
-          </div>
-        </div>
-        <button type="button" class="add-section" (click)="addSection()">
-          <i class="fas fa-plus"></i> Add Section
-        </button>
-      </div>
-  
-      <div class="form-actions">
-        <button type="submit" [disabled]="isSubmitting">
-          <i class="fas fa-check"></i> {{ isSubmitting ? 'Submitting...' : 'Add Post' }}
-        </button>
-        <button type="button" (click)="cancel()">
-          <i class="fas fa-times"></i> Cancel
-        </button>
-      </div>
-  
-      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-    </form>
-  </div>
+      <div
+        id="post-content-editor"
+        class="editor-content"
+        contenteditable="true"
+        (input)="updateContent()"
+        placeholder="Enter post content here..."
+      ></div>
+    </div>
+
+    <div class="form-group">
+      <label for="post-image">Post Image (Optional)</label>
+      <input
+        id="post-image"
+        type="file"
+        accept="image/*"
+        (change)="onPostImageChange($event)"
+      >
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Submitting...' : 'Add Post' }}
+      </button>
+      <button type="button" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  </form>
+</div>

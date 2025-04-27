@@ -1,22 +1,51 @@
 <div class="edit-container">
-    <h2>Edit Vet Blog Post</h2>
-  
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  
-    <form (ngSubmit)="updatePost()" class="edit-form">
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" id="title" [(ngModel)]="post.title" name="title" required />
-      </div>
-  
-      <div class="form-group">
-        <label for="content">Content</label>
-        <textarea id="content" [(ngModel)]="post.content" name="content" rows="6" required></textarea>
-      </div>
-  
-      <button type="submit" class="save-btn">💾 Save Changes</button>
-    </form>
-  
-    <a [routerLink]="['/dashboard/vet-blog']" class="back-link">← Back to Blog List</a>
+  <div class="header-section">
+    <h2><i class="fas fa-edit"></i> Edit Blog Post</h2>
+    <button class="back-btn" routerLink="/doctor-blog">
+      <i class="fas fa-arrow-left"></i> Back to My Posts
+    </button>
   </div>
-  
+
+  <div *ngIf="errorMessage" class="error-message">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+  </div>
+
+  <form (ngSubmit)="updatePost()" class="edit-form">
+    <div class="form-group">
+      <label for="title"><i class="fas fa-heading"></i> Title</label>
+      <input type="text" id="title" [(ngModel)]="post.title" name="title" required />
+    </div>
+
+    <div class="form-group">
+      <label for="content"><i class="fas fa-align-left"></i> Content</label>
+      <textarea id="content" [(ngModel)]="post.content" name="content" rows="8" required></textarea>
+    </div>
+
+    <div *ngIf="post.sections && post.sections.length > 0" class="sections-toggle">
+      <button type="button" (click)="toggleSections()" class="toggle-btn">
+        <i class="fas" [class.fa-chevron-down]="!showSections" [class.fa-chevron-up]="showSections"></i>
+        {{ showSections ? 'Hide' : 'Show' }} Sections ({{ post.sections.length }})
+      </button>
+    </div>
+
+    <div *ngIf="showSections" class="sections-container">
+      <div *ngFor="let section of post.sections; let i = index" class="section-card">
+        <h4>Section {{ i + 1 }}</h4>
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" [(ngModel)]="section.title" [name]="'section-title-' + i" />
+        </div>
+        <div class="form-group">
+          <label>Content</label>
+          <textarea [(ngModel)]="section.content" [name]="'section-content-' + i" rows="4"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="save-btn">
+        <i class="fas fa-save"></i> Save Changes
+      </button>
+    </div>
+  </form>
+</div>

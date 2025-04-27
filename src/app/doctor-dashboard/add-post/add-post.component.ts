@@ -1,8 +1,9 @@
-import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PostService } from '../../services/blog/post.service';
+import { LoginDoctorService } from '../../services/login-doctor.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,92 +17,94 @@ export class AddPostComponent implements OnInit {
   addPostForm: FormGroup;
   isSubmitting = false;
   errorMessage: string | null = null;
-  doctorRole: string = 'human';
-  doctorId: number = 3; // Default doctor_id
+  doctorRole: string | null = null;
+  doctorId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private postService: PostService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
+    private loginDoctorService: LoginDoctorService,
+    private router: Router
   ) {
     this.addPostForm = this.fb.group({
-      title: ['', Validators.required],
-      content: ['', Validators.required],
-      image: [null],
-      sections: this.fb.array([])
-    });
-  }
-
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.errorMessage = 'You need to log in to add a post.';
-      console.error('No authentication token found');
-      this.cdr.detectChanges();
-      return;
-    }
-
-    console.log('Using default doctor_id: 3, role: human');
-  }
-
-  get sections(): FormArray {
-    return this.addPostForm.get('sections') as FormArray;
-  }
-
-  createSection(): FormGroup {
-    return this.fb.group({
       title: [''],
       content: [''],
       image: [null]
     });
   }
 
-  addSection() {
-    this.sections.push(this.createSection());
-    this.cdr.detectChanges();
-  }
+  ngOnInit() {
+    const token = this.loginDoctorService.getToken();
+    const doctor = this.loginDoctorService.getDoctor();
+    this.doctorId = doctor?.id || null;
+    this.doctorRole = localStorage.getItem('doctor_role');
 
-  removeSection(index: number) {
-    this.sections.removeAt(index);
-    this.cdr.detectChanges();
+    if (!token || !this.doctorId || !this.doctorRole) {
+      this.errorMessage = 'You need to log in as a doctor to add a post.';
+      setTimeout(() => {
+        this.router.navigate(['/doctor-login']);
+      }, 2000);
+    }
   }
 
   onPostImageChange(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.addPostForm.patchValue({ image: file });
-    } else {
-      this.addPostForm.patchValue({ image: null });
+      this.addPostForm.patchValue({ image: input.files[0] });
     }
-    this.cdr.detectChanges();
   }
 
-  onSectionImageChange(event: Event, index: number) {
+  formatText(command: string, value?: string) {
+    document.execCommand(command, false, value);
+    this.updateContent();
+  }
+
+  onFontSizeChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    if (target) {
+      this.formatText('fontSize', target.value);
+    }
+  }
+
+  onColorChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target) {
+      this.formatText('foreColor', target.value);
+    }
+  }
+
+  insertImage(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      this.sections.at(index).patchValue({ image: file });
-    } else {
-      this.sections.at(index).patchValue({ image: null });
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imgSrc = e.target?.result as string;
+        document.execCommand('insertImage', false, imgSrc);
+        this.updateContent();
+      };
+      reader.readAsDataURL(file);
     }
-    this.cdr.detectChanges();
+  }
+
+  triggerInsertImage() {
+    const input = document.getElementById('insert-image') as HTMLInputElement;
+    if (input) {
+      input.click();
+    }
+  }
+
+  updateContent() {
+    const editor = document.getElementById('post-content-editor') as HTMLDivElement;
+    if (editor) {
+      this.addPostForm.get('content')?.setValue(editor.innerHTML);
+    }
   }
 
   onSubmit() {
-    if (this.addPostForm.invalid) {
-      this.errorMessage = 'Please fill in the required fields (title and content).';
-      console.error('Form is invalid:', this.addPostForm.errors);
-      this.cdr.detectChanges();
-      return;
-    }
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.errorMessage = 'Cannot submit post: Please log in.';
+    if (!this.doctorId || !this.doctorRole) {
+      this.errorMessage = 'Cannot submit post: Please log in as a doctor.';
       this.isSubmitting = false;
-      this.cdr.detectChanges();
       return;
     }
 
@@ -114,43 +117,29 @@ export class AddPostComponent implements OnInit {
     formData.append('role', this.doctorRole);
     formData.append('doctor_id', this.doctorId.toString());
     const postImage = this.addPostForm.get('image')?.value;
-    if (postImage) {
+    if (postImage instanceof File) {
       formData.append('image', postImage);
     }
-    this.sections.controls.forEach((section, index) => {
-      formData.append(`sections[${index}][title]`, section.get('title')?.value || '');
-      formData.append(`sections[${index}][content]`, section.get('content')?.value || '');
-      const sectionImage = section.get('image')?.value;
-      if (sectionImage) {
-        formData.append(`sections[${index}][image]`, sectionImage);
-      }
-    });
 
     console.log('Submitting FormData:', [...formData.entries()]);
     this.postService.createPost(formData).subscribe({
       next: (response) => {
         console.log('Post created successfully:', response);
         this.isSubmitting = false;
-
         Swal.fire({
           icon: 'success',
-          title: 'تم!',
-          text: 'البوست تم إضافته بنجاح.',
+          title: 'Done!',
+          text: 'Post added successfully.',
           timer: 2000,
           showConfirmButton: false
         }).then(() => {
-          console.log('Redirecting to /doctor-dashboard');
-          this.router.navigate(['/doctor-dashboard']);
+          this.router.navigate(['/doctor-blog']);
         });
-
-        this.cdr.detectChanges();
       },
       error: (err) => {
         this.isSubmitting = false;
-        const errors = err.error?.errors || err.error?.message || 'فشل إضافة البوست. حاولي مرة تانية.';
-        this.errorMessage = typeof errors === 'object' ? Object.values(errors).flat().join(', ') : errors;
+        this.errorMessage = err.error?.message || 'Failed to add post. Please try again.';
         console.error('Error creating post:', err);
-        this.cdr.detectChanges();
       }
     });
   }

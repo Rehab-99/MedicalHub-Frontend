@@ -88,6 +88,7 @@ import { DoctorProfileEditComponent } from './doctor-dashboard/doctor-profile-ed
 import { DoctorAppointmentComponent } from './doctor-dashboard/doctor-appointment/doctor-appointment.component';
 import { DoctorPatientDetailComponent } from './doctor-dashboard/doctor-patient-detail/doctor-patient-detail.component';
 import { DoctorPatientComponent } from './doctor-dashboard/doctor-patient/doctor-patient.component';
+import { DoctorReportsComponent } from './doctor-dashboard/doctor-reports/doctor-reports.component';
 
 export const routes: Routes = [
   {
@@ -320,10 +321,9 @@ export const routes: Routes = [
     redirectTo: '/blog/vet', 
     pathMatch: 'full' 
   },
-  {
-    path: "edit-blog/:id",
-    component: EditPostBlogComponent
-  },
+  { path: "doctor-dashboard/edit-blog/:id",
+     component: EditPostBlogComponent 
+    } ,
   {
     path: "doctor-dashboard",
     component: DoctorDashboardComponent
@@ -366,6 +366,9 @@ export const routes: Routes = [
   path: 'doctor-appointments',
   component: DoctorAppointmentComponent
 },
+{ path: 'doctor-reports', 
+  component: DoctorReportsComponent },
+
   {
     path: 'user/dashboard',
     component: UserDashboardComponent,

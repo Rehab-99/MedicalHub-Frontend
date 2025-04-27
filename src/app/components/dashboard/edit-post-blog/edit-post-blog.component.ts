@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router'; 
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,15 +9,20 @@ import Swal from 'sweetalert2';
 
 @Component({
   standalone: true,
-  selector: 'app-edit-vet-blog',
+  selector: 'app-edit-post-blog',
   templateUrl: './edit-post-blog.component.html',
   styleUrls: ['./edit-post-blog.component.css'],
-  imports: [CommonModule, FormsModule, RouterModule], 
+  imports: [CommonModule, FormsModule, RouterModule],
 })
 export class EditPostBlogComponent implements OnInit {
-  post: any = { title: '', content: '' }; 
+  post: any = { 
+    title: '', 
+    content: '',
+    sections: [] 
+  };
   errorMessage: string | null = null;
   postId!: number;
+  showSections: boolean = false;
 
   constructor(
     private postService: PostService,
@@ -35,6 +40,7 @@ export class EditPostBlogComponent implements OnInit {
     this.postService.getPostById(this.postId).subscribe({
       next: (res) => {
         this.post = res.data;
+        this.showSections = this.post.sections && this.post.sections.length > 0;
         this.errorMessage = null;
       },
       error: (err) => {
@@ -45,15 +51,36 @@ export class EditPostBlogComponent implements OnInit {
   }
 
   updatePost(): void {
-    this.postService.updatePost(this.postId, this.post).subscribe({
+    const formData = new FormData();
+    formData.append('title', this.post.title);
+    formData.append('content', this.post.content);
+    
+    if (this.post.sections && this.post.sections.length > 0) {
+      this.post.sections.forEach((section: any, index: number) => {
+        formData.append(`sections[${index}][title]`, section.title);
+        formData.append(`sections[${index}][content]`, section.content);
+      });
+    }
+
+    this.postService.updatePost(this.postId, formData).subscribe({
       next: () => {
-        Swal.fire('Updated!', 'The post has been updated successfully.', 'success');
-        this.router.navigate(['/dashboard/vet-blog']);
+        Swal.fire({
+          icon: 'success',
+          title: 'Updated!',
+          text: 'The post has been updated successfully.',
+          timer: 2000
+        });
+        this.blogService.notifyPostsUpdated();
+        this.router.navigate(['/doctor-blog']);
       },
       error: (err) => {
         console.error('Failed to update:', err);
         Swal.fire('Error', 'Failed to update the post.', 'error');
       }
     });
+  }
+
+  toggleSections(): void {
+    this.showSections = !this.showSections;
   }
 }

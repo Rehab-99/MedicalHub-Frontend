@@ -2,19 +2,22 @@
 
 <div class="blog-detail-page" *ngIf="post">
   <div class="blog-header-section">
-    <img [src]="post.doctorImage || 'assets/default-doctor.png'" alt="Doctor Image" class="doctor-image" />
+    <img [src]="post.doctor?.image || 'assets/default-doctor.png'" 
+         alt="Doctor Image" class="doctor-image" />
     <div class="doctor-info">
       <h4 class="doctor-name">{{ doctorName || 'Unknown Doctor' }}</h4>
-      <p class="date">{{ formatDate(post.date) }}</p>
+      <p class="date">{{ formatDate(post.created_at) }}</p>
     </div>
   </div>
 
   <div class="blog-content-section">
     <h1 class="post-title">{{ post.title }}</h1>
+    
+    <img *ngIf="post.image" [src]="post.image" alt="Post Image" class="post-image">
+    
     <p class="post-content">{{ post.content }}</p>
   </div>
 
-  <!-- Comments Component -->
   <app-comments [postId]="post.id"></app-comments>
 </div>
 
