@@ -21,7 +21,12 @@ export class DoctorAppointmentComponent implements OnInit {
   upcomingAppointments: any[] = []; // لتخزين المواعيد القريبة
   isLoading = false;
   baseUrl = environment.apiUrl;
-  activeChats: { [key: number]: boolean } = {}; // Track active chats by patient ID
+  activeChats: { 
+    [key: number]: { 
+      isActive: boolean; 
+      conversationId: string | null 
+    } 
+  } = {}; // Track active chats by patient ID
   doctorId: number | null = null;
 
   constructor(
@@ -117,35 +122,47 @@ export class DoctorAppointmentComponent implements OnInit {
       }
     });
   }
-
   startChat(patient: any) {
     console.log('startChat called with patient:', patient);
     if (patient && patient.id && this.doctorId) {
-      this.activeChats[patient.id] = true;
-      console.log('activeChats updated:', JSON.stringify(this.activeChats));
-      this.http.post(`${this.baseUrl}/chat/start`, { user_id: patient.id, doctor_id: this.doctorId })
-        .subscribe({
-          next: (response: any) => {
-            console.log('Chat started successfully with patient:', patient.name, 'Response:', response);
-          },
-          error: (error) => {
-            console.error('Error starting chat:', error);
-            this.activeChats[patient.id] = false;
-            console.log('activeChats reverted:', JSON.stringify(this.activeChats));
-          }
+        // Initialize the chat state
+        this.activeChats[patient.id] = {
+            isActive: true,
+            conversationId: null
+        };
+        
+        console.log('activeChats updated:', JSON.stringify(this.activeChats));
+        
+        this.http.post(`${this.baseUrl}/chat/start`, { 
+            doctor_id: this.doctorId,
+            user_id: patient.id 
+        }).subscribe({
+            next: (response: any) => {
+                console.log('Chat started successfully with patient:', patient.name, 'Response:', response);
+                if (response.data?.id) {
+                    this.activeChats[patient.id] = {
+                        isActive: true,
+                        conversationId: response.data.id
+                    };
+                }
+            },
+            error: (error) => {
+                console.error('Error starting chat:', error);
+                delete this.activeChats[patient.id];
+            }
         });
     } else {
-      console.error('Cannot start chat: Invalid patient or doctorId', { patient, doctorId: this.doctorId });
+        console.error('Cannot start chat: Invalid patient or doctorId', { patient, doctorId: this.doctorId });
     }
-  }
-  
-  isChatActive(patientId: number): boolean {
-    console.log('isChatActive called with patientId:', patientId, 'activeChats:', JSON.stringify(this.activeChats));
-    return this.activeChats[patientId] || false;
-  }
+}
+isChatActive(patientId: number): boolean {
+  return !!this.activeChats[patientId]?.isActive;
+}
   closeChat(patientId: number) {
-    this.activeChats[patientId] = false;
-  }
+    if (this.activeChats[patientId]) {
+        this.activeChats[patientId].isActive = false;
+    }
+}
 
 
 }

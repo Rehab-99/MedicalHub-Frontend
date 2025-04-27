@@ -65,15 +65,16 @@
   <!-- Chat windows for each patient -->
   <ng-container *ngFor="let appointment of appointments; let i = index">
     <app-chat-window
-      *ngIf="isChatActive(appointment.user.id)"
-      [doctorId]="doctorId"
-      [userId]="appointment.user.id"
-      [doctorName]="appointment.user.name || 'Unknown Patient'"
-      (closeChat)="closeChat(appointment.user.id)"
-      [style.right.px]="20"
-      [style.bottom.px]="20">
-    </app-chat-window>
-  </ng-container>
+    *ngIf="activeChats[appointment.user.id]?.isActive"
+    [conversationId]="activeChats[appointment.user.id]?.conversationId || null"
+    [doctorId]="doctorId"
+    [userId]="appointment.user.id"
+    [doctorName]="appointment.user.name || 'Unknown Patient'"
+    (closeChat)="closeChat(appointment.user.id)"
+    [style.right.px]="20 + (i * 20)"
+    [style.bottom.px]="20 + (i * 20)">
+</app-chat-window>
+</ng-container>
 </div>
 
    
