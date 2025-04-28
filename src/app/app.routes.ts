@@ -411,5 +411,10 @@ export const routes: Routes = [
   {
     path: 'shopping-cart',
     component: ShoppingCartComponent
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent,
+    canActivate: [AuthGuard]
   }
 ];

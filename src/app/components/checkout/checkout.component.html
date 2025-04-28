@@ -1,73 +1,104 @@
-<p>checkout works!</p>
-<form action="">
+<div class="checkout-container">
+  <h2>Checkout</h2>
 
-    <div class="accordion-box">
-      <input type="checkbox" id="billing-toggle" class="accordion-toggle">
-      <label for="billing-toggle" class="accordion-header">Billing Address</label>
-      <div class="accordion-body">
-        <form>
-          <div class="form-grid">
-            <div class="form-row two-columns">
-              <input type="text" name="addr[billing][first_name]" placeholder="First Name" />
-              <input type="text" name="addr[billing][last_name]" placeholder="Last Name" />
-            </div>
-            <div class="form-row">
-              <input type="email" name="addr[billing][email]" placeholder="Email Address" />
-            </div>
-            <div class="form-row">
-              <input type="text" name="addr[billing][phone_number]" placeholder="Phone Number" />
-            </div>
-            <div class="form-row">
-              <input type="text" name="addr[billing][address]" placeholder="Mailing Address" />
-            </div>
-            <div class="form-row two-columns">
-              <input type="text" name="addr[billing][city]" placeholder="City" />
-              <input type="text" name="addr[billing][post_code]" placeholder="Post Code" />
-            </div>
-            <div class="form-row two-columns">
-              <select name="addr[billing][country]">
-                <option value="">Select Country</option>
-              </select>
-              <input type="text" name="addr[billing][state]" placeholder="State" />
-            </div>
-          </div>
-        </form>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Processing your order...</p>
+  </div>
+
+  <!-- Cart Summary -->
+  <div class="cart-summary" *ngIf="cartItems.length > 0">
+    <h3>Order Summary</h3>
+    <div class="cart-items">
+      <div *ngFor="let item of cartItems" class="cart-item">
+        <span class="item-name">Product ID: {{item.product_id}}</span>
+        <span class="item-quantity">Quantity: {{item.quantity}}</span>
+        <span class="item-price">Price: {{item.price | currency:'EGP':'symbol':'1.2-2'}}</span>
       </div>
     </div>
-  
+    <div class="total-amount">
+      <strong>Total: {{totalAmount | currency:'EGP':'symbol':'1.2-2'}}</strong>
+    </div>
+  </div>
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <!-- Payment Method -->
+    <div class="payment-method">
+      <h3>Payment Method</h3>
+      <select formControlName="payment_method">
+        <option value="cash">Cash on Delivery</option>
+        <option value="card">Credit Card</option>
+      </select>
+    </div>
+
+    <!-- Billing Address -->
+    <div class="address-section">
+      <h3>Billing Address</h3>
+      <div formGroupName="addr">
+        <div formGroupName="billing">
+          <div class="form-row">
+            <input type="text" formControlName="firstName" placeholder="First Name">
+            <input type="text" formControlName="lastName" placeholder="Last Name">
+          </div>
+          <div class="form-row">
+            <input type="email" formControlName="email" placeholder="Email">
+            <input type="text" formControlName="phoneNumber" placeholder="Phone Number">
+          </div>
+          <div class="form-row">
+            <input type="text" formControlName="address" placeholder="Address">
+          </div>
+          <div class="form-row">
+            <input type="text" formControlName="city" placeholder="City">
+            <input type="text" formControlName="postCode" placeholder="Post Code">
+          </div>
+          <div class="form-row">
+            <select formControlName="country">
+              <option value="">Select Country</option>
+              <option value="Egypt">Egypt</option>
+            </select>
+            <input type="text" formControlName="state" placeholder="State">
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Shipping Address -->
-    <div class="accordion-box">
-      <input type="checkbox" id="shipping-toggle" class="accordion-toggle">
-      <label for="shipping-toggle" class="accordion-header">Shipping Address</label>
-      <div class="accordion-body">
-       
-          <div class="form-grid">
-            <div class="form-row two-columns">
-              <input type="text" name="addr[shipping][first_name]" placeholder="First Name" />
-              <input type="text" name="addr[shipping][last_name]" placeholder="Last Name" />
-            </div>
-            <div class="form-row">
-              <input type="email" name="addr[shipping][email]" placeholder="Email Address" />
-            </div>
-            <div class="form-row">
-              <input type="text" name="addr[shipping][phone_number]" placeholder="Phone Number" />
-            </div>
-            <div class="form-row">
-              <input type="text" name="addr[shipping][address]" placeholder="Mailing Address" />
-            </div>
-            <div class="form-row two-columns">
-              <input type="text" name="addr[shipping][city]" placeholder="City" />
-              <input type="text" name="addr[shipping][post_code]" placeholder="Post Code" />
-            </div>
-            <div class="form-row two-columns">
-              <select name="addr[shipping][country]">
-                <option value="">Select Country</option>
-              </select>
-              <input type="text" name="addr[shipping][state]" placeholder="State" />
-            </div>
+    <div class="address-section">
+      <h3>Shipping Address</h3>
+      <div formGroupName="addr">
+        <div formGroupName="shipping">
+          <div class="form-row">
+            <input type="text" formControlName="firstName" placeholder="First Name">
+            <input type="text" formControlName="lastName" placeholder="Last Name">
           </div>
-      
+          <div class="form-row">
+            <input type="email" formControlName="email" placeholder="Email">
+            <input type="text" formControlName="phoneNumber" placeholder="Phone Number">
+          </div>
+          <div class="form-row">
+            <input type="text" formControlName="address" placeholder="Address">
+          </div>
+          <div class="form-row">
+            <input type="text" formControlName="city" placeholder="City">
+            <input type="text" formControlName="postCode" placeholder="Post Code">
+          </div>
+          <div class="form-row">
+            <select formControlName="country">
+              <option value="">Select Country</option>
+              <option value="Egypt">Egypt</option>
+            </select>
+            <input type="text" formControlName="state" placeholder="State">
+          </div>
+        </div>
       </div>
     </div>
-  </form><!-- Billing Address -->
+
+    <div class="submit-section">
+      <button type="submit" [disabled]="isLoading || !checkoutForm.valid">
+        Place Order
+      </button>
+    </div>
+  </form>
+</div>
   
