@@ -1,0 +1,87 @@
+<div class="edit-profile-container">
+    <div class="header-container">
+      <h1>Edit Profile</h1>
+    </div>
+    <div class="profile-card">
+      <form #editForm="ngForm" (ngSubmit)="onSubmit()" class="edit-form">
+        <!-- Image Section -->
+        <div class="image-section">
+          <div class="image-container">
+            <img *ngIf="doctor && doctor.image && !imageRemoved" [src]="getImageUrl(doctor.image)" alt="Doctor's Image" class="profile-image">
+            <i *ngIf="!(doctor && doctor.image) || imageRemoved" class="fas fa-user-md profile-icon"></i>
+            <div class="image-upload">
+              <label for="image" class="upload-label">
+                <i class="fas fa-camera"></i>
+                Change Image
+              </label>
+              <input type="file" id="image" (change)="onFileSelected($event)" accept="image/*">
+              <button type="button" class="remove-image-button" (click)="removeImage()" *ngIf="doctor.image && !imageRemoved">
+                <i class="fas fa-trash"></i>
+                Remove Image
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Personal Information -->
+        <div class="form-section">
+          <h3>Personal Information</h3>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" [(ngModel)]="doctor.name" name="name" required placeholder="Enter full name">
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" [(ngModel)]="doctor.email" name="email" required placeholder="Enter email address">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" [(ngModel)]="doctor.phone" name="phone" placeholder="Enter phone number">
+          </div>
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" [(ngModel)]="doctor.address" name="address" placeholder="Enter address">
+          </div>
+        </div>
+  
+        <!-- Professional Information -->
+        <div class="form-section">
+          <h3>Professional Information</h3>
+          <div class="form-group">
+            <label for="role">Doctor Type</label>
+            <input type="text" id="role" [value]="doctor.role === 'human' ? 'Human Doctor' : 'Veterinarian'" disabled>
+          </div>
+          <div class="form-group">
+            <label for="clinic_id">Clinic</label>
+            <input type="text" id="clinic_id" [value]="clinicName || 'N/A'" disabled>
+          </div>
+          <div class="form-group">
+            <label for="specialization">Specialization</label>
+            <input type="text" id="specialization" [(ngModel)]="doctor.specialization" name="specialization" disabled>
+          </div>
+          <div class="form-group">
+            <label for="clinic_address">Clinic Address</label>
+            <input type="text" id="clinic_address" [(ngModel)]="doctor.clinic_address" name="clinic_address" placeholder="Enter clinic address">
+          </div>
+        </div>
+  
+        <!-- Bio -->
+        <div class="form-section">
+          <h3>Bio</h3>
+          <div class="form-group">
+            <label for="bio">Bio</label>
+            <textarea id="bio" [(ngModel)]="doctor.bio" name="bio" placeholder="Enter your bio"></textarea>
+          </div>
+        </div>
+  
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <button type="button" class="cancel-button" (click)="onCancel()">Cancel</button>
+          <button type="submit" class="submit-button" [disabled]="editForm.invalid || isLoading">
+            <span *ngIf="!isLoading">Save Changes</span>
+            <span *ngIf="isLoading">Saving...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

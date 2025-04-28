@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 interface Activity {
   icon: string;
@@ -17,19 +20,38 @@ interface Appointment {
   id: string;
 }
 
+interface DashboardStats {
+  totalUsers: number;
+  totalDoctors: number;
+  totalAppointemnts: number;
+  totalHumanClinic: number;
+  totalVet: number;
+  totalService: number;
+  totalFeedback: number;
+  totalCategory: number;
+  totalProduct: number;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterLink]
+  imports: [CommonModule, RouterLink, HttpClientModule]
 })
 export class HomeComponent implements OnInit {
   userName = 'John Doe';
-  todayAppointments = 8;
-  onlineConsultations = 3;
-  pendingPrescriptions = 12;
-  totalPatients = 150;
+  stats: DashboardStats = {
+    totalUsers: 0,
+    totalDoctors: 0,
+    totalAppointemnts: 0,
+    totalHumanClinic: 0,
+    totalVet: 0,
+    totalService: 0,
+    totalFeedback: 0,
+    totalCategory: 0,
+    totalProduct: 0
+  };
 
   recentActivities: Activity[] = [
     {
@@ -78,16 +100,50 @@ export class HomeComponent implements OnInit {
     }
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router, 
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
-    // Initialize dashboard data
-    this.loadDashboardData();
+    if (isPlatformBrowser(this.platformId)) {
+      const adminToken = localStorage.getItem('adminToken');
+      if (!adminToken) {
+        this.router.navigate(['/admin/login']);
+        return;
+      }
+      this.loadDashboardData();
+    }
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+      this.router.navigate(['/admin/login']);
+      return new HttpHeaders();
+    }
+    return new HttpHeaders({
+      'Authorization': `Bearer ${adminToken}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
   }
 
   loadDashboardData() {
-    // TODO: Implement API calls to load real data
-    // This is currently using mock data
+    this.http.get<DashboardStats>('http://localhost:8000/api/dashboard/stats', {
+      headers: this.getAuthHeaders()
+    }).subscribe({
+      next: (data) => {
+        this.stats = data;
+      },
+      error: (error) => {
+        console.error('Error fetching dashboard stats:', error);
+        if (error.status === 401) {
+          this.router.navigate(['/admin/login']);
+        }
+      }
+    });
   }
 
   startConsultation(appointment: Appointment): void {

@@ -18,7 +18,7 @@
 
 .sidebar {
   width: 250px;
-  background-color: var(--background-dark);
+  background-color:#0d3048;
   color: var(--text-light);
   display: flex;
   flex-direction: column;

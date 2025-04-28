@@ -29,17 +29,22 @@
     align-items: center;
     text-decoration: none;
     gap: 0.5rem;
+    justify-content: center;
 }
 
 .logo-icon {
     color: #3498db;
     font-size: 1.8rem;
+    display: flex;
+    align-items: center;
 }
 
 .logo-text {
     font-size: 1.5rem;
     font-weight: bold;
     color: #2c3e50;
+    display: flex;
+    align-items: center;
 }
 
 .nav-links {
@@ -218,13 +223,18 @@
     cursor: pointer;
     padding: 8px 12px;
     display: inline-block;
-    color: #007B8A; /* soft medical blue */
+    color: #007B8A;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .dropdown-toggle i {
     margin-left: 5px;
     font-size: 0.8rem;
+    transition: transform 0.3s ease;
 }
 
 .dropdown-menu {
@@ -305,6 +315,42 @@
     transform: translateX(5px);
 }
 
+@media (max-width: 1200px) {
+    .nav-container {
+        padding: 0 1.5rem;
+    }
+    
+    .nav-links {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-container {
+        padding: 0 1rem;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .logo a {
+        gap: 0.4rem;
+    }
+    
+    .logo-icon {
+        font-size: 1.5rem;
+    }
+    
+    .logo-text {
+        font-size: 1.3rem;
+    }
+    
+    .nav-links a {
+        font-size: 0.9rem;
+    }
+}
+
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;
@@ -313,21 +359,79 @@
     .nav-links {
         position: fixed;
         top: 70px;
-        left: 0;
-        right: 0;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
         background-color: #fff;
-        padding: 1rem;
         flex-direction: column;
-        gap: 1rem;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        transform: translateY(-100%);
-        opacity: 0;
-        transition: all 0.3s ease;
+        padding: 2rem;
+        transition: left 0.3s ease;
+        gap: 1.5rem;
+        overflow-y: auto;
     }
 
     .nav-links.active {
-        transform: translateY(0);
-        opacity: 1;
+        left: 0;
+    }
+
+    .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 1rem 0;
+        font-size: 1.1rem;
+    }
+
+    .dropdown {
+        width: 100%;
+        text-align: center;
+    }
+
+    .dropdown-toggle {
+        width: 100%;
+        padding: 1rem 0;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .dropdown-toggle i {
+        margin-left: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        transform: none;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        margin-top: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .dropdown-menu a {
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .user-menu {
+        width: 100%;
+        text-align: center;
+    }
+
+    .user-menu .dropdown-menu {
+        position: static;
+        transform: none;
+        width: 100%;
     }
 
     .menu-toggle.active span:nth-child(1) {
@@ -342,39 +446,52 @@
         transform: rotate(-45deg) translate(7px, -6px);
     }
 
-    .social-icons {
-        display: none;
+    .login-btn {
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
     }
-    .dropdown {
-  position: relative;
-  display: inline-block;
+
+    .cart-link {
+        width: 100%;
+        text-align: center;
+        margin: 1rem 0;
+    }
+
+    .logo a {
+        justify-content: flex-start;
+        padding: 0.5rem 0;
+    }
+    
+    .logo-icon {
+        font-size: 1.4rem;
+    }
+    
+    .logo-text {
+        font-size: 1.2rem;
+    }
 }
 
-.dropdown-toggle {
-  cursor: pointer;
-}
+@media (max-width: 576px) {
+    .nav-container {
+        padding: 0 0.8rem;
+    }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: var(--white);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  display: block; /* المفروض تكون block لما تظهر */
-  z-index: 1000;
-}
+    .logo a {
+        gap: 0.3rem;
+    }
+    
+    .logo-icon {
+        font-size: 1.3rem;
+    }
+    
+    .logo-text {
+        font-size: 1.1rem;
+    }
 
-.dropdown-menu a {
-  display: block;
-  padding: 0.5rem 1rem;
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-.dropdown-menu a:hover {
-  background-color: var(--light-gray);
-}
+    .nav-links {
+        padding: 1.5rem;
+    }
 }
 
 .cart-link {

@@ -1,0 +1,51 @@
+<div class="orders-container">
+  <h2>Orders Management</h2>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading orders...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button (click)="loadOrders()">Retry</button>
+  </div>
+
+  <!-- Orders Table -->
+  <div *ngIf="!loading && !error" class="orders-table-container">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Payment Method</th>
+          <th>Payment Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>{{ order.id }}</td>
+          <td>{{ order.customerName }}</td>
+          <td>{{ order.orderDate | date:'medium' }}</td>
+          <td>{{ order.items.length }} items</td>
+          <td>${{ order.totalAmount }}</td>
+          <td>{{ order.paymentMethod }}</td>
+          <td>
+            <span [class]="getPaymentStatusClass(order.paymentStatus)">
+              {{ order.paymentStatus }}
+            </span>
+          </td>
+          <td>
+            <button class="view-btn" (click)="viewOrderDetails(order)">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> 

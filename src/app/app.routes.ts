@@ -76,9 +76,7 @@ import { CategoryProductsComponent } from './components/main-website/category-pr
 
 import { DoctorRequestFormComponent } from './components/main-website/doctor-request-form/doctor-request-form.component';
 import { DoctorRequestComponent } from './components/dashboard/doctor-request/doctor-request.component';
-<<<<<<< HEAD
-import { PaymentComponent } from './payment/payment.component';
-=======
+
 import { FeedbackComponent } from './components/main-website/feedback/feedback.component';
 
 import { AddPostComponent } from './doctor-dashboard/add-post/add-post.component';
@@ -86,8 +84,15 @@ import { DoctorBlogComponent } from './doctor-dashboard/doctor-blog/doctor-blog.
 import { CommentsComponent } from './components/main-website/comments/comments.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { OrderConfirmationComponent } from './components/order-confirmation/order-confirmation.component';
+import { DoctorProfileComponent } from './doctor-dashboard/doctor-profile/doctor-profile.component';
+import { DoctorProfileEditComponent } from './doctor-dashboard/doctor-profile-edit/doctor-profile-edit.component';
+import { DoctorAppointmentComponent } from './doctor-dashboard/doctor-appointment/doctor-appointment.component';
+import { DoctorPatientDetailComponent } from './doctor-dashboard/doctor-patient-detail/doctor-patient-detail.component';
+import { DoctorPatientComponent } from './doctor-dashboard/doctor-patient/doctor-patient.component';
+import { DoctorReportsComponent } from './doctor-dashboard/doctor-reports/doctor-reports.component';
+import { BookedServicesComponent } from './components/dashboard/bookedservices/bookedservices.component';
 
->>>>>>> 63327ec853cd34531b41df5381411327bedb89ba
+
 export const routes: Routes = [
   {
     path: '',
@@ -118,6 +123,7 @@ export const routes: Routes = [
     path: 'clinics/:id/doctors',
     component: ClinicDoctorsComponent 
   },
+  
   {
     path: 'services',
     component: ServiceDetailComponent
@@ -189,6 +195,10 @@ export const routes: Routes = [
       {
         path: 'human-clinic',
         component: HumanClinicComponent
+      },
+      { 
+        path: 'bookedservices',
+        component: BookedServicesComponent
       },
       { 
         path: 'add-clinic', 
@@ -344,8 +354,30 @@ export const routes: Routes = [
     component: AddPostComponent
   },
   { path: 'doctor-blog',
-     component: DoctorBlogComponent },
-
+     component: DoctorBlogComponent 
+    },
+    {
+      path: 'doctor-profile',
+      component: DoctorProfileComponent
+    } ,
+    {
+      path: 'doctor-profile/edit',
+      component: DoctorProfileEditComponent
+    },
+    { path: 'doctor-patient', 
+      component:  DoctorPatientComponent
+     },
+    { path: 'doctor-patient/:id',
+       component: DoctorPatientDetailComponent 
+      },
+    // أضف هذا المسار إذا لم يكن موجوداً
+{
+  path: 'doctor-appointments',
+  component: DoctorAppointmentComponent
+},
+{ path: 'doctor-reports', 
+  component: DoctorReportsComponent
+ },
   {
     path: 'user/dashboard',
     component: UserDashboardComponent,
@@ -396,5 +428,13 @@ export const routes: Routes = [
   {
     path: 'order-confirmation',
     component: OrderConfirmationComponent
+  },
+  {
+    path: 'shopping-cart',
+    component: ShoppingCartComponent
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent
   }
 ];
