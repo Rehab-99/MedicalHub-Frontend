@@ -3,11 +3,15 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { CartService } from '../../../services/cart.service';
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -18,9 +22,13 @@ export class HeaderComponent {
   user: any = null;
   cartItemsCount: number = 0;
 
+  searchQuery: string = '';
+
   constructor(
     private authService: AuthService,
-    private cartService: CartService
+    private cartService: CartService,
+    private http: HttpClient ,
+    private router: Router
   ) {
     this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
       this.isLoggedIn = loggedIn;
@@ -72,4 +80,15 @@ export class HeaderComponent {
     this.authService.logout();
     this.isUserMenuOpen = false;
   }
+
+
+  onSearch() {
+      if (this.searchQuery.trim() !== '') {
+        this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+      }
+  }
+
+
+
+
 }

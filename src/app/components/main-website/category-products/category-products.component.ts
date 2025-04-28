@@ -4,13 +4,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../footer/footer.component';
+import { HeaderComponent } from '../header/header.component';
 import { AuthService } from '../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrModule } from 'ngx-toastr';
 
 @Component({
   selector: 'app-category-products',
-  imports: [CommonModule, FormsModule, FooterComponent, ToastrModule],
+  imports: [CommonModule, FormsModule, FooterComponent, ToastrModule, HeaderComponent],
   templateUrl: './category-products.component.html',
   styleUrl: './category-products.component.css'
 })

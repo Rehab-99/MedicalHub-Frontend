@@ -26,6 +26,8 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { UpdatePasswordComponent } from './components/auth/update-password/update-password.component';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { SearchComponent } from './components/main-website/search/search.component';
+
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -416,5 +418,9 @@ export const routes: Routes = [
   {
     path: 'checkout',
     component: CheckoutComponent
+  },
+  {
+    path:'search',
+    component:SearchComponent
   }
 ];

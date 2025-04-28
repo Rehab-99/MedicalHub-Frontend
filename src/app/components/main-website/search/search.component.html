@@ -1,0 +1,71 @@
+<app-header></app-header>
+
+<div class="search-results-container">
+  <h2>Search Results for "{{ query }}"</h2>
+
+  <div class="search-buttons">
+    <button (click)="setActiveSection('categories')" [ngClass]="{'active': selectedSection === 'categories'}">Categories</button>
+    <button (click)="setActiveSection('doctors')" [ngClass]="{'active': selectedSection === 'doctors'}">Doctors</button>
+    <button (click)="setActiveSection('posts')" [ngClass]="{'active': selectedSection === 'posts'}">Posts</button>
+    <button (click)="setActiveSection('products')" [ngClass]="{'active': selectedSection === 'products'}">Products</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <span>Loading...</span>
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading && results[selectedSection]?.length === 0" class="no-results">
+    <p>No results found.</p>
+  </div>
+
+  <!-- فاصل عرض كل قسم -->
+
+  <!-- الأقسام -->
+  <div *ngIf="!loading && selectedSection === 'categories'">
+    <div *ngFor="let item of results.categories" class="result-card">
+      <div class="result-card-header">
+        <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
+        <h4>{{ item.name }}</h4>
+        <p *ngIf="item.description">{{ item.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- الدكاترة -->
+  <div *ngIf="!loading && selectedSection === 'doctors'">
+    <div *ngFor="let item of results.doctors" class="result-card">
+      <div class="result-card-header">
+        <p><strong>Specialization:</strong> {{ item.specialization }}</p>
+        <p><strong>Department:</strong> {{ item.department }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- البوستات -->
+  <div *ngIf="!loading && selectedSection === 'posts'">
+    <div *ngFor="let item of results.posts" class="result-card">
+      <div class="result-card-header">
+        <p>{{ item.title }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- المنتجات -->
+  <div *ngIf="!loading && selectedSection === 'products'">
+    <div *ngFor="let item of results.products" class="product-card">
+      <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
+      <h5>{{ item.name }}</h5>
+      <p *ngIf="item.description">{{ item.description }}</p>
+      <p class="price">{{ item.price }} EGP</p>
+      <button class="add-to-cart-btn" [disabled]="item.stock === 0" (click)="addToCart(item.id)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+</div>
+
+<app-footer></app-footer>
