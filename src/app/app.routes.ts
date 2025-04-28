@@ -89,6 +89,8 @@ import { DoctorAppointmentComponent } from './doctor-dashboard/doctor-appointmen
 import { DoctorPatientDetailComponent } from './doctor-dashboard/doctor-patient-detail/doctor-patient-detail.component';
 import { DoctorPatientComponent } from './doctor-dashboard/doctor-patient/doctor-patient.component';
 import { DoctorReportsComponent } from './doctor-dashboard/doctor-reports/doctor-reports.component';
+import { BookedServicesComponent } from './components/dashboard/bookedservices/bookedservices.component';
+
 
 export const routes: Routes = [
   {
@@ -120,6 +122,7 @@ export const routes: Routes = [
     path: 'clinics/:id/doctors',
     component: ClinicDoctorsComponent 
   },
+  
   {
     path: 'services',
     component: ServiceDetailComponent
@@ -191,6 +194,10 @@ export const routes: Routes = [
       {
         path: 'human-clinic',
         component: HumanClinicComponent
+      },
+      { 
+        path: 'bookedservices',
+        component: BookedServicesComponent
       },
       { 
         path: 'add-clinic', 

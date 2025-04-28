@@ -87,6 +87,12 @@ export class SidebarComponent {
 ,
       route: '/dashboard/services'
     },
+    // In sidebar.component.ts
+{
+  title: 'BookedServices',
+  icon: 'fas fa-hand-holding-medical',
+  route: '/dashboard/bookedservices'  // Remove '/dashboard' to match your route config
+},
     {
       title: 'Doctor-Requests',
       icon: 'fas fa-user-md'

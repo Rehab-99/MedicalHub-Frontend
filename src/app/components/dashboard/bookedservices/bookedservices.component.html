@@ -1,0 +1,65 @@
+<div class="booked-services-wrapper">
+    <h2 class="dashboard-title">Booked Services</h2>
+    
+    <div *ngIf="loading" class="loading-spinner">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  
+    <div *ngIf="!loading && bookings.length === 0" class="no-bookings">
+      <p>No booked services found.</p>
+    </div>
+  
+    <div *ngIf="!loading && bookings.length > 0" class="table-wrapper">
+      <table class="booked-services-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Service</th>
+            <th>User</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let booking of bookings">
+            <td>{{ booking.id }}</td>
+            <td>{{ booking.service?.name }}</td>
+            <td>{{ booking.user?.name }}</td>
+            <td>{{ booking.appointment_date | date:'mediumDate' }}</td>
+            <td>{{ booking.appointment_time }}</td>
+            <td>{{ booking.address }}</td>
+            <td>{{ booking.phone }}</td>
+            <td>
+                <select 
+                  [(ngModel)]="booking.status" 
+                  (change)="updateStatus(booking)"
+                  class="status-select"
+                  [ngClass]="{
+                    'status-confirmed': booking.status === 'confirmed',
+                    'status-pending': booking.status === 'pending',
+                    'status-cancelled': booking.status === 'cancelled'
+                  }"
+                >
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </td>
+              
+              
+            <td>
+              <button class="action-btn delete-btn" (click)="deleteBooking(booking.id)">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
