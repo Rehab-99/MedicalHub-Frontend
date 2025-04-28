@@ -42,16 +42,7 @@ export class SidebarComponent {
       icon: 'fas fa-user-md',
       route: '/dashboard/doctors'
     },
-    {
-      title: 'Patients',
-      icon: 'fas fa-users',
-      route: '/dashboard/patients'
-    },
-    {
-      title: 'Consultations',
-      icon: 'fas fa-stethoscope',
-      route: '/dashboard/consultations'
-    },
+ 
     {
       title: 'Pharmacy',
       icon: 'fas fa-pills',
@@ -83,26 +74,18 @@ export class SidebarComponent {
     },
     {
       title: 'Services',
-      icon: 'fas fa-hand-holding-medical'
-,
+      icon: 'fas fa-hand-holding-medical',
       route: '/dashboard/services'
     },
-    // In sidebar.component.ts
-{
-  title: 'BookedServices',
-  icon: 'fas fa-hand-holding-medical',
-  route: '/dashboard/bookedservices'  // Remove '/dashboard' to match your route config
-},
     {
-      title: 'Doctor-Requests',
-      icon: 'fas fa-user-md'
-,
-      route: '/dashboard/doctor-request'
+      title: 'BookedServices',
+      icon: 'fas fa-hand-holding-medical',
+      route: '/dashboard/bookedservices'
     },
     {
-      title: 'Settings',
-      icon: 'fas fa-cog',
-      route: '/dashboard/settings'
+      title: 'Doctor-Requests',
+      icon: 'fas fa-user-md',
+      route: '/dashboard/doctor-request'
     }
   ];
 
