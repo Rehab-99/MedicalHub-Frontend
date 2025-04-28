@@ -71,6 +71,25 @@
       </div>
 
       <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input
+          type="number"
+          id="quantity"
+          name="quantity"
+          [(ngModel)]="product.quantity"
+          class="form-control"
+          [class.is-invalid]="submitted && !product.quantity"
+          min="0"
+          required
+        />
+        <div class="invalid-feedback" *ngIf="submitted && !product.quantity">
+          Quantity is required
+        </div>
+      </div>
+
+
+
+      <div class="form-group">
         <label for="category">Category</label>
         <select
           id="category"
