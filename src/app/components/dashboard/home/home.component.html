@@ -6,18 +6,8 @@
         <i class="fas fa-user-friends"></i>
       </div>
       <div class="stat-info">
-        <h3>Total Patient</h3>
-        <div class="stat-number">1,521</div>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-icon">
-        <i class="fas fa-stethoscope"></i>
-      </div>
-      <div class="stat-info">
-        <h3>Consultation</h3>
-        <div class="stat-number">307</div>
+        <h3>Total Users</h3>
+        <div class="stat-number">{{ stats.totalUsers }}</div>
       </div>
     </div>
 
@@ -26,71 +16,82 @@
         <i class="fas fa-user-md"></i>
       </div>
       <div class="stat-info">
-        <h3>Staff</h3>
-        <div class="stat-number">771</div>
+        <h3>Total Doctors</h3>
+        <div class="stat-number">{{ stats.totalDoctors }}</div>
       </div>
     </div>
 
     <div class="stat-card">
       <div class="stat-icon">
-        <i class="fas fa-door-open"></i>
+        <i class="fas fa-calendar-check"></i>
       </div>
       <div class="stat-info">
-        <h3>Rooms</h3>
-        <div class="stat-number">2,150</div>
+        <h3>Total Appointments</h3>
+        <div class="stat-number">{{ stats.totalAppointemnts }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-hospital"></i>
+      </div>
+      <div class="stat-info">
+        <h3>Human Clinics</h3>
+        <div class="stat-number">{{ stats.totalHumanClinic }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-paw"></i>
+      </div>
+      <div class="stat-info">
+        <h3>Vet Clinics</h3>
+        <div class="stat-number">{{ stats.totalVet }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-cogs"></i>
+      </div>
+      <div class="stat-info">
+        <h3>Total Services</h3>
+        <div class="stat-number">{{ stats.totalService }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-comment-alt"></i>
+      </div>
+      <div class="stat-info">
+        <h3>Total Feedback</h3>
+        <div class="stat-number">{{ stats.totalFeedback }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-tags"></i>
+      </div>
+      <div class="stat-info">
+        <h3>Total Categories</h3>
+        <div class="stat-number">{{ stats.totalCategory }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-box"></i>
+      </div>
+      <div class="stat-info">
+        <h3>Total Products</h3>
+        <div class="stat-number">{{ stats.totalProduct }}</div>
       </div>
     </div>
   </div>
 
-  <!-- Dashboard Grid -->
-  <div class="dashboard-grid">
-    <!-- Recent Activity -->
-    <div class="dashboard-card">
-      <div class="card-header">
-        <h2>Recent Activity</h2>
-        <a href="#" class="view-all">View All</a>
-      </div>
-      <div class="activity-list">
-        <div class="activity-item" *ngFor="let activity of recentActivities">
-          <i [class]="activity.icon"></i>
-          <div class="activity-content">
-            <p>{{ activity.message }}</p>
-            <span class="activity-time">{{ activity.time }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Upcoming Appointments -->
-    <div class="dashboard-card">
-      <div class="card-header">
-        <h2>Upcoming Appointments</h2>
-        <a href="#" class="view-all">View All</a>
-      </div>
-      <div class="appointment-list">
-        <div class="appointment-item" *ngFor="let appointment of upcomingAppointments">
-          <div class="appointment-time">
-            <span class="time">{{ appointment.time }}</span>
-            <span class="date">{{ appointment.date }}</span>
-          </div>
-          <div class="appointment-info">
-            <h4>{{ appointment.patientName }}</h4>
-            <span class="appointment-type">{{ appointment.type }}</span>
-          </div>
-          <div class="appointment-actions">
-            <button class="btn-primary" (click)="startConsultation(appointment)">
-              <i class="fas fa-video"></i>
-              Start
-            </button>
-            <button class="btn-secondary" (click)="rescheduleAppointment(appointment)">
-              <i class="fas fa-calendar-alt"></i>
-              Reschedule
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Quick Actions -->
   <div class="quick-actions">
