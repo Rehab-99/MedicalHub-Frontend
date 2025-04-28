@@ -82,7 +82,6 @@ import { FeedbackComponent } from './components/main-website/feedback/feedback.c
 import { AddPostComponent } from './doctor-dashboard/add-post/add-post.component';
 import { DoctorBlogComponent } from './doctor-dashboard/doctor-blog/doctor-blog.component';
 import { CommentsComponent } from './components/main-website/comments/comments.component';
-import { PaymentComponent } from './components/payment/payment.component';
 import { OrderConfirmationComponent } from './components/order-confirmation/order-confirmation.component';
 import { DoctorProfileComponent } from './doctor-dashboard/doctor-profile/doctor-profile.component';
 import { DoctorProfileEditComponent } from './doctor-dashboard/doctor-profile-edit/doctor-profile-edit.component';
@@ -390,14 +389,6 @@ export const routes: Routes = [
       {
         path: 'cart',
         component: ShoppingCartComponent
-      },
-      {
-        path: 'checkout',
-        component: CheckoutComponent
-      },
-      {
-        path: 'payment',
-        component: PaymentComponent
       }
     ]
   },
@@ -418,23 +409,7 @@ export const routes: Routes = [
     component: UpdatePasswordComponent
   },
   {
-    path: 'payments/:order/stripe',
-    component: PaymentComponent
-  },
-  {
-    path: 'payments/:order/stripe/confirm',
-    component: PaymentComponent
-  },
-  {
-    path: 'order-confirmation',
-    component: OrderConfirmationComponent
-  },
-  {
     path: 'shopping-cart',
     component: ShoppingCartComponent
-  },
-  {
-    path: 'checkout',
-    component: CheckoutComponent
   }
 ];
