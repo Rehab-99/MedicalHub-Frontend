@@ -10,9 +10,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 
-
-
-
 @Component({
   selector: 'app-search',
   imports: [CommonModule, FooterComponent, HeaderComponent ,ToastrModule, RouterModule],
@@ -143,6 +140,9 @@ export class SearchComponent {
 
     goToCategory(category: any) {
       this.router.navigate(['/category', category.id]);
+    }
+    viewPost(postId: number) {
+      this.router.navigate(['/blog/human', postId]);
     }
   
 
