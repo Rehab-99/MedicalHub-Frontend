@@ -47,8 +47,9 @@
             <div class="title-line"></div>
         </div>
         <div class="doctors-grid">
-            <div class="doctor-card" *ngFor="let doctor of latestDoctors">
-                <img class="images" [src]="getImageUrl(doctor.image)" [alt]="doctor.name">                <h3>{{ doctor.name || 'Dr. Unknown' }}</h3>
+            <div class="doctor-card" *ngFor="let doctor of latestDoctors.slice(0, 4)">
+                <img class="images" [src]="getImageUrl(doctor.image)" [alt]="doctor.name">
+                <h3>{{ doctor.name || 'Dr. Unknown' }}</h3>
                 <p>{{ doctor.role || 'General' }}</p>
             </div>
         </div>
