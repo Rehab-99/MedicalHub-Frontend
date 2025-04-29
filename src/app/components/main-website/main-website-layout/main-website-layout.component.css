@@ -369,48 +369,90 @@ input, select {
 
 /* Medical Specialists Section */
 .medical-specialists {
-    padding: 3rem 1rem;
-    background-color: white;
-    border-radius: 8px; /* Unified radius */
+    padding: 4rem 1rem;
+    background-color: #f8f9fa;
+    border-radius: 16px;
+    margin: 2rem 0;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 3rem;
 }
 
 .section-header h2 {
     font-size: 2.5rem;
-    color: #333333;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.section-header h2 i {
+    color: #3498db;
+    font-size: 2rem;
 }
 
 .title-line {
-    width: 60px;
-    height: 3px;
-    background: #1E90FF;
-    margin: 0.5rem auto;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    margin: 1rem auto;
+    border-radius: 2px;
 }
 
 .doctors-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem; /* Unified gap */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .doctor-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 1.5rem;
     text-align: center;
-    background-color: white;
-    padding: 1.5rem; /* Unified padding */
-    border-radius: 8px; /* Unified radius */
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
-.doctor-card .image-placeholder {
+.doctor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.doctor-card .images {
     width: 100%;
-    height: 300px;
-    background-color: #E0E0E0;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    transition: transform 0.5s ease;
+}
+
+.doctor-card:hover .images {
+    transform: scale(1.05);
+}
+
+.doctor-card h3 {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.doctor-card p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
     margin-bottom: 1rem;
-    border-radius: 8px; /* Unified radius */
 }
 
 /* Testimonials Section */
@@ -545,6 +587,16 @@ input, select {
     .services-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .doctors-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .doctors-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
@@ -562,6 +614,15 @@ input, select {
 
     .section-header h2 {
         font-size: 2rem;
+    }
+
+    .medical-specialists {
+        padding: 3rem 1rem;
+    }
+    
+    .doctors-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 }
 
@@ -585,6 +646,10 @@ input, select {
     .btn {
         padding: 0.6rem 1.2rem;
         font-size: 0.9rem;
+    }
+
+    .doctors-grid {
+        grid-template-columns: 1fr;
     }
 }
 

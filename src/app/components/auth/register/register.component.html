@@ -19,14 +19,14 @@
   
           <!-- Social Login Buttons -->
           <div class="social-buttons">
-            <button class="google-btn">
+            <button class="social-btn google" (click)="loginWithGoogle()">
               <i class="fab fa-google"></i>
-              Sign up with Google
+              <span>Continue with Google</span>
             </button>
-            <button class="facebook-btn">
+            <!-- <button class="social-btn facebook" (click)="loginWithFacebook()">
               <i class="fab fa-facebook-f"></i>
-              Sign up with Facebook
-            </button>
+              <span>Continue with Facebook</span>
+            </button> -->
           </div>
   
           <div class="divider">
@@ -36,30 +36,93 @@
           <!-- Registration Form -->
           <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
-              <input type="text" formControlName="name" placeholder="Full Name:">
+              <input 
+                type="text" 
+                formControlName="name" 
+                placeholder="Full Name"
+                [class.error]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+              <div class="error-message" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+                <span *ngIf="registerForm.get('name')?.errors?.['required']">Name is required</span>
+                <span *ngIf="registerForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters</span>
+              </div>
             </div>
             <div class="form-group">
-              <input type="email" formControlName="email" placeholder="Email:">
+              <input 
+                type="email" 
+                formControlName="email" 
+                placeholder="Email Address"
+                [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+              <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="registerForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+              </div>
             </div>
             <div class="form-group">
-              <input type="text" formControlName="address" placeholder="Address:">
+              <input 
+                type="text" 
+                formControlName="address" 
+                placeholder="Address"
+                [class.error]="registerForm.get('address')?.invalid && registerForm.get('address')?.touched">
+              <div class="error-message" *ngIf="registerForm.get('address')?.invalid && registerForm.get('address')?.touched">
+                <span *ngIf="registerForm.get('address')?.errors?.['required']">Address is required</span>
+              </div>
             </div>
             <div class="form-group">
-              <input type="tel" formControlName="phone" placeholder="Phone Number:">
-            </div>
-            <div class="form-group password-group">
-              <input type="password" formControlName="password" placeholder="Password:">
-              <button type="button" class="toggle-password">
-                <i class="far fa-eye"></i>
-              </button>
+              <input 
+                type="tel" 
+                formControlName="phone" 
+                placeholder="Phone Number"
+                [class.error]="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+              <div class="error-message" *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+                <span *ngIf="registerForm.get('phone')?.errors?.['required']">Phone number is required</span>
+                <span *ngIf="registerForm.get('phone')?.errors?.['pattern']">Please enter a valid phone number</span>
+              </div>
             </div>
             <div class="form-group">
-                <input type="password" formControlName="password_confirmation" placeholder="Confirm Password:">
+              <input 
+                type="password" 
+                formControlName="password" 
+                placeholder="Password"
+                [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+              <div class="error-message" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</span>
+                <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+              </div>
             </div>
-            <button type="submit" class="submit-btn">Create Account</button>
-
+            <div class="form-group">
+              <input 
+                type="password" 
+                formControlName="password_confirmation" 
+                placeholder="Confirm Password"
+                [class.error]="registerForm.get('password_confirmation')?.invalid && registerForm.get('password_confirmation')?.touched">
+              <div class="error-message" *ngIf="registerForm.get('password_confirmation')?.invalid && registerForm.get('password_confirmation')?.touched">
+                <span *ngIf="registerForm.errors?.['mismatch']">Passwords do not match</span>
+              </div>
+            </div>
+            <button 
+              type="submit" 
+              class="submit-btn" 
+              [disabled]="registerForm.invalid || isLoading">
+              <span *ngIf="!isLoading">Create Account</span>
+              <span *ngIf="isLoading">Creating Account...</span>
+            </button>
           </form>
           
+          <div class="success-message" *ngIf="successMessage">
+            <i class="fas fa-check-circle"></i>
+            {{ successMessage }}
+          </div>
+
+          <div class="error-message" *ngIf="errorMessage">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMessage }}
+          </div>
+
+          <div class="auth-footer">
+            <div class="auth-links">
+              <a routerLink="/login">Already have an account? Login</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
