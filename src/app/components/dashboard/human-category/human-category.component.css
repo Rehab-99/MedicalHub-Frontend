@@ -133,21 +133,21 @@
 }
 
 .edit-button {
-  background-color: var(--success);
+  background-color: var(--primary-color);
   color: white;
 }
 
 .edit-button:hover {
-  background-color: #28a745;
+  background-color: var(--primary-dark);
 }
 
 .delete-button {
-  background-color: var(--danger);
+  background-color: var(--primary-light);
   color: white;
 }
 
 .delete-button:hover {
-  background-color: #dc3545;
+  background-color: var(--primary-dark);
 }
 
 .no-categories {
@@ -278,23 +278,6 @@
   transition: background-color 0.2s;
 }
 
-.edit-button {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.edit-button:hover {
-  background-color: #45a049;
-}
-
-.delete-button {
-  background-color: #f44336;
-  color: white;
-}
-
-.delete-button:hover {
-  background-color: #da190b;
-}
 
 .no-categories {
   text-align: center;
@@ -482,20 +465,20 @@ button[type="button"] {
 }
 
 .edit-button {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .edit-button:hover {
-  background-color: #43a047;
+  background-color: var(--primary-dark);
 }
 
 .delete-button {
-  background-color: #f44336;
+  background-color: var(--primary-light);
   color: white;
 }
 
 .delete-button:hover {
-  background-color: #e53935;
+  background-color: var(--primary-dark);
 }
 

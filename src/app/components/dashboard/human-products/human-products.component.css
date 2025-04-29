@@ -1,12 +1,14 @@
 .products-page {
   padding: 24px;
+  background-color: var(--background-light);
+  text-align: center;
 }
 
 .products-page h2 {
   font-size: 24px;
   font-weight: 600;
   margin-bottom: 24px;
-  color: var(--primary-color);
+  color: var(--text-primary);
 }
 
 .add-button {
@@ -21,6 +23,7 @@
   align-items: center;
   gap: 8px;
   font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
 .add-button:hover {
@@ -30,7 +33,7 @@
 .loading {
   text-align: center;
   padding: 48px 0;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .loading i {
@@ -48,6 +51,7 @@
   text-align: center;
   padding: 48px 0;
   color: var(--text-secondary);
+  font-size: 18px;
 }
 
 .no-products i {
@@ -63,9 +67,8 @@
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
-  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -110,7 +113,7 @@
   margin: 0 0 8px 0;
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-color);
+  color: var(--text-primary);
 }
 
 .description {
@@ -125,7 +128,7 @@
   justify-content: space-between;
   margin-bottom: 12px;
   font-size: 13px;
-  color: var(--text-color);
+  color: var(--text-primary);
 }
 
 .price {
@@ -155,26 +158,26 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  transition: background-color 0.2s;
+  transition: background-color 0.3s ease;
   font-size: 13px;
 }
 
 .edit-button {
-  background-color: var(--success);
+  background-color: var(--primary-color);
   color: white;
 }
 
 .edit-button:hover {
-  background-color: #28a745;
+  background-color: var(--primary-dark);
 }
 
 .delete-button {
-  background-color: var(--danger);
+  background-color: var(--primary-light);
   color: white;
 }
 
 .delete-button:hover {
-  background-color: #dc3545;
+  background-color: var(--primary-dark);
 }
 
 /* Responsive design */
@@ -184,7 +187,7 @@
   }
 
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 16px;
   }
 
@@ -199,4 +202,10 @@
   .edit-button, .delete-button {
     width: 100%;
   }
-} 
+}
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+}

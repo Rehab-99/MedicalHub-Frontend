@@ -480,19 +480,19 @@ button[type="button"] {
 }
 
 .edit-button {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
   color: white;
 }
 
 .edit-button:hover {
-  background-color: #43a047;
+  background-color: var(--primary-dark);
 }
 
 .delete-button {
-  background-color: #f44336;
+  background-color: var(--primary-light);
   color: white;
 }
 
 .delete-button:hover {
-  background-color: #e53935;
+  background-color: var(--primary-dark);
 }

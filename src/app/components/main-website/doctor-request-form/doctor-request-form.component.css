@@ -1,133 +1,140 @@
-/* Set a background color for the page */
-/* Set a background color for the page */
+/* Background with a light gradient */
 body {
-    background-color: #f0f0f0;
+    background: linear-gradient(to right, #e0eafc, #cfdef3);
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
 }
 
-/* Center the form container with more top spacing */
+/* Center the form container with a smooth flex */
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 120px); /* Adjust for header/footer height */
-    padding-top: 40px; /* Increased top padding */
-    padding-bottom: 20px;
+    min-height: calc(100vh - 120px);
+    padding: 80px 20px 40px 20px; /* Increased top padding to add space below navbar */
     box-sizing: border-box;
 }
-h4{
-    color:hsl(211, 66%, 21%) ;
-}
-/* Card styling - add margin-top for more space */
-.card {
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
-    padding: 20px;
-    width: 100%;
-    max-width: 800px;
-    margin-top: 30px; /* Additional space between header and card */
+
+/* Heading style */
+h4 {
+    color: hsl(211, 66%, 21%);
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-/* Rest of your CSS remains the same */
+/* Card design */
 .card-header {
-    
-    color: #fff;
+    color: #ffffff;
     text-align: center;
-    padding: 10px 0;
-    border-radius: 8px 8px 0 0;
+    padding: 20px 10px;
+    border-radius: 12px 12px 0 0;
 }
-
-
 
 .card-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     margin: 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: hsl(211, 66%, 41%);
+}
+
+.card {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    margin: 40px 0;
 }
 
 /* Form styling */
 form {
-    border-radius: 8px;
-    padding: 20px;
-    background-color: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    background-color: transparent;
 }
 
 /* Label styling */
 .form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    display: block;
+    color: #333;
 }
 
-/* Form input fields styling */
+/* Input fields */
 .form-control {
-    border-radius: 4px;
-    padding: 10px;
+    border-radius: 8px;
+    padding: 12px;
     border: 1px solid #ccc;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1rem;
     transition: all 0.3s ease;
 }
 
 .form-control:focus {
-    box-shadow: 0 0 5px #007bff80;
+    border-color: hsl(211, 66%, 41%);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    background-color: #f9fbfd;
 }
 
 .form-control.invalid {
     border-color: #dc3545;
 }
 
-/* Error messages styling */
+/* Error message */
 .form-group small {
     color: #dc3545;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
-/* File input styling */
+/* File input */
 input[type="file"] {
     display: block;
     margin-top: 10px;
 }
 
-/* Submit button styling */
+/* Submit button */
 button[type="submit"] {
-    background-color: hsl(211, 66%, 21%);
+    background-color: hsl(211, 66%, 41%);
     color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
+    padding: 12px 20px;
+    border-radius: 8px;
     font-size: 1rem;
+    font-weight: 600;
     width: 100%;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: hsl(211, 66%, 31%);
+    transform: translateY(-2px);
 }
 
-/* Error messages styling */
+/* General error text */
 .text-danger {
     font-size: 0.9rem;
     color: #dc3545;
 }
 
-/* Responsiveness for smaller screens */
+/* Mobile responsiveness */
 @media (max-width: 768px) {
     .container {
-        padding: 10px;
+        padding: 60px 20px 20px 20px; /* Adjusted top padding for mobile */
     }
 
     .card {
-        padding: 15px;
+        padding: 20px;
     }
 
     .form-control {
-        padding: 8px;
+        padding: 10px;
     }
 
     button[type="submit"] {
-        padding: 12px;
+        padding: 14px;
     }
 }
