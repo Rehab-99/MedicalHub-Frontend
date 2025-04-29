@@ -28,6 +28,7 @@ export class AddProductComponent implements OnInit {
     description: '',
     price: 0,
     stock: 0,
+    quantity: 0,
     category_id: '',
   };
   categories: Category[] = [];
@@ -122,7 +123,7 @@ export class AddProductComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     if (!this.product.name.trim() || !this.product.description.trim() || 
-        this.product.price <= 0 || this.product.stock < 0 || !this.product.category_id) {
+        this.product.price <= 0 || this.product.stock < 0 ||this.product.quantity <= 0 || !this.product.category_id) {
       this.showAlert('Error!', 'Please fill all required fields correctly', 'error');
       return;
     }
@@ -135,6 +136,7 @@ export class AddProductComponent implements OnInit {
     formData.append('description', this.product.description);
     formData.append('price', this.product.price.toString());
     formData.append('stock', this.product.stock.toString());
+    formData.append('quantity', this.product.quantity.toString());
     formData.append('category_id', this.product.category_id.toString());
     if (this.selectedFile) {
       formData.append('image', this.selectedFile);

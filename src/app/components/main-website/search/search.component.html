@@ -1,0 +1,107 @@
+    <app-header></app-header>
+
+    <div class="search-results-container">
+    <h2>Search Results for "{{ query }}"</h2>
+
+    <div class="search-buttons">
+        <button (click)="setActiveSection('categories')" [ngClass]="{'active': selectedSection === 'categories'}">Categories</button>
+        <button (click)="setActiveSection('doctors')" [ngClass]="{'active': selectedSection === 'doctors'}">Doctors</button>
+        <button (click)="setActiveSection('posts')" [ngClass]="{'active': selectedSection === 'posts'}">Posts</button>
+        <button (click)="setActiveSection('products')" [ngClass]="{'active': selectedSection === 'products'}">Products</button>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+        <span>Loading...</span>
+        <div class="spinner"></div>
+    </div>
+
+    <div *ngIf="!loading && results[selectedSection]?.length === 0" class="no-results">
+        <p>No results found.</p>
+    </div>
+
+    <div *ngIf="!loading && selectedSection === 'categories'">
+        <div *ngFor="let item of results.categories" class="result-card"  (click)="goToCategory(item)">
+        <div class="result-card-header">
+            <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
+            <h4>{{ item.name }}</h4>
+            <p *ngIf="item.description">{{ item.description }}</p>
+        </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="!loading && selectedSection === 'doctors'">
+        <div *ngFor="let item of results.doctors" class="doctor-card">
+            <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
+
+        <div class="result-card-header">
+            
+            <h3>
+            <i class="fas fa-user-md"></i> {{ item.name }}
+            </h3>
+
+            <p>
+                <i class="fas fa-stethoscope"></i> <strong>Specialization:</strong> {{ item.specialization }}
+            </p>
+
+            <p>
+            <i class="fas fa-hospital"></i> <strong>Clinic:</strong> {{ item.clinic?.name }}
+            </p>
+    
+            <p>
+            <i class="fas fa-briefcase"></i> <strong>Role:</strong> {{ item.role }}
+            </p>
+    
+            <p>
+            <i class="fas fa-phone"></i> <strong>Phone:</strong> {{ item.phone }}
+            </p>
+    
+            <p>
+            <i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> {{ item.address }}
+            </p>
+    
+            <div class="card-buttons">
+            <button class="btn-appointment" (click)="bookAppointment(item)">
+                <i class="fas fa-calendar-check"></i> Book Appointment
+            </button>
+            </div>
+            
+        </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="!loading && selectedSection === 'posts'">
+        <div *ngFor="let item of results.posts" class="post-card" (click)="viewPost(item.id)">
+        <div class="post-card-header">
+            <h3>{{ item.title }}</h3>
+        </div>
+        <div class="post-card-body">
+            <p>{{ item.content }}</p>
+        </div>
+        </div>
+    </div>
+    
+
+    <div *ngIf="!loading && selectedSection === 'products'">
+        <div *ngFor="let item of results.products" class="product-card">
+
+            <div class="badge-unavailable" *ngIf="+item.stock === 0">
+                Not Available
+            </div>
+        
+        <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
+        <h5>{{ item.name }}</h5>
+        <p *ngIf="item.description">{{ item.description }}</p>
+        <p class="price">{{ item.price }} EGP</p>
+        <button class="add-to-cart-btn" [disabled]="+item.stock === 0" (click)="addToCart(item.id)">Add to Cart</button>
+        </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+    </div>
+
+    </div>
+
+    <app-footer></app-footer>

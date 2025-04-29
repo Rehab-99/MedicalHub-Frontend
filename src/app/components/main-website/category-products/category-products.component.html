@@ -1,18 +1,5 @@
-<header class="site-header">
-  <div class="header-container">
-    <div class="logo">
-      <a routerLink="/">
-          <i class="fas fa-heartbeat logo-icon"></i>
-          <span class="logo-text">MedicalHub</span>
-      </a>
-  </div>
-    <div class="search-container">
-      <input type="text" placeholder="Search products..." class="search-bar">
-      <button class="search-btn">Search</button>
-    </div>
-  </div>
-</header>
 
+<app-header></app-header>
 
 <div class="products-container">
     <h2>All Products</h2>
@@ -39,7 +26,7 @@
         <div class="product-details">
           <h4>{{ product.name }}</h4>
           <p>{{ product.description }}</p>
-          <span class="price">${{ product.price }}</span>
+          <span class="price">{{ product.price }} EGP</span>
         </div>
         <button class="add-to-cart-btn" [disabled]="product.stock === 0" (click)="addToCart(product.id)">Add to Cart</button>
       </div>
