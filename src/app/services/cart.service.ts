@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { AuthService } from './auth.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 export interface CartItem {
   id: number;
@@ -15,12 +15,23 @@ export interface CartItem {
   description: string;
 }
 
+export interface CouponResponse {
+  valid: boolean;
+  discount: number;
+  final_price: number;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private cartItems = new BehaviorSubject<CartItem[]>([]);
   private cartTotal = new BehaviorSubject<number>(0);
+  private discount = new BehaviorSubject<number>(0);
+  private finalPrice = new BehaviorSubject<number>(0);
+  private couponCode = new BehaviorSubject<string | null>(null);
+  private cartItemsCount = new BehaviorSubject<number>(0);
 
   constructor(
     private http: HttpClient,
@@ -74,10 +85,12 @@ export class CartService {
           });
           console.log('Processed cart items:', items);
           this.cartItems.next(items);
+          this.cartItemsCount.next(items.length);
           this.calculateTotal(items);
         } else {
           console.warn('No cart items found in response');
           this.cartItems.next([]);
+          this.cartItemsCount.next(0);
         }
       },
       error: (error) => {
@@ -86,6 +99,7 @@ export class CartService {
           console.error('Unauthorized - Token might be invalid or expired');
         }
         this.cartItems.next([]);
+        this.cartItemsCount.next(0);
       }
     });
     return this.cartItems.asObservable();
@@ -126,9 +140,45 @@ export class CartService {
     );
   }
 
+  checkCoupon(couponCode: string): Observable<CouponResponse> {
+    const headers = this.getHeaders();
+    return this.http.post<CouponResponse>('http://localhost:8000/api/check-coupon', {
+      coupon_code: couponCode,
+      total_price: this.cartTotal.value
+    }, { headers }).pipe(
+      tap(response => {
+        if (response.valid) {
+          this.couponCode.next(couponCode);
+        }
+      })
+    );
+  }
+
+  getCouponCode(): Observable<string | null> {
+    return this.couponCode.asObservable();
+  }
+
+  getDiscount(): Observable<number> {
+    return this.discount.asObservable();
+  }
+
+  getFinalPrice(): Observable<number> {
+    return this.finalPrice.asObservable();
+  }
+
+  getCartItemsCount(): Observable<number> {
+    return this.cartItemsCount.asObservable();
+  }
+
   private calculateTotal(items: CartItem[]): void {
     const total = items.reduce((sum, item) => sum + item.total, 0);
     this.cartTotal.next(total);
+    this.finalPrice.next(total - this.discount.value);
+  }
+
+  applyDiscount(discount: number): void {
+    this.discount.next(discount);
+    this.finalPrice.next(this.cartTotal.value - discount);
   }
 
   addToCart(item: CartItem): void {
@@ -143,6 +193,7 @@ export class CartService {
     }
 
     this.cartItems.next(currentItems);
+    this.cartItemsCount.next(currentItems.length);
     this.calculateTotal(currentItems);
     this.saveCart();
   }
@@ -150,6 +201,7 @@ export class CartService {
   removeFromCart(productId: number) {
     const currentItems = this.cartItems.value.filter(item => item.productId !== productId);
     this.cartItems.next(currentItems);
+    this.cartItemsCount.next(currentItems.length);
     this.calculateTotal(currentItems);
     this.saveCart();
   }
@@ -161,7 +213,9 @@ export class CartService {
         .subscribe({
           next: () => {
             this.cartItems.next([]);
+            this.cartItemsCount.next(0);
             this.cartTotal.next(0);
+            this.clearCoupon();
             localStorage.removeItem('cart');
             observer.next();
             observer.complete();
@@ -172,6 +226,12 @@ export class CartService {
           }
         });
     });
+  }
+
+  clearCoupon(): void {
+    this.couponCode.next(null);
+    this.discount.next(0);
+    this.finalPrice.next(this.cartTotal.value);
   }
 
   private saveCart() {

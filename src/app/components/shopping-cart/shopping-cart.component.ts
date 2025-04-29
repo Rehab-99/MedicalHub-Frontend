@@ -18,6 +18,11 @@ export class ShoppingCartComponent implements OnInit {
   isLoading: boolean = true;
   error: string | null = null;
   isAuthenticated: boolean = false;
+  couponCode: string = '';
+  discount: number = 0;
+  finalPrice: number = 0;
+  couponError: string | null = null;
+  couponSuccess: string | null = null;
 
   constructor(
     private cartService: CartService,
@@ -50,6 +55,7 @@ export class ShoppingCartComponent implements OnInit {
         this.cartItems = items;
         this.cartService.getTotal().subscribe(total => {
           this.cartTotal = total;
+          this.finalPrice = total;
           console.log('Updated cart total:', this.cartTotal);
         });
         this.isLoading = false;
@@ -63,6 +69,14 @@ export class ShoppingCartComponent implements OnInit {
         }
         this.isLoading = false;
       }
+    });
+
+    this.cartService.getDiscount().subscribe(discount => {
+      this.discount = discount;
+    });
+
+    this.cartService.getFinalPrice().subscribe(finalPrice => {
+      this.finalPrice = finalPrice;
     });
   }
 
@@ -85,6 +99,42 @@ export class ShoppingCartComponent implements OnInit {
     this.cartService.getTotal().subscribe(total => {
       this.cartTotal = total;
       console.log('Updated cart total after removal:', this.cartTotal);
+    });
+    
+    if (this.cartItems.length === 1) {
+      this.cartService.clearCoupon();
+      this.couponCode = '';
+      this.couponSuccess = null;
+    }
+  }
+
+  applyCoupon(): void {
+    if (!this.couponCode.trim()) {
+      this.couponError = 'Please enter a coupon code';
+      return;
+    }
+
+    this.couponError = null;
+    this.couponSuccess = null;
+    this.isLoading = true;
+
+    this.cartService.checkCoupon(this.couponCode).subscribe({
+      next: (response) => {
+        if (response.valid) {
+          this.cartService.applyDiscount(response.discount);
+          this.couponSuccess = response.message;
+          this.couponError = null;
+        } else {
+          this.couponError = response.message;
+          this.couponSuccess = null;
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.couponError = 'Failed to apply coupon. Please try again.';
+        this.couponSuccess = null;
+        this.isLoading = false;
+      }
     });
   }
 } 

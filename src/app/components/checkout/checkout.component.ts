@@ -30,6 +30,7 @@ export class CheckoutComponent implements OnInit {
 
   cartItems: CartItem[] = [];
   totalPrice: number = 0;
+  discount: number = 0;
   isLoading: boolean = false;
   showPopup: boolean = false;
   popupMessage: string = '';
@@ -80,8 +81,14 @@ export class CheckoutComponent implements OnInit {
     this.cartService.getCartItems().subscribe({
       next: (items) => {
         this.cartItems = items;
-        this.totalPrice = items.reduce((sum, item) => sum + item.total, 0);
-        this.updateCheckoutData();
+        this.cartService.getFinalPrice().subscribe(finalPrice => {
+          this.totalPrice = finalPrice;
+          this.updateCheckoutData();
+        });
+        
+        this.cartService.getDiscount().subscribe(discount => {
+          this.discount = discount;
+        });
       },
       error: (error: HttpErrorResponse) => {
         this.showMessage('Failed to load cart items. Please try again.', 'error');
@@ -96,6 +103,16 @@ export class CheckoutComponent implements OnInit {
       price: item.price
     }));
     this.checkoutData.total_price = this.totalPrice;
+    
+    // إضافة معلومات الخصم
+    this.cartService.getDiscount().subscribe(discount => {
+      this.checkoutData.discount = discount;
+    });
+    
+    // إضافة كود الخصم
+    this.cartService.getCouponCode().subscribe(couponCode => {
+      this.checkoutData.coupon_code = couponCode || undefined;
+    });
   }
 
   async onPaymentMethodChange() {

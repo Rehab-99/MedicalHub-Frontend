@@ -38,8 +38,8 @@ export class HeaderComponent {
       this.user = user;
     });
 
-    this.cartService.getCartItems().subscribe((items: any[]) => {
-      this.cartItemsCount = items.length;
+    this.cartService.getCartItemsCount().subscribe(count => {
+      this.cartItemsCount = count;
     });
   }
   isDoctorsDropdownOpen = false;

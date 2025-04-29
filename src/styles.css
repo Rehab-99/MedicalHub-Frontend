@@ -257,3 +257,46 @@ p {
     height: 40px;
   }
 }
+
+/* تخصيص أنماط Toastr */
+.custom-toast {
+  background-color: #ffffff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: none !important;
+  padding: 15px !important;
+}
+
+.toast-title {
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+.toast-message {
+  color: #34495e !important;
+  font-size: 14px !important;
+}
+
+.ngx-toastr.success {
+  background-color: #ffffff !important;
+  border-left: 4px solid #2ecc71 !important;
+}
+
+.ngx-toastr.error {
+  background-color: #ffffff !important;
+  border-left: 4px solid #e74c3c !important;
+}
+
+.toast-progress {
+  background-color: #2ecc71 !important;
+}
+
+.toast-close-button {
+  color: #7f8c8d !important;
+  opacity: 0.7 !important;
+}
+
+.toast-close-button:hover {
+  opacity: 1 !important;
+}

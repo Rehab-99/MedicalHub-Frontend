@@ -131,6 +131,11 @@ select {
   border-radius: 8px;
 }
 
+.summary-item.discount {
+  background-color: #f0fdf4;
+  border: 1px dashed #86efac;
+}
+
 .item-details {
   display: flex;
   align-items: center;
@@ -150,6 +155,11 @@ select {
 .item-price {
   font-weight: 600;
   color: #1e293b;
+}
+
+.item-price.discount {
+  color: #16a34a;
+  font-weight: 700;
 }
 
 .summary-total {

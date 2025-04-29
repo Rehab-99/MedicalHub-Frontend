@@ -8,6 +8,7 @@ import { HeaderComponent } from '../header/header.component';
 import { AuthService } from '../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrModule } from 'ngx-toastr';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-category-products',
@@ -25,7 +26,8 @@ export class CategoryProductsComponent implements OnInit {
     private route: ActivatedRoute, 
     private http: HttpClient,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +57,6 @@ export class CategoryProductsComponent implements OnInit {
 
   addToCart(productId: number): void {
     const token = this.authService.getToken();
-    console.log('Current token:', token);
     
     if (!token) {
       this.error = 'Please login to add items to cart';
@@ -68,8 +69,6 @@ export class CategoryProductsComponent implements OnInit {
       'Accept': 'application/json'
     });
 
-    console.log('Sending request with headers:', headers);
-
     this.http.post('http://localhost:8000/api/cart/add', 
       { 
         product_id: productId,
@@ -81,12 +80,17 @@ export class CategoryProductsComponent implements OnInit {
       }
     ).subscribe({
       next: (response) => {
-        console.log('Full response:', response);
         console.log('Product added to cart successfully', response.body);
-        this.toastr.success('تم إضافة المنتج للسلة بنجاح', 'نجاح', {
+        this.cartService.getCartItems();
+        this.toastr.success('Product added to cart successfully', 'Success', {
           timeOut: 3000,
           positionClass: 'toast-top-right',
-          closeButton: true
+          closeButton: true,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          toastClass: 'ngx-toastr custom-toast',
+          titleClass: 'toast-title',
+          messageClass: 'toast-message'
         });
       },
       error: (error) => {
@@ -97,10 +101,15 @@ export class CategoryProductsComponent implements OnInit {
           this.error = 'You do not have permission to perform this action.';
         } else {
           this.error = `Failed to add product to cart: ${error.error?.message || 'Unknown error'}`;
-          this.toastr.error('فشل في إضافة المنتج للسلة', 'خطأ', {
+          this.toastr.error('Failed to add product to cart', 'Error', {
             timeOut: 3000,
             positionClass: 'toast-top-right',
-            closeButton: true
+            closeButton: true,
+            progressBar: true,
+            progressAnimation: 'increasing',
+            toastClass: 'ngx-toastr custom-toast',
+            titleClass: 'toast-title',
+            messageClass: 'toast-message'
           });
         }
       }

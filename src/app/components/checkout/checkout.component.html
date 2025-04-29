@@ -122,6 +122,15 @@
           </div>
           <span class="item-price">${{item.price * item.quantity}}</span>
         </div>
+        
+        <!-- عرض الخصم إذا كان موجودًا -->
+        <div class="summary-item discount" *ngIf="discount > 0">
+          <div class="item-details">
+            <span class="item-name">Discount</span>
+          </div>
+          <span class="item-price discount">-${{discount}}</span>
+        </div>
+        
         <div class="summary-total">
           <span>Total:</span>
           <span>${{totalPrice}}</span>

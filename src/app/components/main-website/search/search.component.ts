@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ToastrModule } from 'ngx-toastr';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-search',
@@ -37,7 +38,8 @@ export class SearchComponent {
     private http: HttpClient,
     private authService: AuthService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -81,69 +83,76 @@ export class SearchComponent {
   }
 
   addToCart(productId: number): void {
-      const token = this.authService.getToken();
-      console.log('Current token:', token);
-      
-      if (!token) {
-        this.error = 'Please login to add items to cart';
-        return;
+    const token = this.authService.getToken();
+    
+    if (!token) {
+      this.error = 'Please login to add items to cart';
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+
+    this.http.post('http://localhost:8000/api/cart/add', 
+      { 
+        product_id: productId,
+        quantity: 1
+      },
+      { 
+        headers: headers,
+        observe: 'response'
       }
-  
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      });
-  
-      console.log('Sending request with headers:', headers);
-  
-      this.http.post('http://localhost:8000/api/cart/add', 
-        { 
-          product_id: productId,
-          quantity: 1
-        },
-        { 
-          headers: headers,
-          observe: 'response'
-        }
-      ).subscribe({
-        next: (response) => {
-          console.log('Full response:', response);
-          console.log('Product added to cart successfully', response.body);
-          this.toastr.success('تم إضافة المنتج للسلة بنجاح', 'نجاح', {
+    ).subscribe({
+      next: (response) => {
+        console.log('Product added to cart successfully', response.body);
+        this.cartService.getCartItems();
+        this.toastr.success('Product added to cart successfully', 'Success', {
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+          closeButton: true,
+          progressBar: true,
+          progressAnimation: 'increasing',
+          toastClass: 'ngx-toastr custom-toast',
+          titleClass: 'toast-title',
+          messageClass: 'toast-message'
+        });
+      },
+      error: (error) => {
+        console.error('Detailed error:', error);
+        if (error.status === 401) {
+          this.error = 'Your session has expired. Please login again.';
+        } else if (error.status === 403) {
+          this.error = 'You do not have permission to perform this action.';
+        } else {
+          this.error = `Failed to add product to cart: ${error.error?.message || 'Unknown error'}`;
+          this.toastr.error('Failed to add product to cart', 'Error', {
             timeOut: 3000,
             positionClass: 'toast-top-right',
-            closeButton: true
+            closeButton: true,
+            progressBar: true,
+            progressAnimation: 'increasing',
+            toastClass: 'ngx-toastr custom-toast',
+            titleClass: 'toast-title',
+            messageClass: 'toast-message'
           });
-        },
-        error: (error) => {
-          console.error('Detailed error:', error);
-          if (error.status === 401) {
-            this.error = 'Your session has expired. Please login again.';
-          } else if (error.status === 403) {
-            this.error = 'You do not have permission to perform this action.';
-          } else {
-            this.error = `Failed to add product to cart: ${error.error?.message || 'Unknown error'}`;
-            this.toastr.error('فشل في إضافة المنتج للسلة', 'خطأ', {
-              timeOut: 3000,
-              positionClass: 'toast-top-right',
-              closeButton: true
-            });
-          }
         }
-      });
-    }
+      }
+    });
+  }
 
-    bookAppointment(item: any) {
-      this.router.navigate(['/appointment', item.id]);
-    }
+  bookAppointment(item: any) {
+    this.router.navigate(['/appointment', item.id]);
+  }
 
-    goToCategory(category: any) {
-      this.router.navigate(['/category', category.id]);
-    }
-    viewPost(postId: number) {
-      this.router.navigate(['/blog/human', postId]);
-    }
+  goToCategory(category: any) {
+    this.router.navigate(['/category', category.id]);
+  }
+  viewPost(postId: number) {
+    this.router.navigate(['/blog/human', postId]);
+  }
   
 
 }

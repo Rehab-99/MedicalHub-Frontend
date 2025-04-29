@@ -66,8 +66,14 @@
         <div class="coupon-section">
           <h4>Apply Discount</h4>
           <div class="coupon-input">
-            <input type="text" placeholder="Enter promo code">
-            <button class="apply-btn">Apply</button>
+            <input type="text" [(ngModel)]="couponCode" placeholder="Enter promo code">
+            <button class="apply-btn" (click)="applyCoupon()" [disabled]="isLoading">Apply</button>
+          </div>
+          <div *ngIf="couponError" class="coupon-error">
+            {{ couponError }}
+          </div>
+          <div *ngIf="couponSuccess" class="coupon-success">
+            {{ couponSuccess }}
           </div>
         </div>
         
@@ -77,13 +83,17 @@
             <span>Subtotal</span>
             <span>{{ cartTotal | currency:'EGP':'symbol':'1.2-2' }}</span>
           </div>
+          <div class="total-row" *ngIf="discount > 0">
+            <span>Discount</span>
+            <span>-{{ discount | currency:'EGP':'symbol':'1.2-2' }}</span>
+          </div>
           <div class="total-row">
             <span>Shipping</span>
             <span>Free</span>
           </div>
           <div class="total-row grand-total">
             <span>Total</span>
-            <span>{{ cartTotal | currency:'EGP':'symbol':'1.2-2' }}</span>
+            <span>{{ finalPrice | currency:'EGP':'symbol':'1.2-2' }}</span>
           </div>
           
           <div class="action-buttons">

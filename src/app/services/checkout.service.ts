@@ -15,6 +15,8 @@ export interface CheckoutRequest {
   total_price: number;
   payment_method: string;
   items: CheckoutItem[];
+  discount?: number;
+  coupon_code?: string;
 }
 
 @Injectable({
