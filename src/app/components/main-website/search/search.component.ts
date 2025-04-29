@@ -7,13 +7,15 @@ import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from '../header/header.component';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrModule } from 'ngx-toastr';
+import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 
 
 @Component({
   selector: 'app-search',
-  imports: [CommonModule, FooterComponent, HeaderComponent ,ToastrModule],
+  imports: [CommonModule, FooterComponent, HeaderComponent ,ToastrModule, RouterModule],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
@@ -37,7 +39,8 @@ export class SearchComponent {
     private route: ActivatedRoute,
     private http: HttpClient,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -132,6 +135,10 @@ export class SearchComponent {
           }
         }
       });
+    }
+
+    bookAppointment(item: any) {
+      this.router.navigate(['/appointment', item.id]);
     }
 
 }
