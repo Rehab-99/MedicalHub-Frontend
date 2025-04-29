@@ -20,7 +20,7 @@
   </div>
 
   <div *ngIf="!loading && selectedSection === 'categories'">
-    <div *ngFor="let item of results.categories" class="result-card">
+    <div *ngFor="let item of results.categories" class="result-card"  (click)="goToCategory(item)">
       <div class="result-card-header">
         <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
         <h4>{{ item.name }}</h4>
@@ -29,7 +29,6 @@
     </div>
   </div>
 
-  <!-- الدكاترة -->
 
   <div *ngIf="!loading && selectedSection === 'doctors'">
     <div *ngFor="let item of results.doctors" class="doctor-card">
@@ -40,11 +39,11 @@
         <h3>
           <i class="fas fa-user-md"></i> {{ item.name }}
         </h3>
-  
+
         <p>
-          <i class="fas fa-stethoscope"></i> <strong>Specialization:</strong> {{ item.specialization }}
+            <i class="fas fa-stethoscope"></i> <strong>Specialization:</strong> {{ item.specialization }}
         </p>
-  
+
         <p>
           <i class="fas fa-hospital"></i> <strong>Clinic:</strong> {{ item.clinic?.name }}
         </p>
@@ -70,42 +69,7 @@
       </div>
     </div>
   </div>
-  
-  <!-- <div *ngIf="!loading && selectedSection === 'doctors'">
-    <div *ngFor="let item of results.doctors" class="result-card">
-      <div class="result-card-header">
-        <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
-        <p><strong>Specialization:</strong> {{ item.specialization }}</p>
-        <p><strong>Clinic:</strong> {{ item.clinic?.name }}</p>
-        <p><strong>Role:</strong> {{ item.role }}</p>
-        <p><strong>Phone:</strong> {{ item.phone }}</p>
-        <p><strong>Address:</strong> {{ item.address }}</p>
 
-        <button (click)="bookAppointment(item)">
-             Book Appointment
-          </button>
-
-      </div>
-    </div>
-  </div> -->
-
-    <!-- <div *ngIf="!loading && selectedSection === 'doctors'">
-        <div *ngFor="let item of results.doctors" class="result-card">
-            <div class="doctor-info">
-
-    <h3><i class="fas fa-user-md"></i> {{ item.name }}</h3>
-    <p><i class="fas fa-stethoscope"></i> <strong>Specialization:</strong> {{ item.specialization }}</p>
-    <p><i class="fas fa-hospital"></i> <strong>Clinic:</strong> {{ item.clinic?.name }}</p>
-    <p><i class="fas fa-briefcase"></i> <strong>Role:</strong> {{ item.role }}</p>
-    <p><i class="fas fa-phone"></i> <strong>Phone:</strong> {{ item.phone }}</p>
-    <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> {{ item.address }}</p>
-    <div class="card-buttons">
-      <button class="btn-appointment" >
-        <i class="fas fa-calendar-check"></i> Book Appointment
-      </button>
-     
-    </div>
-  </div></div></div> -->
 
   <!-- البوستات -->
   <div *ngIf="!loading && selectedSection === 'posts'">

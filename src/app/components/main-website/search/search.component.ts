@@ -141,4 +141,9 @@ export class SearchComponent {
       this.router.navigate(['/appointment', item.id]);
     }
 
+    goToCategory(category: any) {
+      this.router.navigate(['/category', category.id]);
+    }
+  
+
 }
