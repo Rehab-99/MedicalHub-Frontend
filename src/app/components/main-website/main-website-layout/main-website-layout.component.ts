@@ -9,6 +9,7 @@ import { AuthService } from '../../../services/auth.service';
 import { ClinicService } from '../../../services/clinic.service';
 import { VetService } from '../../../services/vet.service';
 import { ServiceService } from '../../../services/service.service';
+import { AppointmentService } from '../../../services/appointment.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -33,7 +34,7 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
   totalDoctors: number = 0;
   totalUsers: number = 0;
   totalClinics: number = 0;
-  totalServices: number = 0;
+  totalAppointments: number = 0;
   baseUrl = environment.apiUrl;
 
   private images = [
@@ -47,7 +48,8 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private clinicService: ClinicService,
     private vetService: VetService,
-    private serviceService: ServiceService
+    private serviceService: ServiceService,
+    private appointmentService: AppointmentService
   ) {}
 
   ngOnInit() {
@@ -60,7 +62,7 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
     this.loadTotalDoctors();
     this.loadTotalUsers();
     this.loadTotalClinics();
-    this.loadTotalServices();
+    this.loadTotalAppointments();
 
     this.http.get(`${environment.apiUrl}/feedback`).subscribe({
       next: (res: any) => {
@@ -157,13 +159,13 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadTotalServices() {
-    this.serviceService.getServices().subscribe({
+  loadTotalAppointments() {
+    this.appointmentService.getAllAppointments().subscribe({
       next: (response: any) => {
-        this.totalServices = response.data?.length || 0;
+        this.totalAppointments = response?.length || 0;
       },
       error: (error) => {
-        console.error('Error loading total services:', error);
+        console.error('Error loading total appointments:', error);
       }
     });
   }
