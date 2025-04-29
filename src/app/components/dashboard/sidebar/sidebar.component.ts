@@ -73,6 +73,11 @@ export class SidebarComponent {
       route: '/dashboard/users'
     },
     {
+      title: 'Orders',
+      icon: 'fas fa-shopping-cart',
+      route: '/dashboard/orders'
+    },
+    {
       title: 'Services',
       icon: 'fas fa-hand-holding-medical',
       route: '/dashboard/services'
@@ -86,7 +91,8 @@ export class SidebarComponent {
       title: 'Doctor-Requests',
       icon: 'fas fa-user-md',
       route: '/dashboard/doctor-request'
-    }
+    },
+
   ];
 
   expandedMenus: { [key: string]: boolean } = {};

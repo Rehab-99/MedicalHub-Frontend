@@ -90,6 +90,8 @@ import { DoctorPatientDetailComponent } from './doctor-dashboard/doctor-patient-
 import { DoctorPatientComponent } from './doctor-dashboard/doctor-patient/doctor-patient.component';
 import { DoctorReportsComponent } from './doctor-dashboard/doctor-reports/doctor-reports.component';
 import { BookedServicesComponent } from './components/dashboard/bookedservices/bookedservices.component';
+import { OrdersComponent } from './components/dashboard/orders/orders.component';
+import { UserOrdersComponent } from './components/user-orders/user-orders.component';
 
 
 export const routes: Routes = [
@@ -287,6 +289,10 @@ export const routes: Routes = [
       {
         path: 'edit-product/:id',
         component: EditProductComponent
+      },
+      {
+        path: 'orders',
+        component: OrdersComponent
       }
     ]
   },
@@ -379,6 +385,10 @@ export const routes: Routes = [
       {
         path: 'settings',
         component: UserSettingsComponent
+      },
+      {
+        path: 'orders',
+        component: UserOrdersComponent
       }
     ]
   },

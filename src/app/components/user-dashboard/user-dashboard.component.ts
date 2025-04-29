@@ -4,6 +4,7 @@ import { MainHeaderComponent } from './main-header/main-header.component';
 import { PatientDetailsComponent } from './patient-details/patient-details.component';
 import { PatientVitalsComponent } from './patient-vitals/patient-vitals.component';
 import { PatientHistoryTableComponent } from './patient-history-table/patient-history-table.component';
+import { UserOrdersComponent } from '../user-orders/user-orders.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -20,11 +21,13 @@ import { filter } from 'rxjs/operators';
     MainHeaderComponent,
     PatientDetailsComponent,
     PatientVitalsComponent,
-    PatientHistoryTableComponent
+    PatientHistoryTableComponent,
+    UserOrdersComponent
   ]
 })
 export class UserDashboardComponent implements OnInit {
   isRootRoute: boolean = true;
+  isOrdersRoute: boolean = false;
 
   constructor(private router: Router) { }
 
@@ -33,8 +36,10 @@ export class UserDashboardComponent implements OnInit {
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       this.isRootRoute = event.urlAfterRedirects === '/user/dashboard' || event.urlAfterRedirects === '/user/dashboard/';
+      this.isOrdersRoute = event.urlAfterRedirects === '/user/dashboard/orders';
     });
 
     this.isRootRoute = this.router.url === '/user/dashboard' || this.router.url === '/user/dashboard/';
+    this.isOrdersRoute = this.router.url === '/user/dashboard/orders';
   }
 }

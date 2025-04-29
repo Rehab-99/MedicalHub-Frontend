@@ -1,0 +1,80 @@
+<div class="user-orders-container">
+  <div class="header-section">
+    <h2 class="page-title">My Orders</h2>
+    <div class="search-box">
+      <input 
+        type="text" 
+        placeholder="Search orders..." 
+        class="search-input"
+        [(ngModel)]="searchTerm"
+        (input)="filterOrders()"
+      >
+      <i class="fas fa-search search-icon"></i>
+    </div>
+  </div>
+  
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading your orders...</p>
+  </div>
+  
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <i class="fas fa-exclamation-circle error-icon"></i>
+    <p>{{ error }}</p>
+    <button class="retry-button" (click)="loadUserOrders()">Try Again</button>
+  </div>
+  
+  <!-- No Orders State -->
+  <div *ngIf="!isLoading && !error && orders.length === 0" class="empty-state">
+    <i class="fas fa-shopping-bag empty-icon"></i>
+    <h3>No Orders Yet</h3>
+    <p>You haven't placed any orders yet. Start shopping to see your orders here.</p>
+    <a href="/pharmacy/human" class="shop-button">Start Shopping</a>
+  </div>
+  
+  <!-- Orders Table or No Results -->
+  <div *ngIf="!isLoading && !error && orders.length > 0">
+    <!-- Orders Table -->
+    <div *ngIf="filteredOrders.length > 0" class="table-container">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Payment Status</th>
+            <th>Payment Method</th>
+            <th>Items</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of filteredOrders">
+            <td>{{ order.number }}</td>
+            <td>{{ order.created_at | date:'mediumDate' }}</td>
+            <td><span [class]="getStatusClass(order.status)">{{ order.status }}</span></td>
+            <td><span [class]="getPaymentStatusClass(order.payment_status)">{{ order.payment_status }}</span></td>
+            <td>{{ order.payment_method }}</td>
+            <td>
+              <ul class="items-list">
+                <li *ngFor="let item of order.items">
+                  {{ item.product?.name || 'Product' }} ({{ item.quantity }})
+                </li>
+              </ul>
+            </td>
+            <td>{{ calculateTotal(order) | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- No Results from Search -->
+    <div *ngIf="filteredOrders.length === 0" class="no-results">
+      <i class="fas fa-search no-results-icon"></i>
+      <h3>No Matching Orders</h3>
+      <p>No orders match your search criteria. Try a different search term.</p>
+    </div>
+  </div>
+</div> 

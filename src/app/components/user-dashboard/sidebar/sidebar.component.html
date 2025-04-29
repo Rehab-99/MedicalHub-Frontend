@@ -23,8 +23,9 @@
             <li [class.active]="isActive('/user/dashboard')">
                 <a routerLink="/user/dashboard"><i class="fas fa-user-injured"></i> Patient</a>
             </li>
-
-           
+            <li [class.active]="isActive('/user/dashboard/orders')">
+                <a routerLink="/user/dashboard/orders"><i class="fas fa-shopping-bag"></i> My Orders</a>
+            </li>
             <li [class.active]="isActive('/user/dashboard/settings')">
                 <a routerLink="/user/dashboard/settings"><i class="fas fa-cog"></i> Settings</a>
             </li>
