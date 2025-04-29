@@ -7,11 +7,20 @@ import { PostService } from '../../../../../services/blog/post.service';
 import { BlogService } from '../../../../../services/blog/blog.service';
 import { DoctorService } from '../../../../../services/doctor.service';
 import { Subscription } from 'rxjs';
+import { StripHtmlPipe } from '../../../../../doctor-dashboard/add-post/pipe/strip-html.pipe';
+import { RelativeTimePipe } from '../../../../../doctor-dashboard/add-post/pipe/relative-time.pipe';
 
 @Component({
   selector: 'app-human-blog-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    HeaderComponent,
+    FooterComponent,
+    StripHtmlPipe,
+    RelativeTimePipe
+  ],
   templateUrl: './human-blog-list.component.html',
   styleUrls: ['./human-blog-list.component.css'],
   providers: [DatePipe],
@@ -49,13 +58,19 @@ export class HumanBlogListComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.humanBlogPosts = res.data || [];
         console.log('Fetched human posts:', this.humanBlogPosts);
-        // مؤقتًا: إضافة البوستات اللي role: null
+        // إضافة البوستات اللي role: null
         this.postService.getAllPosts().subscribe({
           next: (nullRes) => {
             const nullRolePosts = (nullRes.data || []).filter((post: any) => post.role === null);
             this.humanBlogPosts = [...this.humanBlogPosts, ...nullRolePosts];
             console.log('Fetched posts with role: null:', nullRolePosts);
-            console.log('Updated human posts:', this.humanBlogPosts);
+            // ترتيب البوستات من الأحدث للأقدم
+            this.humanBlogPosts.sort((a, b) => {
+              const dateA = new Date(a.created_at);
+              const dateB = new Date(b.created_at);
+              return dateB.getTime() - dateA.getTime(); // من الأحدث للأقدم
+            });
+            console.log('Sorted human posts:', this.humanBlogPosts);
             this.fetchDoctorNames();
           },
           error: (err) => {

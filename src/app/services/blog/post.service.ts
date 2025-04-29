@@ -1,73 +1,67 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { BlogService } from './blog.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  private apiUrl = 'http://127.0.0.1:8000/api/posts';
+  private apiUrl = `${environment.apiUrl}/posts`;
 
-  constructor(
-    private http: HttpClient,
-    private blogService: BlogService
-  ) {}
+  constructor(private http: HttpClient) {}
 
-  private getAuthHeaders(): HttpHeaders {
+  private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('No token found in localStorage');
-      return new HttpHeaders();
-    }
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    });
   }
 
-  getAllPosts(role?: string): Observable<any> {
-    const headers = this.getAuthHeaders();
+  getAllPosts(role?: 'human' | 'vet'): Observable<any> {
     const url = role ? `${this.apiUrl}?role=${role}` : this.apiUrl;
-    console.log(`Fetching posts for role: ${role || 'all'} from ${url}`);
-    return this.http.get(url, { headers }).pipe(
-      catchError(error => this.handleError(error))
-    );
-  }
-
-  createPost(postData: FormData): Observable<any> {
-    const headers = this.getAuthHeaders();
-    console.log('Sending POST request to create post:', [...postData.entries()]);
-    return this.http.post(this.apiUrl, postData, { headers }).pipe(
-      tap((response) => {
-        console.log('Post created, notifying BlogService:', response);
-        this.blogService.notifyPostsUpdated();
-      }),
-      catchError(error => this.handleError(error))
+    return this.http.get(url, { headers: this.getHeaders() }).pipe(
+      catchError(this.handleError)
     );
   }
 
   getPostById(id: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.apiUrl}/${id}`, { headers }).pipe(
-      catchError(error => this.handleError(error))
+    return this.http.get(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  createPost(postData: FormData): Observable<any> {
+    return this.http.post(this.apiUrl, postData, { headers: this.getHeaders() }).pipe(
+      tap(() => console.log('Post created successfully')),
+      catchError(this.handleError)
     );
   }
 
   updatePost(id: number, postData: FormData): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.post(`${this.apiUrl}/${id}`, postData, { headers }).pipe(
-      catchError(error => this.handleError(error))
+    return this.http.put(`${this.apiUrl}/${id}`, postData, { headers: this.getHeaders() }).pipe(
+      catchError(this.handleError)
     );
   }
 
   deletePost(id: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.delete(`${this.apiUrl}/${id}`, { headers }).pipe(
-      catchError(error => this.handleError(error))
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() }).pipe(
+      catchError(this.handleError)
     );
   }
 
-  private handleError(error: any) {
+  private handleError(error: HttpErrorResponse) {
     console.error('PostService Error:', error);
-    return throwError(() => error);
+    
+    let errorMessage = 'An unknown error occurred';
+    if (error.status === 422 && error.error.errors) {
+      errorMessage = Object.values(error.error.errors).join('\n');
+    } else if (error.error.message) {
+      errorMessage = error.error.message;
+    }
+    
+    return throwError(() => new Error(errorMessage));
   }
 }

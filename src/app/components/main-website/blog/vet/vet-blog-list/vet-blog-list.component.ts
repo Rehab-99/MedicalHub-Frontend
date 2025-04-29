@@ -8,11 +8,20 @@ import { BlogService } from '../../../../../services/blog/blog.service';
 import { DoctorService } from '../../../../../services/doctor.service';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { StripHtmlPipe } from '../../../../../doctor-dashboard/add-post/pipe/strip-html.pipe';
+import { RelativeTimePipe } from '../../../../../doctor-dashboard/add-post/pipe/relative-time.pipe';
 
 @Component({
   selector: 'app-vet-blog-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    HeaderComponent,
+    FooterComponent,
+    StripHtmlPipe,
+    RelativeTimePipe
+  ],
   templateUrl: './vet-blog-list.component.html',
   styleUrls: ['./vet-blog-list.component.css'],
   providers: [DatePipe],
@@ -50,6 +59,13 @@ export class VetBlogListComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.vetBlogPosts = res.data || [];
         console.log('Fetched vet posts:', this.vetBlogPosts);
+        // ترتيب البوستات من الأحدث للأقدم
+        this.vetBlogPosts.sort((a, b) => {
+          const dateA = new Date(a.created_at);
+          const dateB = new Date(b.created_at);
+          return dateB.getTime() - dateA.getTime(); // من الأحدث للأقدم
+        });
+        console.log('Sorted vet posts:', this.vetBlogPosts);
         this.errorMessage = null;
         this.fetchDoctorNames();
       },
