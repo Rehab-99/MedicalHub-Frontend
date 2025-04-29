@@ -4,7 +4,6 @@
     <h2>Human Blogs</h2>
   </div>
 
- 
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
   <div class="blogs-grid">
@@ -13,12 +12,12 @@
         <img [src]="post.doctor?.image ? 'http://127.0.0.1:8000/storage/' + post.doctor.image : 'assets/default-doctor.png'" alt="Doctor Image" class="doctor-image" />
         <div class="doctor-info">
           <p class="doctor-name">{{ post.doctor?.name || 'Unknown Doctor' }}</p>
-          <p class="date">{{ post.created_at | date:'mediumDate' }}</p>
+          <p class="date">{{ post.created_at | relativeTime }}</p>
         </div>
       </div>
       <div class="card-body">
         <h3 class="post-title">{{ post.title }}</h3>
-        <p class="summary">{{ post.content | slice:0:100 }}...</p>
+        <p class="summary">{{ post.content | stripHtml:20 }}</p>
         <div class="show-more-wrapper">
           <a [routerLink]="['/blog/human', post.id]" class="show-more-btn">Show more</a>
         </div>
