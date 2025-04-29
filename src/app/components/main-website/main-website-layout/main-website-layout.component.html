@@ -14,7 +14,7 @@
         <div class="hero-section" id="human-section" [ngClass]="{'active': currentSlide === 1}" style="background-image: url('https://images.ctfassets.net/szez98lehkfm/3aFXjISnNZfF0MkUX6Z5rZ/af19d4cd2183c340fde85ef620db9d81/MyIC_Inline_79497');">
             <div class="hero-content">
                 <h1 class="hero-title"><i class="fas fa-heartbeat"></i> A Warm Embrace for Your Wellbeing</h1>
-                <p class="hero-subtitle">At MedicalHub, we’re here to hold your hand through every step of your health journey with care and kindness.</p>
+                <p class="hero-subtitle">At MedicalHub, we're here to hold your hand through every step of your health journey with care and kindness.</p>
                 <div class="hero-buttons">
                     <button class="btn btn-appointment" routerLink="/appointment"><i class="fas fa-calendar-check"></i> Appointment</button>
                     <button class="btn btn-services" routerLink="/services"><i class="fa-hand-holding-medical fas"></i> Services</button>
@@ -146,31 +146,31 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
+                        <i class="fas fa-users"></i>
                     </div>
-                    <div class="stat-number">836</div>
-                    <p>Working Hours</p>
+                    <div class="stat-number">{{ totalUsers }}</div>
+                    <p>Total Users</p>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-user-md"></i>
                     </div>
-                    <div class="stat-number">78</div>
+                    <div class="stat-number">{{ totalDoctors }}</div>
                     <p>Doctor's Available</p>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-heartbeat"></i>
+                        <i class="fas fa-hospital"></i>
                     </div>
-                    <div class="stat-number">485</div>
-                    <p>Primary Health Care</p>
+                    <div class="stat-number">{{ totalClinics }}</div>
+                    <p>Total Clinics</p>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
-                        <i class="fas fa-flask"></i>
+                        <i class="fas fa-hand-holding-medical"></i>
                     </div>
-                    <div class="stat-number">60</div>
-                    <p>Lab Results</p>
+                    <div class="stat-number">{{ totalServices }}</div>
+                    <p>Total Services</p>
                 </div>
             </div>
         </div>

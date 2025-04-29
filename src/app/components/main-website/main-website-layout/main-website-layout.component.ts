@@ -5,6 +5,10 @@ import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { HttpClient } from '@angular/common/http';
 import { DoctorService } from '../../../services/doctor.service';
+import { AuthService } from '../../../services/auth.service';
+import { ClinicService } from '../../../services/clinic.service';
+import { VetService } from '../../../services/vet.service';
+import { ServiceService } from '../../../services/service.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -26,6 +30,10 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
   private imagesLoaded = false;
   feedbacks: any[] = [];
   latestDoctors: any[] = [];
+  totalDoctors: number = 0;
+  totalUsers: number = 0;
+  totalClinics: number = 0;
+  totalServices: number = 0;
   baseUrl = environment.apiUrl;
 
   private images = [
@@ -33,7 +41,14 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
     'https://img.freepik.com/free-photo/close-up-veterinarian-taking-care-pet_23-2149143884.jpg'
   ];
 
-  constructor(private http: HttpClient, private doctorService: DoctorService) {}
+  constructor(
+    private http: HttpClient, 
+    private doctorService: DoctorService,
+    private authService: AuthService,
+    private clinicService: ClinicService,
+    private vetService: VetService,
+    private serviceService: ServiceService
+  ) {}
 
   ngOnInit() {
     this.preloadImages().then(() => {
@@ -42,6 +57,10 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
     });
 
     this.loadLatestDoctors();
+    this.loadTotalDoctors();
+    this.loadTotalUsers();
+    this.loadTotalClinics();
+    this.loadTotalServices();
 
     this.http.get(`${environment.apiUrl}/feedback`).subscribe({
       next: (res: any) => {
@@ -72,8 +91,8 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
 
   loadLatestDoctors() {
     this.doctorService.getLatestDoctors(4).subscribe({
-      next: (response) => {
-        this.latestDoctors = response.data || response;
+      next: (response: any) => {
+        this.latestDoctors = response.data || [];
         console.log('Latest doctors loaded:', this.latestDoctors);
         this.latestDoctors.forEach(doctor => {
           console.log('Doctor:', doctor.name, 'Image Path:', doctor.image, 'URL:', this.getImageUrl(doctor.image));
@@ -82,6 +101,69 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error('Error loading latest doctors:', error);
         this.latestDoctors = [];
+      }
+    });
+  }
+
+  loadTotalDoctors() {
+    this.doctorService.getDoctors().subscribe({
+      next: (response: any) => {
+        this.totalDoctors = response.data?.length || 0;
+      },
+      error: (error) => {
+        console.error('Error loading total doctors:', error);
+      }
+    });
+  }
+
+  loadTotalUsers() {
+    const token = this.authService.getToken();
+    if (token) {
+      this.http.get(`${environment.apiUrl}/user/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }).subscribe({
+        next: (response: any) => {
+          this.totalUsers = response.users?.length || 0;
+        },
+        error: (error) => {
+          console.error('Error loading total users:', error);
+        }
+      });
+    }
+  }
+
+  loadTotalClinics() {
+    // Load human clinics
+    this.clinicService.getClinics().subscribe({
+      next: (response: any) => {
+        const humanClinics = response.data?.length || 0;
+        
+        // Load vet clinics
+        this.vetService.getVetClinics().subscribe({
+          next: (vetResponse: any) => {
+            const vetClinics = vetResponse.data?.length || 0;
+            this.totalClinics = humanClinics + vetClinics;
+          },
+          error: (error) => {
+            console.error('Error loading vet clinics:', error);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error loading human clinics:', error);
+      }
+    });
+  }
+
+  loadTotalServices() {
+    this.serviceService.getServices().subscribe({
+      next: (response: any) => {
+        this.totalServices = response.data?.length || 0;
+      },
+      error: (error) => {
+        console.error('Error loading total services:', error);
       }
     });
   }
