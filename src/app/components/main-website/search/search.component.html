@@ -82,11 +82,16 @@
 
   <div *ngIf="!loading && selectedSection === 'products'">
     <div *ngFor="let item of results.products" class="product-card">
+
+        <div class="badge-unavailable" *ngIf="+item.stock === 0">
+            Not Available
+          </div>
+    
       <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
       <h5>{{ item.name }}</h5>
       <p *ngIf="item.description">{{ item.description }}</p>
       <p class="price">{{ item.price }} EGP</p>
-      <button class="add-to-cart-btn" [disabled]="item.stock === 0" (click)="addToCart(item.id)">Add to Cart</button>
+      <button class="add-to-cart-btn" [disabled]="+item.stock === 0" (click)="addToCart(item.id)">Add to Cart</button>
     </div>
   </div>
 
