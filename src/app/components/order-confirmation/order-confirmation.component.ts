@@ -13,7 +13,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
         <h1>Payment Successful!</h1>
         <p>Thank you for your order. Your order number is #{{orderId}}</p>
         <div class="actions">
-          <button class="btn btn-primary" (click)="goToOrders()">View Orders</button>
           <button class="btn btn-secondary" (click)="continueShopping()">Continue Shopping</button>
         </div>
       </div>
@@ -113,6 +112,6 @@ export class OrderConfirmationComponent implements OnInit {
   }
 
   continueShopping() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/pharmacy/human']);
   }
 } 
