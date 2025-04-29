@@ -32,12 +32,22 @@ export class AuthService {
 
   private initializeAuthState() {
     if (isPlatformBrowser(this.platformId)) {
+      // Check for user data
       const user = localStorage.getItem('user');
       const token = localStorage.getItem('token');
+      
+      // Check for admin data
+      const adminData = localStorage.getItem('adminData');
+      const adminToken = localStorage.getItem('adminToken');
+      
       if (user && token) {
         const parsedUser = JSON.parse(user);
         parsedUser.image = this.constructImageUrl(parsedUser.image);
         this.currentUserSubject.next(parsedUser);
+        this.isLoggedIn$.next(true);
+      } else if (adminData && adminToken) {
+        const parsedAdmin = JSON.parse(adminData);
+        this.currentUserSubject.next(parsedAdmin);
         this.isLoggedIn$.next(true);
       }
     }
@@ -89,9 +99,14 @@ export class AuthService {
 
   logout() {
     if (isPlatformBrowser(this.platformId)) {
+      // Clear user data
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('lastEmail');
+      
+      // Clear admin data
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminData');
     }
     this.currentUserSubject.next(null);
     this.isLoggedIn$.next(false);
@@ -100,14 +115,14 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     if (isPlatformBrowser(this.platformId)) {
-      return !!localStorage.getItem('token');
+      return !!(localStorage.getItem('token') || localStorage.getItem('adminToken'));
     }
     return false;
   }
 
   getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('token');
+      return localStorage.getItem('token') || localStorage.getItem('adminToken');
     }
     return null;
   }
