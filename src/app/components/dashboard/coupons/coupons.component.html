@@ -1,4 +1,16 @@
 <div class="container-fluid mt-4">
+  <!-- Flash Message -->
+  <div *ngIf="flashMessage" 
+       class="alert alert-dismissible fade show" 
+       [class.alert-success]="flashType === 'success'" 
+       [class.alert-danger]="flashType === 'error'" 
+       role="alert"
+       style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+    <i class="fas" [class.fa-check-circle]="flashType === 'success'" [class.fa-exclamation-circle]="flashType === 'error'" me-2></i>
+    {{ flashMessage }}
+    <button type="button" class="btn-close" (click)="flashMessage = ''"></button>
+  </div>
+
   <div class="row justify-content-center">
     <div class="col-12">
       <div class="card shadow-sm">
@@ -105,9 +117,9 @@
               <div class="col-md-3 d-flex align-items-end">
                 <button type="submit" 
                         class="btn btn-primary w-100" 
-                        [disabled]="!couponForm.valid">
-                  <i class="fas fa-plus-circle me-2"></i>
-                  Create Coupon
+                        [disabled]="!couponForm.valid || isLoading">
+                  <i class="fas" [class.fa-plus-circle]="!isLoading" [class.fa-spinner]="isLoading" [class.fa-spin]="isLoading" me-2></i>
+                  {{ isLoading ? 'Creating...' : 'Create Coupon' }}
                 </button>
               </div>
             </div>
@@ -116,44 +128,4 @@
       </div>
     </div>
   </div>
-</div>
-
-<!-- Success Modal -->
-<div class="modal fade" [class.show]="showSuccessModal" [class.d-block]="showSuccessModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title" id="successModalLabel">
-          <i class="fas fa-check-circle me-2"></i>
-          نجاح
-        </h5>
-        <button type="button" class="btn-close btn-close-white" (click)="closeSuccessModal()" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center py-4">
-        <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
-        <p class="mb-0 fs-5">{{ successMessage }}</p>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop fade show" *ngIf="showSuccessModal"></div>
-
-<!-- Error Modal -->
-<div class="modal fade" [class.show]="showErrorModal" [class.d-block]="showErrorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="errorModalLabel">
-          <i class="fas fa-exclamation-circle me-2"></i>
-          خطأ
-        </h5>
-        <button type="button" class="btn-close btn-close-white" (click)="closeErrorModal()" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center py-4">
-        <i class="fas fa-exclamation-circle text-danger fa-3x mb-3"></i>
-        <p class="mb-0 fs-5">{{ errorMessage }}</p>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop fade show" *ngIf="showErrorModal"></div> 
+</div> 

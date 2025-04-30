@@ -1,8 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CouponService, Coupon } from '../../../services/coupon.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-coupons',
@@ -12,15 +13,10 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./coupons.component.css']
 })
 export class CouponsComponent implements OnInit {
-  @ViewChild('successModal') successModalEl!: ElementRef;
-  @ViewChild('errorModal') errorModalEl!: ElementRef;
-  
   couponForm: FormGroup;
-  successMessage: string = '';
-  errorMessage: string = '';
-  formErrors: { [key: string]: string } = {};
-  showSuccessModal: boolean = false;
-  showErrorModal: boolean = false;
+  flashMessage: string = '';
+  flashType: 'success' | 'error' | null = null;
+  isLoading: boolean = false;
   
   // Define discount types as constants to match backend validation
   readonly DISCOUNT_TYPES = {
@@ -34,13 +30,22 @@ export class CouponsComponent implements OnInit {
     REQUIRED: 'This field is required',
     MIN_LENGTH: 'Must be at least 3 characters long',
     MIN_VALUE: 'Value must be greater than 0',
-    INVALID_DATE: 'Please select a valid date'
+    INVALID_DATE: 'Please select a valid date',
+    TIMEOUT: 'Request timed out. Please try again.',
+    NETWORK_ERROR: 'Network error. Please check your connection.'
   };
 
   constructor(
     private fb: FormBuilder,
-    private couponService: CouponService
+    private couponService: CouponService,
+    private router: Router
   ) {
+    // Check if admin is logged in
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+      this.router.navigate(['/admin-login']);
+    }
+
     this.couponForm = this.fb.group({
       code: ['', [Validators.required, Validators.minLength(3)]],
       discount_type: [this.DISCOUNT_TYPES.PERCENTAGE, [Validators.required, Validators.pattern(`^(${this.DISCOUNT_TYPES.PERCENTAGE}|${this.DISCOUNT_TYPES.FIXED})$`)]],
@@ -50,53 +55,57 @@ export class CouponsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Double check admin authentication on component initialization
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+      this.router.navigate(['/admin-login']);
+    }
+  }
 
-  private showSuccessMessage(message: string): void {
-    this.successMessage = message;
-    this.errorMessage = '';
-    this.showSuccessModal = true;
+  private showFlashMessage(message: string, type: 'success' | 'error'): void {
+    this.flashMessage = message;
+    this.flashType = type;
     
-    // Hide the modal after 3 seconds
+    // Hide the flash message after 3 seconds
     setTimeout(() => {
-      this.showSuccessModal = false;
+      this.flashMessage = '';
+      this.flashType = null;
     }, 3000);
   }
 
-  private showErrorMessage(message: string): void {
-    this.errorMessage = message;
-    this.successMessage = '';
-    this.showErrorModal = true;
-  }
-
-  closeSuccessModal(): void {
-    this.showSuccessModal = false;
-  }
-
-  closeErrorModal(): void {
-    this.showErrorModal = false;
-  }
-
   onSubmit(): void {
+    // Check admin authentication before submitting
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+      this.router.navigate(['/admin-login']);
+      return;
+    }
+
     if (this.couponForm.valid) {
       // Clear previous errors
-      this.formErrors = {};
-      this.errorMessage = '';
+      this.flashMessage = '';
+      this.flashType = null;
+      this.isLoading = true;
       
       // Store form data before submission
       const formData = { ...this.couponForm.value };
       
       this.couponService.createCoupon(formData).subscribe({
         next: (response) => {
+          console.log('Server Response:', response); // Debug log
+          this.isLoading = false;
           // Reset form immediately after successful submission
           this.couponForm.reset({
             discount_type: this.DISCOUNT_TYPES.PERCENTAGE
           });
           
-          // Show success message with the stored coupon code
-          this.showSuccessMessage(`تم إنشاء الكوبون "${formData.code}" بنجاح! 🎉`);
+          // Always show a success message
+          this.showFlashMessage(`Coupon "${formData.code}" created successfully! 🎉`, 'success');
         },
         error: (error: HttpErrorResponse) => {
+          console.error('Error Response:', error); // Debug log
+          this.isLoading = false;
           if (error.status === 422) {
             // Handle validation errors
             if (error.error.errors) {
@@ -107,7 +116,6 @@ export class CouponsComponent implements OnInit {
                 if (errorMessage.includes('already been taken')) {
                   errorMessage = this.ERROR_MESSAGES.CODE_TAKEN;
                 }
-                this.formErrors[key] = errorMessage;
                 // Set error on specific form control
                 const control = this.couponForm.get(key);
                 if (control) {
@@ -115,9 +123,13 @@ export class CouponsComponent implements OnInit {
                 }
               });
             }
-            this.showErrorMessage('يرجى التحقق من صحة البيانات المدخلة');
+            this.showFlashMessage('Please check your input data', 'error');
+          } else if (error.status === 0) {
+            this.showFlashMessage(this.ERROR_MESSAGES.NETWORK_ERROR, 'error');
+          } else if (error instanceof Error && error.message.includes('Timeout')) {
+            this.showFlashMessage(this.ERROR_MESSAGES.TIMEOUT, 'error');
           } else {
-            this.showErrorMessage('حدث خطأ أثناء إنشاء الكوبون');
+            this.showFlashMessage('An error occurred while creating the coupon', 'error');
           }
         }
       });
@@ -147,6 +159,6 @@ export class CouponsComponent implements OnInit {
         return this.ERROR_MESSAGES.MIN_VALUE;
       }
     }
-    return this.formErrors[fieldName] || '';
+    return '';
   }
 } 
