@@ -129,10 +129,7 @@ export const routes: Routes = [
     path: 'services',
     component: ServiceDetailComponent
   },
-  {
-   path:'feedback',
-   component:FeedbackComponent
-  },
+ 
   {
     path: 'book/:id',
     component: BookComponent
@@ -389,6 +386,14 @@ export const routes: Routes = [
       {
         path: 'settings',
         component: UserSettingsComponent
+      },
+      {
+        path:'feedback',
+        component:FeedbackComponent
+       },
+      {
+        path:'bookedservice',
+        component:BookedServicesComponent
       },
       {
         path: 'orders',
