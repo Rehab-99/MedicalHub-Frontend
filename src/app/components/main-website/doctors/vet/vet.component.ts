@@ -6,6 +6,8 @@ import { FooterComponent } from '../../footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { DoctorService } from '../../../../services/doctor.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../../../environments/environment';
+
 @Component({
   selector: 'app-vet',
   standalone: true,
@@ -15,11 +17,26 @@ import { Router } from '@angular/router';
 })
 export class VetComponent implements OnInit {
   doctors: any[] = [];  // Changed from vets to doctors
+  baseUrl = environment.apiUrl;
 
   constructor(private doctorService: DoctorService, private router:Router) {}  // Changed from vetService to doctorService
 
   trackDoctor(index: number, doctor: any): number {  // Changed from trackVet to trackDoctor
     return doctor.id;
+  }
+
+  getImageUrl(imagePath: string | null): string {
+    if (!imagePath) {
+      return 'https://via.placeholder.com/100';
+    }
+    // Check if the imagePath is already a full URL
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    // If it's a relative path, construct the full URL
+    // Remove /api from the base URL for storage access
+    const storageUrl = this.baseUrl.replace('/api', '');
+    return `${storageUrl}/storage/${imagePath}`;
   }
 
   bookAppointment(doc: any) {

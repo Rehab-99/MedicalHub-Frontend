@@ -17,19 +17,19 @@ interface ClinicResponse {
   providedIn: 'root',
 })
 export class ClinicService {
-  private apiUrl = 'http://127.0.0.1:8000/api/clinics'; // Updated to use 127.0.0.1
+  private baseUrl = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient) {}
 
-  // Fetch all clinics
-  getClinics(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  // Fetch all clinics based on type
+  getClinics(type: 'clinics' | 'vets' = 'clinics'): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${type}`);
   }
 
   // Fetch a single clinic by ID
-  getClinic(id: number): Observable<ClinicResponse> {
-    console.log('Making API Call to:', `${this.apiUrl}/${id}`);
-    return this.http.get<ClinicResponse>(`${this.apiUrl}/${id}`).pipe(
+  getClinic(id: number, type: 'clinics' | 'vets' = 'clinics'): Observable<ClinicResponse> {
+    console.log('Making API Call to:', `${this.baseUrl}/${type}/${id}`);
+    return this.http.get<ClinicResponse>(`${this.baseUrl}/${type}/${id}`).pipe(
       tap(response => {
         console.log('API Response:', response);
         if (response && response.data && response.data.doctors) {
@@ -40,21 +40,21 @@ export class ClinicService {
   }
 
   // Add a new clinic
-  addClinic(clinicData: any): Observable<any> {
-    return this.http.post(this.apiUrl, clinicData);
+  addClinic(clinicData: any, type: 'clinics' | 'vets' = 'clinics'): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${type}`, clinicData);
   }
 
   // Update a clinic
-  updateClinic(id: number, formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${id}`, formData);
+  updateClinic(id: number, formData: FormData, type: 'clinics' | 'vets' = 'clinics'): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${type}/${id}`, formData);
   }
 
   // Delete a clinic
-  deleteClinic(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  deleteClinic(id: number, type: 'clinics' | 'vets' = 'clinics'): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${type}/${id}`);
   }
 
-  createClinic(formData: FormData): Observable<any> {
-    return this.http.post(this.apiUrl, formData);
+  createClinic(formData: FormData, type: 'clinics' | 'vets' = 'clinics'): Observable<any> {
+    return this.http.post(`${this.baseUrl}/${type}`, formData);
   }
 }

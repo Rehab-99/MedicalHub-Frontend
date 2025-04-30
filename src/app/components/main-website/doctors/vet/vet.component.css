@@ -18,7 +18,6 @@ html, body {
   overflow-y: auto;
 }
 
-/* Grid layout for vets */
 /* Grid layout for doctors */
 .doctors-grid {
   display: grid;
@@ -27,8 +26,7 @@ html, body {
   justify-items: center;
 }
 
-
-/* Vet Card Styling */
+/* Doctor Card Styling */
 .doctor-card {
   background-color: #fff;
   border-radius: 12px;
@@ -37,19 +35,17 @@ html, body {
   display: flex;
   flex-direction: column;
   width: 100%;
- 
   padding: 1rem;
   text-align: left;
   transition: transform 0.3s ease;
 }
 
-
-.vet-card:hover {
+.doctor-card:hover {
   transform: translateY(-5px);
 }
 
 /* Image Styling */
-.vet-image {
+.doctor-image {
   width: 100%;
   height: 200px;
   background-color: #f7f7f7;
@@ -59,7 +55,7 @@ html, body {
   border-radius: 8px;
 }
 
-.vet-image img {
+.doctor-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -78,18 +74,18 @@ html, body {
   border-radius: 8px;
 }
 
-/* Vet Info Section */
-.vet-info {
+/* Doctor Info Section */
+.doctor-info {
   margin-top: 1rem;
 }
 
-.vet-info h3 {
+.doctor-info h3 {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
   color: #333;
 }
 
-.vet-info p {
+.doctor-info p {
   font-size: 1rem;
   margin: 0.3rem 0;
   color: #555;
@@ -143,28 +139,28 @@ html, body {
   transform: translateY(-2px);
 }
 
-.section-title {
-  font-size: 2rem;
-  margin-bottom: 2rem;
+/* Footer styling */
+h1 {
   text-align: center;
+  margin: 10px;
+  color: #3498db;
 }
 
-/* Responsive Layout */
-@media (max-width: 992px) {
-  .vets-grid {
-    grid-template-columns: repeat(2, 1fr); /* Two cards per row on tablets */
+/* Adjustments for small screens */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+  .doctors-grid {
+    padding: 10px;
   }
 }
 
-@media (max-width: 600px) {
-  .vets-grid {
-    grid-template-columns: 1fr; /* One card per row on mobile */
-  }
-}
-i{
+i {
   padding: 10px;
 }
-/* Footer always at the bottom */
+
+/* Hero Slider Styles */
 .hero-section {
   position: relative;
   width: 100%;
@@ -220,7 +216,7 @@ i{
 
 .hero-content button {
   padding: 15px 20px;
-  background-color:rgb(16, 123, 165);
+  background-color: rgb(16, 123, 165);
   border: none;
   border-radius: 20px;
   color: white;

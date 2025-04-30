@@ -20,6 +20,7 @@ interface Clinic {
 })
 export class ClinicsComponent implements OnInit {
   clinics: Clinic[] = [];
+  clinicType: 'human' | 'vet' = 'human';
 
   constructor(private clinicService: ClinicService, private router: Router) {}
 
@@ -29,7 +30,8 @@ export class ClinicsComponent implements OnInit {
 
   // Fetch clinics from Laravel API
   loadClinics() {
-    this.clinicService.getClinics().subscribe(
+    const apiEndpoint = this.clinicType === 'human' ? 'clinics' : 'vets';
+    this.clinicService.getClinics(apiEndpoint).subscribe(
       (response) => {
         console.log('Full API Response:', response);
         if (response && response.data) {
@@ -54,7 +56,13 @@ export class ClinicsComponent implements OnInit {
     );
   }
 
+  toggleClinicType(type: 'human' | 'vet') {
+    this.clinicType = type;
+    this.loadClinics();
+  }
+
   goToClinicDoctors(clinicId: number) {
-    this.router.navigate(['/clinics', clinicId, 'doctors']);
+    const route = this.clinicType === 'human' ? 'clinics' : 'vets';
+    this.router.navigate([`/${route}`, clinicId, 'doctors']);
   }
 }

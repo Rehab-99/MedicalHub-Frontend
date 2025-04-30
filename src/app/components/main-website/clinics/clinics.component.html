@@ -3,6 +3,21 @@
     <div class="section-header">
         <h2 class="section-title">Our Clinics</h2>
         <p class="section-subtitle">Find the perfect clinic for your needs</p>
+        
+        <div class="clinic-type-toggle">
+            <button 
+                class="toggle-btn" 
+                [class.active]="clinicType === 'human'"
+                (click)="toggleClinicType('human')">
+                <i class="fas fa-hospital"></i> Human Clinics
+            </button>
+            <button 
+                class="toggle-btn" 
+                [class.active]="clinicType === 'vet'"
+                (click)="toggleClinicType('vet')">
+                <i class="fas fa-paw"></i> Veterinary Clinics
+            </button>
+        </div>
     </div>
     <!-- sssssssssssssssssssssssssssssssssss -->
     
@@ -11,7 +26,7 @@
             <div class="clinic-image">
                 <img *ngIf="clinic.image" [src]="clinic.image" alt="{{ clinic.name }}" />
                 <div *ngIf="!clinic.image" class="image-placeholder">
-                    <i class="fas fa-clinic-medical"></i>
+                    <i class="fas" [class.fa-hospital]="clinicType === 'human'" [class.fa-paw]="clinicType === 'vet'"></i>
                 </div>
             </div>
             <div class="clinic-info">
