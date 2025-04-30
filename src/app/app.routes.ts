@@ -92,7 +92,7 @@ import { DoctorReportsComponent } from './doctor-dashboard/doctor-reports/doctor
 import { BookedServicesComponent } from './components/dashboard/bookedservices/bookedservices.component';
 import { OrdersComponent } from './components/dashboard/orders/orders.component';
 import { UserOrdersComponent } from './components/user-orders/user-orders.component';
-
+import { CouponsComponent } from './components/dashboard/coupons/coupons.component';
 
 export const routes: Routes = [
   {
@@ -293,6 +293,10 @@ export const routes: Routes = [
       {
         path: 'orders',
         component: OrdersComponent
+      },
+      {
+        path: 'coupons',
+        component: CouponsComponent
       }
     ]
   },

@@ -30,6 +30,10 @@ export const apiInterceptor: HttpInterceptorFn = (req, next) => {
           window.location.href = '/login';
         } else if (error.status === 403) {
           Swal.fire('Error', 'You do not have permission to perform this action', 'error');
+        } else if (error.status === 422) {
+          // Don't show a general error for validation errors
+          // Let the component handle the specific validation messages
+          return throwError(() => error);
         } else {
           Swal.fire('Error', 'An error occurred while processing your request', 'error');
         }

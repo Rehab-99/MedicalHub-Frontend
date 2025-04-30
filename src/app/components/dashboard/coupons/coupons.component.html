@@ -1,0 +1,135 @@
+<div class="container-fluid mt-4">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white py-3">
+          <h5 class="card-title mb-0 d-flex align-items-center">
+            <i class="fas fa-ticket-alt me-2"></i>
+            Create New Coupon
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <form [formGroup]="couponForm" (ngSubmit)="onSubmit()" class="needs-validation">
+            <div class="row g-4">
+              <!-- Coupon Code -->
+              <div class="col-md-3">
+                <label class="form-label fw-bold">Coupon Code</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-tag"></i>
+                  </span>
+                  <input type="text" 
+                         class="form-control" 
+                         [class.is-invalid]="hasError('code')"
+                         formControlName="code" 
+                         placeholder="Enter unique coupon code">
+                </div>
+                <div class="invalid-feedback" *ngIf="hasError('code')">
+                  {{ getErrorMessage('code') }}
+                </div>
+              </div>
+
+              <!-- Discount Type -->
+              <div class="col-md-3">
+                <label class="form-label fw-bold">Discount Type</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-percent"></i>
+                  </span>
+                  <select class="form-select" 
+                          [class.is-invalid]="hasError('discount_type')"
+                          formControlName="discount_type">
+                    <option [value]="DISCOUNT_TYPES.PERCENTAGE">Percentage</option>
+                    <option [value]="DISCOUNT_TYPES.FIXED">Fixed Amount</option>
+                  </select>
+                </div>
+                <div class="invalid-feedback" *ngIf="hasError('discount_type')">
+                  {{ getErrorMessage('discount_type') }}
+                </div>
+              </div>
+
+              <!-- Discount Value -->
+              <div class="col-md-3">
+                <label class="form-label fw-bold">Discount Value</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-dollar-sign"></i>
+                  </span>
+                  <input type="number" 
+                         class="form-control" 
+                         [class.is-invalid]="hasError('discount_value')"
+                         formControlName="discount_value" 
+                         placeholder="e.g., 50">
+                </div>
+                <div class="invalid-feedback" *ngIf="hasError('discount_value')">
+                  {{ getErrorMessage('discount_value') }}
+                </div>
+              </div>
+
+              <!-- Usage Limit -->
+              <div class="col-md-3">
+                <label class="form-label fw-bold">Usage Limit</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-users"></i>
+                  </span>
+                  <input type="number" 
+                         class="form-control" 
+                         [class.is-invalid]="hasError('usage_limit')"
+                         formControlName="usage_limit" 
+                         placeholder="e.g., 100">
+                </div>
+                <div class="invalid-feedback" *ngIf="hasError('usage_limit')">
+                  {{ getErrorMessage('usage_limit') }}
+                </div>
+              </div>
+
+              <!-- Expiry Date -->
+              <div class="col-md-3">
+                <label class="form-label fw-bold">Expiry Date</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span>
+                  <input type="datetime-local" 
+                         class="form-control" 
+                         [class.is-invalid]="hasError('expires_at')"
+                         formControlName="expires_at">
+                </div>
+                <div class="invalid-feedback" *ngIf="hasError('expires_at')">
+                  {{ getErrorMessage('expires_at') }}
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" 
+                        class="btn btn-primary w-100" 
+                        [disabled]="!couponForm.valid">
+                  <i class="fas fa-plus-circle me-2"></i>
+                  Create Coupon
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Messages -->
+  <div class="row justify-content-center mt-4">
+    <div class="col-12">
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        {{ successMessage }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        {{ errorMessage }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+</div> 

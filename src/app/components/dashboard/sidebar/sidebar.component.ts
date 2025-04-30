@@ -68,16 +68,6 @@ export class SidebarComponent {
       ]
     },
     {
-      title: 'Users',
-      icon: 'fas fa-user-cog',
-      route: '/dashboard/users'
-    },
-    {
-      title: 'Orders',
-      icon: 'fas fa-shopping-cart',
-      route: '/dashboard/orders'
-    },
-    {
       title: 'Services',
       icon: 'fas fa-hand-holding-medical',
       route: '/dashboard/services'
@@ -92,7 +82,21 @@ export class SidebarComponent {
       icon: 'fas fa-user-md',
       route: '/dashboard/doctor-request'
     },
-
+    {
+      title: 'Coupons',
+      icon: 'fas fa-ticket-alt',
+      route: '/dashboard/coupons'
+    },
+    {
+      title: 'Users',
+      icon: 'fas fa-user-cog',
+      route: '/dashboard/users'
+    },
+    {
+      title: 'Orders',
+      icon: 'fas fa-shopping-cart',
+      route: '/dashboard/orders'
+    },
   ];
 
   expandedMenus: { [key: string]: boolean } = {};
