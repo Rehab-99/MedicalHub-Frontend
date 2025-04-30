@@ -1,0 +1,28 @@
+<div class="chat-container" [class.open]="isOpen">
+  <div class="chat-button" (click)="toggleChat()">
+    <fa-icon [icon]="faComments"></fa-icon>
+  </div>
+  
+  <div class="chat-window" *ngIf="isOpen">
+    <div class="chat-header">
+      <h3>MedicalHub Assistant</h3>
+      <button class="close-button" (click)="toggleChat()">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+    
+    <div class="chat-messages">
+      <div *ngFor="let message of messages" [class.user-message]="message.isUser" [class.bot-message]="!message.isUser">
+        {{ message.text }}
+      </div>
+    </div>
+    
+    <div class="quick-questions">
+      <button *ngFor="let question of quickQuestions" 
+              class="quick-question-btn"
+              (click)="sendMessage(question)">
+        {{ question }}
+      </button>
+    </div>
+  </div>
+</div> 

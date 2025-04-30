@@ -11,11 +11,12 @@ import { VetService } from '../../../services/vet.service';
 import { ServiceService } from '../../../services/service.service';
 import { AppointmentService } from '../../../services/appointment.service';
 import { environment } from '../../../../environments/environment';
+import { ChatComponent } from '../chat/chat.component';
 
 @Component({
   selector: 'app-main-website-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent, ChatComponent],
   templateUrl: './main-website-layout.component.html',
   styleUrls: ['./main-website-layout.component.css'],
   encapsulation: ViewEncapsulation.None,
