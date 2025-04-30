@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CouponService, Coupon } from '../../../services/coupon.service';
@@ -12,10 +12,15 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./coupons.component.css']
 })
 export class CouponsComponent implements OnInit {
+  @ViewChild('successModal') successModalEl!: ElementRef;
+  @ViewChild('errorModal') errorModalEl!: ElementRef;
+  
   couponForm: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
   formErrors: { [key: string]: string } = {};
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
   
   // Define discount types as constants to match backend validation
   readonly DISCOUNT_TYPES = {
@@ -47,19 +52,49 @@ export class CouponsComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  private showSuccessMessage(message: string): void {
+    this.successMessage = message;
+    this.errorMessage = '';
+    this.showSuccessModal = true;
+    
+    // Hide the modal after 3 seconds
+    setTimeout(() => {
+      this.showSuccessModal = false;
+    }, 3000);
+  }
+
+  private showErrorMessage(message: string): void {
+    this.errorMessage = message;
+    this.successMessage = '';
+    this.showErrorModal = true;
+  }
+
+  closeSuccessModal(): void {
+    this.showSuccessModal = false;
+  }
+
+  closeErrorModal(): void {
+    this.showErrorModal = false;
+  }
+
   onSubmit(): void {
     if (this.couponForm.valid) {
       // Clear previous errors
       this.formErrors = {};
       this.errorMessage = '';
       
-      this.couponService.createCoupon(this.couponForm.value).subscribe({
+      // Store form data before submission
+      const formData = { ...this.couponForm.value };
+      
+      this.couponService.createCoupon(formData).subscribe({
         next: (response) => {
-          this.successMessage = 'Coupon created successfully!';
-          this.errorMessage = '';
+          // Reset form immediately after successful submission
           this.couponForm.reset({
-            discount_type: this.DISCOUNT_TYPES.PERCENTAGE // Reset to default value
+            discount_type: this.DISCOUNT_TYPES.PERCENTAGE
           });
+          
+          // Show success message with the stored coupon code
+          this.showSuccessMessage(`تم إنشاء الكوبون "${formData.code}" بنجاح! 🎉`);
         },
         error: (error: HttpErrorResponse) => {
           if (error.status === 422) {
@@ -80,11 +115,10 @@ export class CouponsComponent implements OnInit {
                 }
               });
             }
-            this.errorMessage = 'Please check the form for errors';
+            this.showErrorMessage('يرجى التحقق من صحة البيانات المدخلة');
           } else {
-            this.errorMessage = 'Error creating coupon';
+            this.showErrorMessage('حدث خطأ أثناء إنشاء الكوبون');
           }
-          this.successMessage = '';
         }
       });
     }
