@@ -7,6 +7,8 @@ import { DoctorService } from '../../services/doctor.service';
 import { ClinicService } from '../../services/clinic.service';
 import { VetService } from '../../services/vet.service';
 import { LoginDoctorService } from '../../services/login-doctor.service';
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import { FormsModule } from '@angular/forms';
 
 interface Clinic {
   id: number;
@@ -30,7 +32,7 @@ interface Doctor {
 @Component({
   selector: 'app-doctor-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarComponent, FormsModule],
   templateUrl: './doctor-profile.component.html',
   styleUrls: ['./doctor-profile.component.css']
 })
@@ -106,6 +108,22 @@ export class DoctorProfileComponent implements OnInit {
     }
     const storageUrl = this.baseUrl.replace('/api', '');
     return `${storageUrl}/storage/${imagePath}`;
+  }
+
+  copyToClipboard(text: string | null) {
+    if (text) {
+      navigator.clipboard.writeText(text).then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Copied!',
+          text: `${text} copied to clipboard.`,
+          timer: 1500,
+          showConfirmButton: false
+        });
+      }).catch(() => {
+        Swal.fire('Error', 'Failed to copy text.', 'error');
+      });
+    }
   }
 
   goBack() {

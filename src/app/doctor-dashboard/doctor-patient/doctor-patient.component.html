@@ -1,4 +1,10 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+  <main class="main-content">
+<div class="profile-container">
+
 <div class="patients-container">
+
     <h2>Patients</h2>
   
     <div class="search-bar">
@@ -50,10 +56,7 @@
       <button [disabled]="currentPage === totalPages" (click)="nextPage()">Next</button>
     </div>
   
-    <div class="back-section">
-      <button class="back-btn" (click)="goBack()">
-        <i class="fas fa-arrow-left"></i> Back to Dashboard
-      </button>
+   
     </div>
   
     <!-- Notes Modal -->

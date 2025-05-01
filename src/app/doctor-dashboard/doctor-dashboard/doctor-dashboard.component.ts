@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { LoginDoctorService } from '../../services/login-doctor.service';
 import { DoctorService } from '../../services/doctor.service';
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-doctor-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule,SidebarComponent,RouterLink],
   templateUrl: './doctor-dashboard.component.html',
   styleUrls: ['./doctor-dashboard.component.css']
 })
 export class DoctorDashboardComponent implements OnInit {
   doctorName = 'Doctor';
-  doctorImage: string | null = null; // No default image, we'll use icon
+  doctorImage: string | null = null;
 
   constructor(
     private loginDoctorService: LoginDoctorService,
@@ -43,15 +44,9 @@ export class DoctorDashboardComponent implements OnInit {
       this.doctorImage = null;
     }
   }
+
   getFormattedName(): string {
     if (!this.doctorName) return 'Doctor';
     return this.doctorName.trim().toLowerCase().startsWith('dr') ? this.doctorName : `Dr. ${this.doctorName}`;
-  }
-  
-  logout() {
-    localStorage.removeItem('doctor');
-    localStorage.removeItem('token');
-    localStorage.removeItem('doctor_role');
-    window.location.href = '/doctor-login';
   }
 }

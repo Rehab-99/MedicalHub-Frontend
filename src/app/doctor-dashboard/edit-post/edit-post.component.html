@@ -1,0 +1,167 @@
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+  <main class="main-content">
+<div class="profile-container">
+
+
+<div class="add-post-container">
+
+    <div class="header-actions">
+      <h2 class="page-title">Edit Post</h2>
+    </div>
+  
+    <form [formGroup]="editPostForm" (ngSubmit)="onSubmit()" class="post-form">
+      <div class="form-group">
+        <label for="title" class="form-label">Title</label>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            class="form-input"
+            id="title"
+            formControlName="title"
+            placeholder="Enter post title"
+            [class.is-invalid]="editPostForm.get('title')?.invalid && editPostForm.get('title')?.touched"
+            aria-label="Post title"
+          >
+          <i class="bi bi-exclamation-circle input-error-icon" *ngIf="editPostForm.get('title')?.invalid && editPostForm.get('title')?.touched"></i>
+        </div>
+        <div class="invalid-feedback" *ngIf="editPostForm.get('title')?.errors?.['required']">
+          Title is required
+        </div>
+        <div class="invalid-feedback" *ngIf="editPostForm.get('title')?.errors?.['maxlength']">
+          Title cannot exceed 255 characters
+        </div>
+        <div class="char-count" *ngIf="editPostForm.get('title')?.value">
+          {{ editPostForm.get('title')?.value.length }} / 255
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label class="form-label">Content</label>
+        <div class="editor-toolbar sticky-toolbar">
+          <div class="toolbar-group">
+            <button type="button" class="toolbar-btn" (click)="formatText('bold')" aria-label="Bold text" title="Bold">
+              <i class="bi bi-type-bold"></i>
+              <span class="btn-label">Bold</span>
+            </button>
+            <button type="button" class="toolbar-btn" (click)="formatText('italic')" aria-label="Italic text" title="Italic">
+              <i class="bi bi-type-italic"></i>
+              <span class="btn-label">Italic</span>
+            </button>
+            <button type="button" class="toolbar-btn" (click)="formatText('underline')" aria-label="Underline text" title="Underline">
+              <i class="bi bi-type-underline"></i>
+              <span class="btn-label">Underline</span>
+            </button>
+          </div>
+          <div class="toolbar-group">
+            <select class="toolbar-select" (change)="setFontSize($event)" aria-label="Font size">
+              <option value="">Font Size</option>
+              <option value="1">Small</option>
+              <option value="3" selected>Normal</option>
+              <option value="5">Large</option>
+              <option value="7">Huge</option>
+            </select>
+          </div>
+          
+          <div class="toolbar-group">
+            <button type="button" class="toolbar-btn" (click)="formatText('justifyLeft')" aria-label="Align left" title="Align Left">
+              <i class="bi bi-text-left"></i>
+              <span class="btn-label">Left</span>
+            </button>
+            <button type="button" class="toolbar-btn" (click)="formatText('justifyCenter')" aria-label="Align center" title="Align Center">
+              <i class="bi bi-text-center"></i>
+              <span class="btn-label">Center</span>
+            </button>
+            <button type="button" class="toolbar-btn" (click)="formatText('justifyRight')" aria-label="Align right" title="Align Right">
+              <i class="bi bi-text-right"></i>
+              <span class="btn-label">Right</span>
+            </button>
+          </div>
+          <div class="toolbar-group">
+            <button type="button" class="toolbar-btn" (click)="triggerImageUpload()" aria-label="Add photo" title="Add Photo">
+              <i class="bi bi-image"></i>
+              <span class="btn-label">Photo</span>
+            </button>
+            <button type="button" class="toolbar-btn" (click)="alignImage('left')" aria-label="Align image left" title="Image Left" [disabled]="!lastInsertedImage">
+              <i class="bi bi-align-start"></i>
+              <span class="btn-label">Img Left</span>
+            </button>
+            <button type="button" class="toolbar-btn" (click)="alignImage('center')" aria-label="Align image center" title="Image Center" [disabled]="!lastInsertedImage">
+              <i class="bi bi-align-center"></i>
+              <span class="btn-label">Img Center</span>
+            </button>
+            <button type="button" class="toolbar-btn" (click)="alignImage('right')" aria-label="Align image right" title="Image Right" [disabled]="!lastInsertedImage">
+              <i class="bi bi-align-end"></i>
+              <span class="btn-label">Img Right</span>
+            </button>
+          </div>
+          <div class="toolbar-group">
+            <button type="button" class="toolbar-btn" (click)="formatText('undo')" aria-label="Undo" title="Undo">
+              <i class="bi bi-arrow-counterclockwise"></i>
+              <span class="btn-label">Undo</span>
+            </button>
+            <button type="button" class="toolbar-btn" (click)="formatText('redo')" aria-label="Redo" title="Redo">
+              <i class="bi bi-arrow-clockwise"></i>
+              <span class="btn-label">Redo</span>
+            </button>
+          </div>
+          <div class="toolbar-group">
+            <button type="button" class="toolbar-btn" (click)="openPreview()" aria-label="Preview post" title="Preview">
+              <i class="bi bi-eye"></i>
+              <span class="btn-label">Preview</span>
+            </button>
+          </div>
+        </div>
+  
+        <div
+          #editor
+          class="editor-content"
+          contenteditable="true"
+          (input)="updateContent()"
+          [class.is-invalid]="editPostForm.get('content')?.invalid && editPostForm.get('content')?.touched"
+          aria-label="Post content editor"
+        ></div>
+        <div class="invalid-feedback" *ngIf="editPostForm.get('content')?.errors?.['required']">
+          Content is required
+        </div>
+        <div class="editor-stats">
+          <span>Words: {{ wordCount }}</span>
+          <span *ngIf="isAutoSaving" class="auto-save">Auto-saving...</span>
+          <span *ngIf="lastAutoSaved" class="auto-save">Last saved: {{ lastAutoSaved | date:'shortTime' }}</span>
+        </div>
+      </div>
+  
+      <div class="form-actions">
+        <button type="button" class="action-btn cancel-btn" (click)="router.navigate(['/doctor-dashboard'])" aria-label="Cancel">
+          Cancel
+        </button>
+       
+        <button type="submit" class="action-btn publish-btn" [disabled]="isSubmitting" aria-label="Update post">
+          <span *ngIf="!isSubmitting">Update Post</span>
+          <span *ngIf="isSubmitting">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Updating...
+          </span>
+        </button>
+      </div>
+  
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}
+      </div>
+    </form>
+  
+    <div class="preview-modal" *ngIf="showPreview" @modalAnimation>
+      <div class="preview-content">
+        <div class="preview-header">
+          <h3>Post Preview</h3>
+          <button type="button" class="close-btn" (click)="closePreview()" aria-label="Close preview">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="preview-body">
+          <h4 class="preview-post-title">{{ editPostForm.get('title')?.value || 'Your Post Title' }}</h4>
+          <div [innerHTML]="editPostForm.get('content')?.value | safeHtml"></div>
+        </div>
+      </div>
+    </div>
+  </div>

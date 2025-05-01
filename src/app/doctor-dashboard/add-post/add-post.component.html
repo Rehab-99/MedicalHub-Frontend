@@ -1,23 +1,25 @@
-<div class="add-post-container" [ngClass]="{'dark-mode': isDarkMode}">
-  <!-- Header Actions -->
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+  <main class="main-content">
+<div class="profile-container">
+
+<div class="add-post-container">
+ 
   <div class="header-actions">
-    <h2 class="page-title">Create New Post</h2>
-    <button type="button" class="theme-toggle" (click)="toggleDarkMode()" aria-label="Toggle dark mode">
-      <i class="bi" [ngClass]="isDarkMode ? 'bi-sun' : 'bi-moon-stars'"></i>
-    </button>
+    <h2 class="page-title">Add New Post</h2>
   </div>
 
   <form [formGroup]="addPostForm" (ngSubmit)="onSubmit()" class="post-form">
     <!-- Title Input -->
     <div class="form-group">
-      <label for="title" class="form-label">Title</label>
+      <label for="title" class="form-label">Post Title</label>
       <div class="input-wrapper">
         <input
           type="text"
           class="form-input"
           id="title"
           formControlName="title"
-          placeholder="Enter post title"
+          placeholder="Enter a catchy title..."
           [class.is-invalid]="addPostForm.get('title')?.invalid && addPostForm.get('title')?.touched"
           aria-label="Post title"
         >
@@ -36,9 +38,8 @@
 
     <!-- Content Editor -->
     <div class="form-group">
-      <label class="form-label">Content</label>
+      <label class="form-label">Post Content</label>
       <div class="editor-toolbar sticky-toolbar">
-        <!-- Text Formatting -->
         <div class="toolbar-group">
           <button type="button" class="toolbar-btn" (click)="formatText('bold')" aria-label="Bold text" title="Bold">
             <i class="bi bi-type-bold"></i>
@@ -53,7 +54,6 @@
             <span class="btn-label">Underline</span>
           </button>
         </div>
-        <!-- Font Size -->
         <div class="toolbar-group">
           <select class="toolbar-select" (change)="setFontSize($event)" aria-label="Font size">
             <option value="">Font Size</option>
@@ -63,23 +63,7 @@
             <option value="7">Huge</option>
           </select>
         </div>
-        <!-- Color Palette -->
-        <div class="toolbar-group color-palette-wrapper">
-          <button type="button" class="toolbar-btn palette-btn" (click)="toggleColorPalette()" aria-label="Text color" title="Text Color">
-            <i class="bi bi-palette"></i>
-            <span class="btn-label">Color</span>
-          </button>
-          <div class="color-palette" *ngIf="showColorPalette">
-            <span class="color-option" style="background: #3b82f6" (click)="setTextColor('#3b82f6')"></span>
-            <span class="color-option" style="background: #10b981" (click)="setTextColor('#10b981')"></span>
-            <span class="color-option" style="background: #ef4444" (click)="setTextColor('#ef4444')"></span>
-            <span class="color-option" style="background: #000000" (click)="setTextColor('#000000')"></span>
-            <span class="color-option" style="background: #6b7280" (click)="setTextColor('#6b7280')"></span>
-            <span class="color-option" style="background: #f59e0b" (click)="setTextColor('#f59e0b')"></span>
-            <span class="color-option" style="background: #8b5cf6" (click)="setTextColor('#8b5cf6')"></span>
-          </div>
-        </div>
-        <!-- Text Alignment -->
+       
         <div class="toolbar-group">
           <button type="button" class="toolbar-btn" (click)="formatText('justifyLeft')" aria-label="Align left" title="Align Left">
             <i class="bi bi-text-left"></i>
@@ -94,26 +78,24 @@
             <span class="btn-label">Right</span>
           </button>
         </div>
-        <!-- Image Controls -->
         <div class="toolbar-group">
           <button type="button" class="toolbar-btn" (click)="triggerImageUpload()" aria-label="Add photo" title="Add Photo">
-            <i class="bi bi-camera"></i>
+            <i class="bi bi-image"></i>
             <span class="btn-label">Photo</span>
           </button>
-          <button type="button" class="toolbar-btn" (click)="alignImage('left')" aria-label="Align image left" title="Image Left">
+          <button type="button" class="toolbar-btn" (click)="alignImage('left')" aria-label="Align image left" title="Image Left" [disabled]="!lastInsertedImage">
             <i class="bi bi-align-start"></i>
             <span class="btn-label">Img Left</span>
           </button>
-          <button type="button" class="toolbar-btn" (click)="alignImage('center')" aria-label="Align image center" title="Image Center">
+          <button type="button" class="toolbar-btn" (click)="alignImage('center')" aria-label="Align image center" title="Image Center" [disabled]="!lastInsertedImage">
             <i class="bi bi-align-center"></i>
             <span class="btn-label">Img Center</span>
           </button>
-          <button type="button" class="toolbar-btn" (click)="alignImage('right')" aria-label="Align image right" title="Image Right">
+          <button type="button" class="toolbar-btn" (click)="alignImage('right')" aria-label="Align image right" title="Image Right" [disabled]="!lastInsertedImage">
             <i class="bi bi-align-end"></i>
             <span class="btn-label">Img Right</span>
           </button>
         </div>
-        <!-- Undo/Redo -->
         <div class="toolbar-group">
           <button type="button" class="toolbar-btn" (click)="formatText('undo')" aria-label="Undo" title="Undo">
             <i class="bi bi-arrow-counterclockwise"></i>
@@ -124,7 +106,6 @@
             <span class="btn-label">Redo</span>
           </button>
         </div>
-        <!-- Preview -->
         <div class="toolbar-group">
           <button type="button" class="toolbar-btn" (click)="openPreview()" aria-label="Preview post" title="Preview">
             <i class="bi bi-eye"></i>
@@ -147,18 +128,13 @@
       </div>
       <div class="editor-stats">
         <span>Words: {{ wordCount }}</span>
-        <span *ngIf="isAutoSaving" class="auto-save">Auto-saving...</span>
-        <span *ngIf="lastAutoSaved" class="auto-save">Last saved: {{ lastAutoSaved | date:'shortTime' }}</span>
       </div>
     </div>
 
     <!-- Form Actions -->
     <div class="form-actions">
-      <button type="button" class="action-btn cancel-btn" (click)="router.navigate(['/blog'])" aria-label="Cancel">
+      <button type="button" class="action-btn cancel-btn" (click)="router.navigate(['/doctor-dashboard'])" aria-label="Cancel">
         Cancel
-      </button>
-      <button type="button" class="action-btn draft-btn" (click)="saveDraft()" [disabled]="isSubmitting" aria-label="Save as draft">
-        Save as Draft
       </button>
       <button type="submit" class="action-btn publish-btn" [disabled]="isSubmitting" aria-label="Publish post">
         <span *ngIf="!isSubmitting">Publish Post</span>

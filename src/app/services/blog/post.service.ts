@@ -41,7 +41,7 @@ export class PostService {
   }
 
   updatePost(id: number, postData: FormData): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, postData, { headers: this.getHeaders() }).pipe(
+    return this.http.post(`${this.apiUrl}/${id}?_method=PUT`, postData, { headers: this.getHeaders() }).pipe(
       catchError(this.handleError)
     );
   }

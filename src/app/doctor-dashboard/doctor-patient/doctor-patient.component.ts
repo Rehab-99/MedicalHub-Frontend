@@ -7,11 +7,12 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-doctor-patient',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, SidebarComponent,RouterModule, FormsModule],
   templateUrl: './doctor-patient.component.html',
   styleUrls: ['./doctor-patient.component.css'],
   animations: [

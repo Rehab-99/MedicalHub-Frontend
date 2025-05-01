@@ -1,20 +1,21 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { PostService } from '../../services/blog/post.service';
+import { interval, Subscription } from 'rxjs';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { SafeHtmlPipe } from './pipe/safe-html.pipe';
+import { SafeHtmlPipe } from '../add-post/pipe/safe-html.pipe';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
-  selector: 'app-add-post',
   standalone: true,
-  imports: [ReactiveFormsModule, SidebarComponent,CommonModule, SafeHtmlPipe],
-  templateUrl: './add-post.component.html',
-  styleUrls: ['./add-post.component.css'],
+  selector: 'app-edit-post',
+  templateUrl: './edit-post.component.html',
+  styleUrls: ['./edit-post.component.css'],
+  imports: [ReactiveFormsModule,SidebarComponent,CommonModule, SafeHtmlPipe],
   animations: [
     trigger('modalAnimation', [
       state('void', style({ opacity: 0, transform: 'translateY(50px)' })),
@@ -24,16 +25,20 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
     ])
   ]
 })
-export class AddPostComponent implements OnInit, OnDestroy {
+export class EditPostComponent implements OnInit, OnDestroy {
   @ViewChild('editor') editor!: ElementRef<HTMLDivElement>;
 
-  addPostForm: FormGroup;
+  editPostForm: FormGroup;
   isSubmitting = false;
   errorMessage: string | null = null;
   showColorPalette = false;
   showPreview = false;
+  isAutoSaving = false;
+  lastAutoSaved: Date | null = null;
   wordCount = 0;
+  autoSaveSubscription: Subscription | null = null;
   lastInsertedImage: HTMLImageElement | null = null;
+  postId: number | null = null;
 
   fontSizeMap: { [key: string]: string } = {
     '1': '12px',
@@ -50,9 +55,10 @@ export class AddPostComponent implements OnInit, OnDestroy {
     private postService: PostService,
     public router: Router,
     private sanitizer: DomSanitizer,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private route: ActivatedRoute
   ) {
-    this.addPostForm = this.fb.group({
+    this.editPostForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(255)]],
       content: ['', Validators.required]
     });
@@ -62,12 +68,46 @@ export class AddPostComponent implements OnInit, OnDestroy {
     if (!localStorage.getItem('token')) {
       this.router.navigate(['/login']);
     }
-    this.addPostForm.get('content')?.valueChanges.subscribe(() => {
+
+    this.postId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.postId) {
+      this.loadPost();
+    }
+
+    this.autoSaveSubscription = interval(30000).subscribe(() => {
+      if (this.editPostForm.valid && this.postId) {
+        this.autoSaveDraft();
+      }
+    });
+
+    this.editPostForm.get('content')?.valueChanges.subscribe(() => {
       this.updateWordCount();
     });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    if (this.autoSaveSubscription) {
+      this.autoSaveSubscription.unsubscribe();
+    }
+  }
+
+  loadPost(): void {
+    this.postService.getPostById(this.postId!).subscribe({
+      next: (response) => {
+        const post = response.data;
+        this.editPostForm.patchValue({
+          title: post.title,
+          content: post.content
+        });
+        this.renderer.setProperty(this.editor.nativeElement, 'innerHTML', post.content);
+        this.updateWordCount();
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to load post';
+        console.error(err);
+      }
+    });
+  }
 
   formatText(command: string, value?: string): void {
     document.execCommand(command, false, value);
@@ -92,7 +132,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
     const selection = window.getSelection();
     const range = selection?.getRangeAt(0);
     const selectedText = selection?.toString();
-    
+
     if (selectedText && selectedText.length > 0) {
       document.execCommand('styleWithCSS', false, 'true');
       document.execCommand('foreColor', false, color);
@@ -100,11 +140,11 @@ export class AddPostComponent implements OnInit, OnDestroy {
       const span = document.createElement('span');
       span.style.color = color;
       span.textContent = ' ';
-      
+
       if (range) {
         range.deleteContents();
         range.insertNode(span);
-        
+
         const newRange = document.createRange();
         newRange.setStartAfter(span);
         newRange.collapse(true);
@@ -114,7 +154,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
         this.editor.nativeElement.appendChild(span);
       }
     }
-    
+
     this.showColorPalette = false;
     this.updateContent();
     this.focusEditor();
@@ -155,7 +195,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
         img.style.display = 'block';
         img.style.margin = '12px auto';
         img.setAttribute('data-filename', file.name);
-        
+
         this.insertAtCursor(img);
         this.updateContent();
         this.lastInsertedImage = img;
@@ -170,7 +210,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
       const range = selection.getRangeAt(0);
       range.deleteContents();
       range.insertNode(node);
-      
+
       const newRange = document.createRange();
       newRange.setStartAfter(node);
       newRange.collapse(true);
@@ -187,14 +227,14 @@ export class AddPostComponent implements OnInit, OnDestroy {
 
   updateContent(): void {
     const content = this.editor.nativeElement.innerHTML;
-    this.addPostForm.patchValue({
+    this.editPostForm.patchValue({
       content: this.sanitizeContent(content)
     });
     this.updateWordCount();
   }
 
   private updateWordCount(): void {
-    const content = this.addPostForm.get('content')?.value || '';
+    const content = this.editPostForm.get('content')?.value || '';
     const text = content.replace(/<[^>]+>/g, '').trim();
     this.wordCount = text ? text.split(/\s+/).length : 0;
   }
@@ -240,7 +280,7 @@ export class AddPostComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.addPostForm.invalid) {
+    if (this.editPostForm.invalid) {
       this.markFormAsTouched();
       return;
     }
@@ -249,21 +289,21 @@ export class AddPostComponent implements OnInit, OnDestroy {
     this.errorMessage = null;
 
     const formData = new FormData();
-    formData.append('title', this.addPostForm.value.title);
+    formData.append('title', this.editPostForm.value.title);
 
-    const { content, images } = this.extractInlineImages(this.addPostForm.value.content);
+    const { content, images } = this.extractInlineImages(this.editPostForm.value.content);
     formData.append('content', content);
 
     images.forEach((image) => {
       formData.append(`inline_images[]`, image, image.name);
     });
 
-    this.postService.createPost(formData).subscribe({
+    this.postService.updatePost(this.postId!, formData).subscribe({
       next: (response) => {
         Swal.fire({
           icon: 'success',
           title: 'Success!',
-          text: 'Post created successfully',
+          text: 'Post updated successfully',
           timer: 2000
         }).then(() => {
           this.router.navigate(['/doctor-dashboard']);
@@ -276,8 +316,60 @@ export class AddPostComponent implements OnInit, OnDestroy {
     });
   }
 
+  saveDraft(): void {
+    if (this.editPostForm.invalid) {
+      this.markFormAsTouched();
+      return;
+    }
+
+    this.isSubmitting = true;
+    this.errorMessage = null;
+
+    const formData = new FormData();
+    formData.append('title', this.editPostForm.value.title);
+    formData.append('content', this.editPostForm.value.content);
+    formData.append('status', 'draft');
+
+    this.postService.updatePost(this.postId!, formData).subscribe({
+      next: (response) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Draft Saved!',
+          text: 'Your post has been saved as a draft',
+          timer: 2000
+        }).then(() => {
+          this.router.navigate(['/doctor-dashboard']);
+        });
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.errorMessage = err.message;
+      }
+    });
+  }
+
+  private autoSaveDraft(): void {
+    if (this.isSubmitting) return;
+
+    this.isAutoSaving = true;
+    const formData = new FormData();
+    formData.append('title', this.editPostForm.value.title);
+    formData.append('content', this.editPostForm.value.content);
+    formData.append('status', 'draft');
+
+    this.postService.updatePost(this.postId!, formData).subscribe({
+      next: (response) => {
+        this.isAutoSaving = false;
+        this.lastAutoSaved = new Date();
+      },
+      error: (err) => {
+        this.isAutoSaving = false;
+      }
+    });
+  }
+
   private markFormAsTouched(): void {
-    Object.values(this.addPostForm.controls).forEach(control => {
+    Object.values(this.editPostForm.controls).forEach(control => {
       control.markAsTouched();
     });
   }
