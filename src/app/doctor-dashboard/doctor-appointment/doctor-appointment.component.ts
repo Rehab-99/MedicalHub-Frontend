@@ -7,12 +7,13 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { ChatWindowComponent } from '../../components/chat/chat-window.component';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 
 @Component({
   selector: 'app-doctor-appointment',
   standalone: true,
-  imports: [CommonModule,ChatWindowComponent],
+  imports: [CommonModule,SidebarComponent,ChatWindowComponent],
   templateUrl: './doctor-appointment.component.html',
   styleUrls: ['./doctor-appointment.component.css'],
 })

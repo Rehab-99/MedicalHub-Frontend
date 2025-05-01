@@ -8,6 +8,7 @@ import { DoctorService } from '../../services/doctor.service';
 import { ClinicService } from '../../services/clinic.service';
 import { VetService } from '../../services/vet.service';
 import { LoginDoctorService } from '../../services/login-doctor.service';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 interface Clinic {
   id: number;
@@ -31,7 +32,7 @@ interface Doctor {
 @Component({
   selector: 'app-doctor-profile-edit',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,SidebarComponent],
   templateUrl: './doctor-profile-edit.component.html',
   styleUrls: ['./doctor-profile-edit.component.css']
 })

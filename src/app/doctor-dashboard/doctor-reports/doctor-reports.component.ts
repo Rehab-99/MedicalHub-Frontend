@@ -6,11 +6,12 @@ import { LoginDoctorService } from '../../services/login-doctor.service';
 import { FeedbackService } from '../../services/feedback.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-doctor-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,SidebarComponent],
   templateUrl: './doctor-reports.component.html',
   styleUrls: ['./doctor-reports.component.css']
 })

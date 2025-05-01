@@ -1,36 +1,70 @@
-<div class="profile-container">
-    
-    <div class="profile-card">
+<div class="dashboard-container">
+  <app-sidebar></app-sidebar>
+  <main class="main-content">
+    <div class="profile-container">
+      <div class="profile-card">
         <div class="header-container">
-            <h1>My Profile</h1>
+          <h1>My Profile</h1>
+        </div>
+        <div class="profile-content">
+          <div class="profile-sidebar">
+            <div class="image-wrapper">
+              <img *ngIf="doctor && doctor.image" [src]="getImageUrl(doctor.image)" alt="Doctor's Image" class="profile-image">
+              <i *ngIf="doctor && !doctor.image" class="fas fa-user-md profile-icon"></i>
+            </div>
+            <h2>{{ getFormattedName() }}</h2>
+            <p class="specialization">{{ doctor?.specialization || 'N/A' }}</p>
           </div>
-      <div class="profile-header">
-        <img *ngIf="doctor && doctor.image" [src]="getImageUrl(doctor.image)" alt="Doctor's Image" class="profile-image">
-        <i *ngIf="doctor && !doctor.image" class="fas fa-user-md profile-icon"></i>
-        <h2>{{ getFormattedName() }}</h2>
-        <p class="specialization">{{ doctor?.specialization || 'N/A' }}</p>
-      </div>
-      <div class="profile-details">
-        <div class="detail-group">
-          <h3>Personal Information</h3>
-          <p><strong>Email:</strong> {{ doctor?.email || 'N/A' }}</p>
-          <p><strong>Phone:</strong> {{ doctor?.phone || 'N/A' }}</p>
-          <p><strong>Address:</strong> {{ doctor?.address || 'N/A' }}</p>
-        </div>
-        <div class="detail-group">
-          <h3>Professional Information</h3>
-          <p><strong>Doctor Type:</strong> {{ doctor?.role === 'human' ? 'Human Doctor' : 'Veterinarian' }}</p>
-          <p><strong>Clinic:</strong> {{ clinicName || 'N/A' }}</p>
-          <p><strong>Clinic Address:</strong> {{ doctor?.clinic_address || 'N/A' }}</p>
-        </div>
-        <div class="detail-group">
-          <h3>Bio</h3>
-          <p>{{ doctor?.bio || 'No bio provided.' }}</p>
+          <div class="profile-details">
+            <div class="details-columns">
+              <div class="detail-group bio-group">
+                <h3>Bio</h3>
+                <p>{{ doctor?.bio || 'No bio provided.' }}</p>
+              </div>
+              <div class="detail-group">
+                <h3>Personal Information</h3>
+                <p>
+                  <i class="fas fa-envelope"></i>
+                  <strong>Email:</strong> {{ doctor?.email || 'N/A' }}
+                  <button class="copy-button" (click)="copyToClipboard(doctor?.email ?? null)" *ngIf="doctor?.email">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </p>
+                <p>
+                  <i class="fas fa-phone"></i>
+                  <strong>Phone:</strong> {{ doctor?.phone || 'N/A' }}
+                  <button class="copy-button" (click)="copyToClipboard(doctor?.phone ?? null)" *ngIf="doctor?.phone">
+                    <i class="fas fa-copy"></i>
+                  </button>
+                </p>
+                <p>
+                  <i class="fas fa-map-marker-alt"></i>
+                  <strong>Address:</strong> {{ doctor?.address || 'N/A' }}
+                </p>
+              </div>
+              <div class="detail-group">
+                <h3>Professional Information</h3>
+                <p>
+                  <i class="fas fa-user-md"></i>
+                  <strong>Doctor Type:</strong> {{ doctor?.role === 'human' ? 'Human Doctor' : 'Veterinarian' }}
+                </p>
+                <p>
+                  <i class="fas fa-hospital"></i>
+                  <strong>Clinic:</strong> {{ clinicName || 'N/A' }}
+                </p>
+                <p>
+                  <i class="fas fa-map-marker-alt"></i>
+                  <strong>Clinic Address:</strong> {{ doctor?.clinic_address || 'N/A' }}
+                </p>
+              </div>
+            </div>
+           
+          </div>
         </div>
         <div class="profile-actions">
           <button class="edit-button" (click)="goToEdit()">Edit Profile</button>
-          <button class="back-button" (click)="goBack()">Back to Dashboard</button>
         </div>
       </div>
     </div>
-  </div>
+  </main>
+</div>

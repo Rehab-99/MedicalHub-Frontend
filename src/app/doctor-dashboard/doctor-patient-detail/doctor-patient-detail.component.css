@@ -1,3 +1,15 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-light);
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
 .patient-detail-container {
     padding: 2rem;
     background-color: var(--background-light);
@@ -5,7 +17,7 @@
   }
   
   .patient-detail-container h2 {
-    color: var(--primary-color);
+    color: #1c6a9f;
     margin-bottom: 2rem;
     text-align: center;
     font-size: 2rem;

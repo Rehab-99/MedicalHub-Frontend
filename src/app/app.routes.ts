@@ -90,6 +90,7 @@ import { DoctorPatientDetailComponent } from './doctor-dashboard/doctor-patient-
 import { DoctorPatientComponent } from './doctor-dashboard/doctor-patient/doctor-patient.component';
 import { DoctorReportsComponent } from './doctor-dashboard/doctor-reports/doctor-reports.component';
 import { BookedServicesComponent } from './components/dashboard/bookedservices/bookedservices.component';
+import { EditPostComponent } from './doctor-dashboard/edit-post/edit-post.component';
 
 
 export const routes: Routes = [
@@ -311,6 +312,10 @@ export const routes: Routes = [
   { 
     path: 'blog/human/:id', 
     component: HumanBlogDetailComponent 
+  },
+  {
+    path: 'doctor-dashboard/edit-post/:id',
+    component: EditPostComponent
   },
   
   { 

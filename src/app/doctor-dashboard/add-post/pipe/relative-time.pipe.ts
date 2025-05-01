@@ -17,13 +17,13 @@ export class RelativeTimePipe implements PipeTransform {
     const diffDays = Math.floor(diffHours / 24);
 
     if (diffSeconds < 60) {
-      return `منذ ${diffSeconds} second`;
+      return `${diffSeconds} second${diffSeconds !== 1 ? 's' : ''} ago`;
     } else if (diffMinutes < 60) {
-      return `منذ ${diffMinutes} minute`;
+      return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''} ago`;
     } else if (diffHours < 24) {
-      return `منذ ${diffHours} hour`;
+      return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
     } else if (diffDays === 1) {
-      return 'أمس';
+      return 'Yesterday';
     } else {
       return new DatePipe('en-US').transform(value, 'dd MMM yyyy') || 'Unknown date';
     }

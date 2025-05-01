@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, NavigationEnd, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { CartService } from '../../../services/cart.service';
-import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-
+import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -15,21 +13,34 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
-  isMenuOpen = false;
-  isLoggedIn = false;
-  isUserMenuOpen = false;
-  user: any = null;
-  cartItemsCount: number = 0;
-
+export class HeaderComponent implements OnInit, OnDestroy {
+  isScrolled: boolean = false;
+  isDoctorsDropdownOpen: boolean = false;
+  isBlogsDropdownOpen: boolean = false;
+  isPharmacyDropdownOpen: boolean = false;
+  isSearchActive: boolean = false;
   searchQuery: string = '';
+  cartItemsCount: number = 0;
+  currentRoute: string = '';
+  isMenuOpen: boolean = false;
+  isLoggedIn: boolean = false;
+  isUserMenuOpen: boolean = false;
+  user: any = null;
+  private routerSubscription: Subscription | undefined;
+
+  @ViewChild('searchInput') searchInput!: ElementRef;
 
   constructor(
+    private router: Router,
     private authService: AuthService,
-    private cartService: CartService,
-    private http: HttpClient ,
-    private router: Router
-  ) {
+    private cartService: CartService
+  ) {}
+
+  ngOnInit(): void {
+    window.addEventListener('scroll', () => {
+      this.isScrolled = window.scrollY > 50;
+    });
+
     this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
       this.isLoggedIn = loggedIn;
     });
@@ -38,57 +49,105 @@ export class HeaderComponent {
       this.user = user;
     });
 
-    this.cartService.getCartItems().subscribe((items: any[]) => {
+    this.cartService.getCartItems().subscribe(items => {
       this.cartItemsCount = items.length;
     });
-  }
-  isDoctorsDropdownOpen = false;
 
-  toggleDoctorsDropdown() {
-    this.isDoctorsDropdownOpen = !this.isDoctorsDropdownOpen;
-  }
-  
-
-
-  isBlogsDropdownOpen = false;
-  toggleBlogsDropdown() {
-    console.log('Blogs dropdown toggled, isBlogsDropdownOpen:', this.isBlogsDropdownOpen);
-    this.isBlogsDropdownOpen = !this.isBlogsDropdownOpen;
-  }
-
-  isPharmacyDropdownOpen = false;
-  togglePharmacyDropdown() {
-    this.isPharmacyDropdownOpen = !this.isPharmacyDropdownOpen;
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.currentRoute = event.urlAfterRedirects;
+      this.isSearchActive = false;
+      this.searchQuery = '';
+      this.isMenuOpen = false;
+      this.isDoctorsDropdownOpen = false;
+      this.isBlogsDropdownOpen = false;
+      this.isPharmacyDropdownOpen = false;
+      this.isUserMenuOpen = false;
+    });
   }
 
-  toggleMenu() {
-    this.isMenuOpen = !this.isMenuOpen;
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (menuToggle && navLinks) {
-      menuToggle.classList.toggle('active');
-      navLinks.classList.toggle('active');
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
     }
   }
 
-  toggleUserMenu() {
-    this.isUserMenuOpen = !this.isUserMenuOpen;
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.user-menu') && !target.closest('.dropdown') && !target.closest('.navbar-toggler')) {
+      this.isUserMenuOpen = false;
+      this.isDoctorsDropdownOpen = false;
+      this.isBlogsDropdownOpen = false;
+      this.isPharmacyDropdownOpen = false;
+    }
   }
 
-  logout() {
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+    if (!this.isMenuOpen) {
+      this.isDoctorsDropdownOpen = false;
+      this.isBlogsDropdownOpen = false;
+      this.isPharmacyDropdownOpen = false;
+      this.isUserMenuOpen = false;
+      this.isSearchActive = false;
+    }
+  }
+
+  toggleUserMenu(): void {
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+    this.isDoctorsDropdownOpen = false;
+    this.isBlogsDropdownOpen = false;
+    this.isPharmacyDropdownOpen = false;
+  }
+
+  logout(): void {
     this.authService.logout();
+    this.isUserMenuOpen = false;
+    this.isMenuOpen = false;
+    this.router.navigate(['/login']);
+  }
+
+  toggleDoctorsDropdown(): void {
+    this.isDoctorsDropdownOpen = !this.isDoctorsDropdownOpen;
+    this.isBlogsDropdownOpen = false;
+    this.isPharmacyDropdownOpen = false;
     this.isUserMenuOpen = false;
   }
 
-
-  onSearch() {
-      if (this.searchQuery.trim() !== '') {
-        this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
-      }
+  toggleBlogsDropdown(): void {
+    this.isBlogsDropdownOpen = !this.isBlogsDropdownOpen;
+    this.isDoctorsDropdownOpen = false;
+    this.isPharmacyDropdownOpen = false;
+    this.isUserMenuOpen = false;
   }
 
+  togglePharmacyDropdown(): void {
+    this.isPharmacyDropdownOpen = !this.isPharmacyDropdownOpen;
+    this.isDoctorsDropdownOpen = false;
+    this.isBlogsDropdownOpen = false;
+    this.isUserMenuOpen = false;
+  }
 
+  activateSearch(): void {
+    this.isSearchActive = !this.isSearchActive;
+    if (this.isSearchActive) {
+      setTimeout(() => {
+        this.searchInput.nativeElement.focus();
+      }, 0);
+    }
+    this.isDoctorsDropdownOpen = false;
+    this.isBlogsDropdownOpen = false;
+    this.isPharmacyDropdownOpen = false;
+    this.isUserMenuOpen = false;
+  }
 
-
+  onSearch(): void {
+    if (this.searchQuery.trim() !== '') {
+      this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+      this.isSearchActive = false;
+      this.isMenuOpen = false;
+    }
+  }
 }

@@ -1,13 +1,32 @@
-    <app-header></app-header>
+<app-header></app-header>
 
-    <div class="search-results-container">
+<div class="search-results-container">
     <h2>Search Results for "{{ query }}"</h2>
 
-    <div class="search-buttons">
-        <button (click)="setActiveSection('categories')" [ngClass]="{'active': selectedSection === 'categories'}">Categories</button>
-        <button (click)="setActiveSection('doctors')" [ngClass]="{'active': selectedSection === 'doctors'}">Doctors</button>
-        <button (click)="setActiveSection('posts')" [ngClass]="{'active': selectedSection === 'posts'}">Posts</button>
-        <button (click)="setActiveSection('products')" [ngClass]="{'active': selectedSection === 'products'}">Products</button>
+    <!-- إزالة زرار الـ List من الـ View Toggle -->
+    <div class="view-toggle">
+        <button (click)="viewMode = 'grid'" [ngClass]="{'active': viewMode === 'grid'}">
+            <i class="fas fa-th"></i> Grid
+        </button>
+    </div>
+
+    <div class="search-filters">
+        <div class="filter-chip" [ngClass]="{'active': selectedSection === 'categories'}" (click)="setActiveSection('categories')">
+            <i class="fas fa-list"></i> Categories
+            <span class="badge" *ngIf="results.categories?.length">{{ results.categories.length }}</span>
+        </div>
+        <div class="filter-chip" [ngClass]="{'active': selectedSection === 'doctors'}" (click)="setActiveSection('doctors')">
+            <i class="fas fa-user-md"></i> Doctors
+            <span class="badge" *ngIf="results.doctors?.length">{{ results.doctors.length }}</span>
+        </div>
+        <div class="filter-chip" [ngClass]="{'active': selectedSection === 'posts'}" (click)="setActiveSection('posts')">
+            <i class="fas fa-newspaper"></i> Posts
+            <span class="badge" *ngIf="results.posts?.length">{{ results.posts.length }}</span>
+        </div>
+        <div class="filter-chip" [ngClass]="{'active': selectedSection === 'products'}" (click)="setActiveSection('products')">
+            <i class="fas fa-shopping-basket"></i> Products
+            <span class="badge" *ngIf="results.products?.length">{{ results.products.length }}</span>
+        </div>
     </div>
 
     <div *ngIf="loading" class="loading">
@@ -16,92 +35,65 @@
     </div>
 
     <div *ngIf="!loading && results[selectedSection]?.length === 0" class="no-results">
-        <p>No results found.</p>
+        <i class="fas fa-exclamation-circle"></i>
+        <p>No results found for "{{ query }}". Try searching for something else!</p>
     </div>
 
-    <div *ngIf="!loading && selectedSection === 'categories'">
-        <div *ngFor="let item of results.categories" class="result-card"  (click)="goToCategory(item)">
-        <div class="result-card-header">
+    <!-- إزالة الـ List View، يعني هيبقى فيه بس Grid View -->
+    <div class="results-grid" *ngIf="!loading && selectedSection === 'categories'">
+        <div *ngFor="let item of results.categories" class="result-card" (click)="goToCategory(item)">
+            <span class="badge-type">Category</span>
             <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
-            <h4>{{ item.name }}</h4>
-            <p *ngIf="item.description">{{ item.description }}</p>
-        </div>
+            <div class="result-card-header">
+                <h4>{{ item.name }}</h4>
+                <p *ngIf="item.description">{{ item.description }}</p>
+            </div>
         </div>
     </div>
 
-
-    <div *ngIf="!loading && selectedSection === 'doctors'">
+    <div class="results-grid" *ngIf="!loading && selectedSection === 'doctors'">
         <div *ngFor="let item of results.doctors" class="doctor-card">
+            <span class="badge-type">Doctor</span>
             <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
-
-        <div class="result-card-header">
-            
-            <h3>
-            <i class="fas fa-user-md"></i> {{ item.name }}
-            </h3>
-
-            <p>
-                <i class="fas fa-stethoscope"></i> <strong>Specialization:</strong> {{ item.specialization }}
-            </p>
-
-            <p>
-            <i class="fas fa-hospital"></i> <strong>Clinic:</strong> {{ item.clinic?.name }}
-            </p>
-    
-            <p>
-            <i class="fas fa-briefcase"></i> <strong>Role:</strong> {{ item.role }}
-            </p>
-    
-            <p>
-            <i class="fas fa-phone"></i> <strong>Phone:</strong> {{ item.phone }}
-            </p>
-    
-            <p>
-            <i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> {{ item.address }}
-            </p>
-    
-            <div class="card-buttons">
-            <button class="btn-appointment" (click)="bookAppointment(item)">
-                <i class="fas fa-calendar-check"></i> Book Appointment
-            </button>
+            <div class="doctor-info">
+                <h3>{{ item.name }}</h3>
+                <p><strong>Specialization:</strong> {{ item.specialization }}</p>
+                <p><strong>Clinic:</strong> {{ item.clinic?.name }}</p>
+                <div class="card-buttons">
+                    <button class="btn-appointment" (click)="bookAppointment(item)">Book Appointment</button>
+                </div>
             </div>
-            
-        </div>
         </div>
     </div>
 
-
-    <div *ngIf="!loading && selectedSection === 'posts'">
+    <div class="results-grid" *ngIf="!loading && selectedSection === 'posts'">
         <div *ngFor="let item of results.posts" class="post-card" (click)="viewPost(item.id)">
-        <div class="post-card-header">
-            <h3>{{ item.title }}</h3>
-        </div>
-        <div class="post-card-body">
-            <p>{{ item.content }}</p>
-        </div>
-        </div>
-    </div>
-    
-
-    <div *ngIf="!loading && selectedSection === 'products'">
-        <div *ngFor="let item of results.products" class="product-card">
-
-            <div class="badge-unavailable" *ngIf="+item.stock === 0">
-                Not Available
+            <span class="badge-type">Post</span>
+            <div class="post-card-header">
+                <h3>{{ item.title }}</h3>
             </div>
-        
-        <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
-        <h5>{{ item.name }}</h5>
-        <p *ngIf="item.description">{{ item.description }}</p>
-        <p class="price">{{ item.price }} EGP</p>
-        <button class="add-to-cart-btn" [disabled]="+item.stock === 0" (click)="addToCart(item.id)">Add to Cart</button>
+            <div class="post-card-body">
+                <p>{{ item.content }}</p>
+            </div>
         </div>
     </div>
 
-    <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
+    <div class="results-grid" *ngIf="!loading && selectedSection === 'products'">
+        <div *ngFor="let item of results.products" class="product-card">
+            <span class="badge-type">Product</span>
+            <div class="badge-unavailable" *ngIf="+item.stock === 0">Not Available</div>
+            <img *ngIf="item.image" [src]="'http://127.0.0.1:8000/storage/' + item.image" [alt]="item.name">
+            <h5>{{ item.name }}</h5>
+            <p *ngIf="item.description">{{ item.description }}</p>
+            <p class="price">{{ item.price }} EGP</p>
+            <button class="add-to-cart-btn" [disabled]="+item.stock === 0" (click)="addToCart(item.id)">Add to Cart</button>
+        </div>
     </div>
 
+    <div *ngIf="errorMessage && !loading" class="error-message">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>{{ errorMessage }}</p>
     </div>
+</div>
 
-    <app-footer></app-footer>
+<app-footer></app-footer>

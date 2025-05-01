@@ -1,380 +1,397 @@
+:root {
+  --background-light: #f4f4f4;
+  --background-dark: #2c3e50;
+  --primary-color: #3498db;
+  --primary-dark: #2980b9;
+  --secondary-color: #2ecc71;
+  --text-light: #ecf0f1;
+  --text-secondary: #7f8c8d;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-light);
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
 
 .reports-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
-    min-height: 100vh;
-  }
-  
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+.reports-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.reports-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color:#1c6a9f;
+  margin: 0;
+}
+
+.reports-filter select {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  font-size: 0.9rem;
+  color: #374151;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.reports-tabs {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.reports-tabs li {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #64748b;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reports-tabs li:hover {
+  color: #3b82f6;
+}
+
+.reports-tabs li.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+  background-color: #f0f7ff;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.loading-spinner .spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.tab-content {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stats-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card-header {
+  padding: 1.25rem 1.5rem;
+  background-color: #3b82f6;
+  color: white;
+}
+
+.stats-card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #f1f8fc;
+  font-weight: 600;
+}
+
+.stats-card-body {
+  padding: 1.5rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.stat-label {
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.progress-item {
+  margin-bottom: 1.25rem;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.pending { background-color: #f59e0b; }
+.confirmed { background-color: #3b82f6; }
+.completed { background-color: #10b981; }
+.new-patients { background-color: #8b5cf6; }
+.active-patients { background-color: #ec4899; }
+.age-group { background-color: #14b8a6; }
+.male { background-color: #3b82f6; }
+.female { background-color: #ec4899; }
+
+.appointments-calendar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.calendar-day {
+  background-color: #f9fafb;
+  border-radius: 6px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.day-date {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.day-count {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.patients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.patient-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border-radius: 6px;
+}
+
+.patient-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.patient-visits {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.notes-list {
+  margin-top: 1.5rem;
+}
+
+.note-item {
+  background-color: #f9fafb;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.note-patient {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.note-date {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.note-content {
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.feedback-section {
+  margin-top: 1.5rem;
+}
+
+.feedback-section h4 {
+  margin: 0 0 1rem 0;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.feedback-item {
+  background-color: #f9fafb;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.feedback-item.positive {
+  border-left: 4px solid #10b981;
+}
+
+.feedback-item.negative {
+  border-left: 4px solid #ef4444;
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.feedback-patient {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.feedback-rating {
+  font-weight: 600;
+}
+
+.feedback-item.positive .feedback-rating {
+  color: #10b981;
+}
+
+.feedback-item.negative .feedback-rating {
+  color: #ef4444;
+}
+
+.feedback-comment {
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.no-data {
+  text-align: center;
+  color: #6b7280;
+  padding: 1rem;
+  font-style: italic;
+}
+
+.reports-footer {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-btn i {
+  margin-right: 8px;
+}
+
+.back-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.back-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
   .reports-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  .reports-header h2 {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #124465;
-    margin: 0;
-  }
-  
-  .reports-filter select {
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    border: 1px solid #d1d5db;
-    background-color: white;
-    font-size: 0.9rem;
-    color: #374151;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .reports-tabs {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2rem 0;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  .reports-tabs li {
-    padding: 0.75rem 1.5rem;
-    cursor: pointer;
-    font-weight: 500;
-    color: #64748b;
-    border-bottom: 3px solid transparent;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .reports-tabs li:hover {
-    color: #3b82f6;
-  }
-  
-  .reports-tabs li.active {
-    color: #3b82f6;
-    border-bottom-color: #3b82f6;
-    background-color: #f0f7ff;
-  }
-  
-  .loading-spinner {
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-  
-  .loading-spinner .spinner {
-    width: 3rem;
-    height: 3rem;
-    border: 4px solid #e2e8f0;
-    border-top-color: #3b82f6;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 1rem;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
-  .tab-content {
-    animation: fadeIn 0.3s ease;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  .stats-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .stats-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .stats-card-header {
-    padding: 1.25rem 1.5rem;
-    background-color: #3b82f6;
-    color: white;
-  }
-  
-  .stats-card-header h3 {
-    margin: 0;
-    font-size: 1.25rem;
-    color: #f1f8fc;
-    font-weight: 600;
-  }
-  
-  .stats-card-body {
-    padding: 1.5rem;
-  }
-  
-  .stat-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-  
-  .stat-label {
-    font-weight: 500;
-    color: #4b5563;
-  }
-  
-  .stat-value {
-    font-weight: 600;
-    color: #1f2937;
-  }
-  
-  .progress-item {
-    margin-bottom: 1.25rem;
-  }
-  
-  .progress-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: #4b5563;
-  }
-  
-  .progress-bar {
-    height: 8px;
-    background-color: #e5e7eb;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  
-  .progress-fill {
-    height: 100%;
-    border-radius: 4px;
-  }
-  
-  /* Progress bar colors */
-  .pending { background-color: #f59e0b; }
-  .confirmed { background-color: #3b82f6; }
-  .completed { background-color: #10b981; }
-  .new-patients { background-color: #8b5cf6; }
-  .active-patients { background-color: #ec4899; }
-  .age-group { background-color: #14b8a6; }
-  .male { background-color: #3b82f6; }
-  .female { background-color: #ec4899; }
-  
-  .appointments-calendar {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    align-items: flex-start;
     gap: 1rem;
   }
   
-  .calendar-day {
-    background-color: #f9fafb;
-    border-radius: 6px;
-    padding: 0.75rem;
-    text-align: center;
+  .reports-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 0.5rem;
   }
   
-  .day-date {
-    font-weight: 600;
-    color: #1f2937;
-    margin-bottom: 0.25rem;
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
   
-  .day-count {
-    font-size: 0.85rem;
-    color: #6b7280;
+  .appointments-calendar {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
-  
-  .patients-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .patient-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.75rem;
-    background-color: #f9fafb;
-    border-radius: 6px;
-  }
-  
-  .patient-name {
-    font-weight: 500;
-    color: #1f2937;
-  }
-  
-  .patient-visits {
-    color: #6b7280;
-    font-size: 0.9rem;
-  }
-  
-  .notes-list {
-    margin-top: 1.5rem;
-  }
-  
-  .note-item {
-    background-color: #f9fafb;
-    border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .note-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-  }
-  
-  .note-patient {
-    font-weight: 500;
-    color: #1f2937;
-  }
-  
-  .note-date {
-    color: #6b7280;
-    font-size: 0.85rem;
-  }
-  
-  .note-content {
-    color: #4b5563;
-    line-height: 1.5;
-  }
-  
-  .feedback-section {
-    margin-top: 1.5rem;
-  }
-  
-  .feedback-section h4 {
-    margin: 0 0 1rem 0;
-    color: #1f2937;
-    font-size: 1.1rem;
-  }
-  
-  .feedback-item {
-    background-color: #f9fafb;
-    border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .feedback-item.positive {
-    border-left: 4px solid #10b981;
-  }
-  
-  .feedback-item.negative {
-    border-left: 4px solid #ef4444;
-  }
-  
-  .feedback-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-  }
-  
-  .feedback-patient {
-    font-weight: 500;
-    color: #1f2937;
-  }
-  
-  .feedback-rating {
-    font-weight: 600;
-  }
-  
-  .feedback-item.positive .feedback-rating {
-    color: #10b981;
-  }
-  
-  .feedback-item.negative .feedback-rating {
-    color: #ef4444;
-  }
-  
-  .feedback-comment {
-    color: #4b5563;
-    line-height: 1.5;
-  }
-  
-  .no-data {
-    text-align: center;
-    color: #6b7280;
-    padding: 1rem;
-    font-style: italic;
-  }
-  
-  .reports-footer {
-    margin-top: 1.5rem;
-    text-align: left;
-  }
-  
-
-  .back-btn {
-    display: flex;
-    align-items: center;
-    padding: 0.8rem 1.2rem;
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    border: none;
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .back-btn i {
-    margin-right: 8px;
-  }
-  
-  .back-btn:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-2px);
-  }
-  
-  .back-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  
-  @media (max-width: 768px) {
-    .reports-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-    
-    .reports-tabs {
-      overflow-x: auto;
-      white-space: nowrap;
-      padding-bottom: 0.5rem;
-    }
-    
-    .stats-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    .appointments-calendar {
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    }
-  }
+}
