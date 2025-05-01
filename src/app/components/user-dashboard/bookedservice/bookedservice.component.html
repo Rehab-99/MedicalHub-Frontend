@@ -1,0 +1,39 @@
+<!-- Booked Services Table HTML -->
+<section class="booked-services-table-section">
+    <div class="history-header">
+      <h2>Service Booking History</h2>
+      <span>Total {{ bookings.length }} Bookings</span>
+    </div>
+  
+    <div *ngIf="loading" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Loading bookings...</p>
+    </div>
+  
+    <table *ngIf="!loading" class="history-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Service</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Address</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings">
+          <td>{{ booking.appointment_date | date: 'dd MMM, yyyy' }}</td>
+          <td>{{ booking.service?.name }}</td>
+          <td>{{ booking.appointment_time }}</td>
+          <td><span [class]="getStatusClass(booking.status)">{{ booking.status }}</span></td>
+          <td>{{ booking.address }}</td>
+          <td>{{ booking.phone }}</td>
+        </tr>
+        <tr *ngIf="bookings.length === 0">
+          <td colspan="6" class="no-bookings">No bookings found</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  

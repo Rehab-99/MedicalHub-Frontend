@@ -1,0 +1,147 @@
+// Variables (adjust colors and spacing as needed)
+$primary-color: #0d6efd;
+$secondary-color: #6c757d;
+$light-gray: #f8f9fa;
+$medium-gray: #dee2e6;
+$dark-gray: #343a40;
+$white: #ffffff;
+$red: #dc3545;
+$green: #198754;
+$orange: #fd7e14;
+$font-family: sans-serif;
+$border-radius: 12px;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+// Base Styles (optional)
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// Booked Services Table Section Styles
+:host {
+  display: block;
+}
+
+.booked-services-table-section {
+  background-color: $white;
+  padding: 25px;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  margin-bottom: 30px;
+
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: $primary-color;
+    }
+
+    span {
+      font-size: 0.9rem;
+      color: $secondary-color;
+    }
+  }
+
+  .loading-spinner {
+    text-align: center;
+    padding: 2rem;
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid $medium-gray;
+      border-top: 4px solid $primary-color;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px auto;
+    }
+
+    p {
+      color: $secondary-color;
+      font-size: 0.95rem;
+    }
+  }
+
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 15px 10px;
+      text-align: left;
+      border-bottom: 1px solid $medium-gray;
+      font-size: 0.9rem;
+    }
+
+    th {
+      font-weight: 600;
+      color: $secondary-color;
+      background-color: $white;
+      border-bottom-width: 2px;
+    }
+
+    tbody tr {
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: lighten($light-gray, 2%);
+      }
+
+      td {
+        color: $dark-gray;
+      }
+    }
+
+    .no-bookings {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+      color: $secondary-color;
+    }
+
+    .status {
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 70px;
+      text-transform: capitalize;
+    }
+
+    .status.cured {
+      background-color: lighten($green, 45%);
+      color: $green;
+      border: 1px solid $green;
+    }
+    .status.confirmed {
+      background-color: lighten($primary-color, 45%);
+      color: $green;
+      border: 1px solid $green;
+    }
+    .status.treatment {
+      background-color: lighten($orange, 35%);
+      color: $orange;
+      border: 1px solid $orange;
+    }
+
+    .status.cancelled {
+      background-color: lighten($red, 35%);
+      color: $red;
+      border: 1px solid $red;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

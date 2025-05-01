@@ -43,7 +43,7 @@ app-header {
 /* Doctors grid layout */
 .doctors-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  grid-template-columns: repeat(4, 1fr); /* 3 cards per row */
   gap: 1rem;
   justify-items: center;
 }
@@ -184,94 +184,3 @@ i{
   padding: 10px;
 }
 /* Hero Slider Styles */
-.hero-section {
-  position: relative;
-  width: 100%;
-  height: 90vh;
-  overflow: hidden;
-}
-
-.slider-container {
-  position: relative;
-  height: 100%;
-}
-
-.slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-.slide.active {
-  opacity: 1;
-  z-index: 1;
-}
-
-.slide img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  filter: brightness(0.6);
-}
-
-.hero-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  z-index: 2;
-}
-
-.hero-content h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  color: rgb(23, 155, 207);
-}
-
-.hero-content p {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-}
-
-.hero-content button {
-  padding: 15px 20px;
-  background-color:rgb(16, 123, 165);
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  cursor: pointer;
-  margin-top: 100px;
-}
-
-.hero-content button:hover {
-  background-color: #07679e;
-}
-
-.slider-controls {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 3;
-}
-
-.slider-controls span {
-  width: 12px;
-  height: 12px;
-  background: #ccc;
-  border-radius: 50%;
-  display: inline-block;
-  cursor: pointer;
-}
-
-.slider-controls span.active {
-  background: rgb(2, 182, 253);
-}

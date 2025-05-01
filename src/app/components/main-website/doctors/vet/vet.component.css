@@ -21,7 +21,7 @@ html, body {
 /* Grid layout for doctors */
 .doctors-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+  grid-template-columns: repeat(4, 1fr); /* 3 cards per row */
   gap: 1rem;
   justify-items: center;
 }

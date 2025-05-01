@@ -93,6 +93,7 @@ import { BookedServicesComponent } from './components/dashboard/bookedservices/b
 import { OrdersComponent } from './components/dashboard/orders/orders.component';
 import { UserOrdersComponent } from './components/user-orders/user-orders.component';
 import { CouponsComponent } from './components/dashboard/coupons/coupons.component';
+import { BookedServiceComponent } from './components/user-dashboard/bookedservice/bookedservice.component';
 
 export const routes: Routes = [
   {
@@ -391,10 +392,10 @@ export const routes: Routes = [
         path:'feedback',
         component:FeedbackComponent
        },
-      {
-        path:'bookedservice',
-        component:BookedServicesComponent
-      },
+       {
+        path:'bookedservicee',
+        component:BookedServiceComponent
+       },
       {
         path: 'orders',
         component: UserOrdersComponent

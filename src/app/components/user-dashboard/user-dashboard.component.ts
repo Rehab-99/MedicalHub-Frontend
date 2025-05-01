@@ -1,3 +1,4 @@
+import { BookedServiceComponent } from './bookedservice/bookedservice.component';
 import { Component, OnInit } from '@angular/core';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { MainHeaderComponent } from './main-header/main-header.component';
@@ -22,7 +23,9 @@ import { filter } from 'rxjs/operators';
     PatientDetailsComponent,
     PatientVitalsComponent,
     PatientHistoryTableComponent,
-    UserOrdersComponent
+    UserOrdersComponent,
+    BookedServiceComponent
+   
   ]
 })
 export class UserDashboardComponent implements OnInit {
