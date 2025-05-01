@@ -37,27 +37,33 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // Handle scroll effect for navbar
     window.addEventListener('scroll', () => {
       this.isScrolled = window.scrollY > 50;
     });
 
+    // Subscribe to login status
     this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
       this.isLoggedIn = loggedIn;
+      // Only fetch cart items if user is logged in
+      if (loggedIn) {
+        this.cartService.getCartItems().subscribe(items => {
+          this.cartItemsCount = items.length;
+        });
+        this.cartService.getCartItemsCount().subscribe(count => {
+          this.cartItemsCount = count;
+        });
+      } else {
+        this.cartItemsCount = 0; // Reset cart count for non-logged-in users
+      }
     });
 
+    // Subscribe to user data
     this.authService.currentUser$.subscribe((user: any) => {
       this.user = user;
     });
 
-
-    this.cartService.getCartItemsCount().subscribe(count => {
-      this.cartItemsCount = count;
-
-    this.cartService.getCartItems().subscribe(items => {
-      this.cartItemsCount = items.length;
-
-    });
-
+    // Handle route changes
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
@@ -76,6 +82,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
+    // Clean up scroll event listener
+    window.removeEventListener('scroll', () => {});
   }
 
   @HostListener('document:click', ['$event'])
@@ -111,6 +119,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.isUserMenuOpen = false;
     this.isMenuOpen = false;
+    this.cartItemsCount = 0; // Reset cart count on logout
     this.router.navigate(['/login']);
   }
 
@@ -153,6 +162,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
       this.isSearchActive = false;
       this.isMenuOpen = false;
+      this.searchQuery = ''; // Clear search query after navigation
     }
   }
 }
