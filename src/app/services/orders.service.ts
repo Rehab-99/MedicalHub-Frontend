@@ -7,8 +7,10 @@ export interface OrderItem {
   id: number;
   order_id: number;
   product_id: number;
+  product_name: string;
   quantity: number;
   price: string;
+  subtotal: number;
   created_at: string | null;
   updated_at: string | null;
   product?: {
@@ -89,5 +91,9 @@ export class OrdersService {
 
   getUserOrders(): Observable<OrdersResponse> {
     return this.http.get<OrdersResponse>(`${this.apiUrl}/show`);
+  }
+
+  getOrderById(id: number): Observable<Order> {
+    return this.http.get<Order>(`${this.apiUrl}/getorders/${id}`);
   }
 } 
