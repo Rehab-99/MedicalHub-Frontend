@@ -33,6 +33,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 import { AdminAuthGuard } from './guards/admin-auth.guard';
 import { MainWebsiteLayoutComponent } from './components/main-website/main-website-layout/main-website-layout.component';
+import { HomeComponent } from './components/main-website/home/home.component';
 import { AboutPageComponent } from './components/main-website/about/about-page/about-page.component';
 import { ServiceDetailComponent } from './components/main-website/services/service-detail/service-detail.component';
 import { DoctorListComponent } from './components/main-website/doctors/doctor-list/doctor-list.component';
@@ -103,7 +104,13 @@ import { EditPostComponent } from './doctor-dashboard/edit-post/edit-post.compon
 export const routes: Routes = [
   {
     path: '',
-    component: MainWebsiteLayoutComponent
+    component: MainWebsiteLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: HomeComponent
+      }
+    ]
   },
   {
     path: 'login',

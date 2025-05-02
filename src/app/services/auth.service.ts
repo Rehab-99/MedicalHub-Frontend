@@ -49,6 +49,9 @@ export class AuthService {
         const parsedAdmin = JSON.parse(adminData);
         this.currentUserSubject.next(parsedAdmin);
         this.isLoggedIn$.next(true);
+      } else {
+        // If no user is logged in, still allow access to the home page
+        this.isLoggedIn$.next(false);
       }
     }
   }

@@ -2,14 +2,14 @@
 .settings-container {
   width: 100%;
   max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 2rem auto;
+  padding: 0 20px;
 }
 
 .profile-card {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
@@ -199,7 +199,6 @@
 
 .save-btn:hover:not(:disabled) {
   background: #5a62e0;
-  transform: translateY(-1px);
 }
 
 .save-btn:disabled {
@@ -249,5 +248,9 @@
 @media (max-width: 768px) {
   .form-row {
     grid-template-columns: 1fr;
+  }
+  
+  .save-btn {
+    width: 100%;
   }
 }
