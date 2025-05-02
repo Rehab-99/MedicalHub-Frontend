@@ -20,6 +20,12 @@ export class CommentsComponent implements OnInit {
   newComment: string = '';
   isLoggedIn: boolean = false;
   currentUserId: number | null = null;
+  editingCommentId: number | null = null;
+  editedCommentText: string = '';
+  replyingToCommentId: number | null = null;
+  replyText: string = '';
+  editingReplyId: number | null = null;
+  editedReplyText: string = '';
 
   constructor(
     private commentService: CommentService,
@@ -48,8 +54,35 @@ export class CommentsComponent implements OnInit {
     if (this.postId) {
       this.commentService.getCommentsByPostId(this.postId).subscribe({
         next: (res) => {
-          this.comments = res.data;
-          console.log('Comments fetched:', this.comments);
+          console.log('Main comments response:', res);
+          // Get main comments
+          const mainComments = res.data;
+          
+          // Initialize comments array with empty replies
+          this.comments = mainComments.map((comment: any) => ({
+            ...comment,
+            replies: []
+          }));
+          console.log('Initialized comments:', this.comments);
+
+          // Load replies for each comment
+          mainComments.forEach((comment: any) => {
+            console.log('Fetching replies for comment:', comment.id);
+            this.commentService.getRepliesByCommentId(comment.id).subscribe({
+              next: (repliesRes: { data: any[] }) => {
+                console.log('Replies response for comment', comment.id, ':', repliesRes);
+                // Find the comment in the array and update its replies
+                const commentIndex = this.comments.findIndex(c => c.id === comment.id);
+                if (commentIndex !== -1) {
+                  this.comments[commentIndex].replies = repliesRes.data;
+                  console.log('Updated comment with replies:', this.comments[commentIndex]);
+                }
+              },
+              error: (err: any) => {
+                console.error('Error fetching replies for comment', comment.id, ':', err);
+              }
+            });
+          });
         },
         error: (err) => {
           console.error('Error fetching comments:', err);
@@ -132,5 +165,134 @@ export class CommentsComponent implements OnInit {
 
   goToLogin(): void {
     this.router.navigate(['/login']);
+  }
+
+  editComment(comment: any): void {
+    this.editingCommentId = comment.id;
+    this.editedCommentText = comment.comment;
+  }
+
+  cancelEdit(): void {
+    this.editingCommentId = null;
+    this.editedCommentText = '';
+  }
+
+  updateComment(commentId: number): void {
+    if (!this.editedCommentText.trim()) {
+      this.toastr.warning('Comment cannot be empty.');
+      return;
+    }
+
+    const commentData = {
+      comment: this.editedCommentText
+    };
+
+    this.commentService.updateComment(commentId, commentData).subscribe({
+      next: (res) => {
+        const index = this.comments.findIndex(c => c.id === commentId);
+        if (index !== -1) {
+          this.comments[index] = res.data;
+        }
+        this.editingCommentId = null;
+        this.editedCommentText = '';
+        this.toastr.success('Comment updated successfully!');
+      },
+      error: (err) => {
+        console.error('Error updating comment:', err);
+        const errorMessage = err.error?.message || 'Failed to update comment.';
+        this.toastr.error(errorMessage);
+      }
+    });
+  }
+
+  replyToComment(comment: any): void {
+    this.replyingToCommentId = comment.id;
+    this.replyText = '';
+  }
+
+  cancelReply(): void {
+    this.replyingToCommentId = null;
+    this.replyText = '';
+  }
+
+  submitReply(commentId: number): void {
+    if (!this.isLoggedIn) {
+      this.toastr.warning('Please log in to reply to a comment.');
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (!this.replyText.trim()) {
+      this.toastr.warning('Reply cannot be empty.');
+      return;
+    }
+
+    const replyData = {
+      post_id: this.postId,
+      parent_id: commentId,
+      comment: this.replyText
+    };
+
+    this.commentService.createComment(replyData).subscribe({
+      next: (res) => {
+        const parentComment = this.comments.find(c => c.id === commentId);
+        if (parentComment) {
+          if (!parentComment.replies) {
+            parentComment.replies = [];
+          }
+          parentComment.replies.push(res.data);
+        }
+        this.replyingToCommentId = null;
+        this.replyText = '';
+        this.toastr.success('Reply posted successfully!');
+      },
+      error: (err) => {
+        console.error('Error posting reply:', err);
+        const errorMessage = err.error?.message || 'Failed to post reply.';
+        this.toastr.error(errorMessage);
+      }
+    });
+  }
+
+  editReply(reply: any): void {
+    this.editingReplyId = reply.id;
+    this.editedReplyText = reply.comment;
+  }
+
+  cancelReplyEdit(): void {
+    this.editingReplyId = null;
+    this.editedReplyText = '';
+  }
+
+  updateReply(replyId: number): void {
+    if (!this.editedReplyText.trim()) {
+      this.toastr.warning('Reply cannot be empty.');
+      return;
+    }
+
+    const replyData = {
+      comment: this.editedReplyText
+    };
+
+    this.commentService.updateComment(replyId, replyData).subscribe({
+      next: (res) => {
+        this.comments.forEach(comment => {
+          if (comment.replies) {
+            const replyIndex = comment.replies.findIndex((r: { id: number }) => r.id === replyId);
+            if (replyIndex !== -1) {
+              comment.replies[replyIndex] = res.data;
+            }
+          }
+        });
+        this.editingReplyId = null;
+        this.editedReplyText = '';
+        this.toastr.success('Reply updated successfully!');
+      },
+      error: (err) => {
+        console.error('Error updating reply:', err);
+        const errorMessage = err.error?.message || 'Failed to update reply.';
+        this.toastr.error(errorMessage);
+      }
+    });
   }
 }

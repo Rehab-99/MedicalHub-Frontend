@@ -63,6 +63,7 @@
           <th class="table-header">Payment Method</th>
           <th class="table-header">Date</th>
           <th class="table-header">Total Items</th>
+          <th class="table-header">Details</th>
         </tr>
       </thead>
       <tbody>
@@ -82,12 +83,77 @@
           <td class="table-cell">{{ order.payment_method }}</td>
           <td class="table-cell">{{ order.created_at | date:'medium' }}</td>
           <td class="table-cell">{{ order.items.length }}</td>
-
+          <td class="table-cell">
+            <button class="details-button" (click)="showOrderDetails(order)">
+              <i class="fas fa-eye"></i> View Details
+            </button>
+          </td>
         </tr>
         <tr *ngIf="filteredOrders.length === 0">
           <td colspan="8" class="no-data">No orders found</td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- Order Details Modal -->
+<div class="modal" *ngIf="selectedOrder">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Order Details #{{ selectedOrder.number }}</h3>
+      <button class="close-button" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="order-info">
+        <div class="info-row">
+          <span class="info-label">Customer:</span>
+          <span class="info-value">{{ selectedOrder.user.name }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Date:</span>
+          <span class="info-value">{{ selectedOrder.created_at | date:'medium' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Status:</span>
+          <span class="info-value" [class]="getStatusClass(selectedOrder.status)">{{ selectedOrder.status }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Payment Status:</span>
+          <span class="info-value" [class]="getPaymentStatusClass(selectedOrder.payment_status)">{{ selectedOrder.payment_status }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Payment Method:</span>
+          <span class="info-value">{{ selectedOrder.payment_method }}</span>
+        </div>
+      </div>
+
+      <div class="items-section">
+        <h4>Order Items</h4>
+        <div class="items-list">
+          <div *ngFor="let item of selectedOrder.items" class="item-card">
+            <div class="item-info">
+              <h5 class="item-name">{{ item.product?.name || 'Product' }}</h5>
+              <div class="item-details">
+                <span class="detail-label">Quantity:</span>
+                <span class="detail-value">{{ item.quantity }}</span>
+              </div>
+              <div class="item-details">
+                <span class="detail-label">Price:</span>
+                <span class="detail-value">{{ item.price | currency }}</span>
+              </div>
+              <div class="item-details">
+                <span class="detail-label">Total:</span>
+                <span class="detail-value">{{ calculateItemTotal(item) | currency }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="order-total">
+          <span class="total-label">Total Amount:</span>
+          <span class="total-value">{{ calculateTotal(selectedOrder) | currency }}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div> 

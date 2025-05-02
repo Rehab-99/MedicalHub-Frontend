@@ -57,6 +57,16 @@ export class CommentService {
     );
   }
 
+  getRepliesByCommentId(commentId: number): Observable<any> {
+    console.log('Fetching replies from:', `${this.apiUrl}/${commentId}/replies`);
+    return this.http.get(`${this.apiUrl}/${commentId}/replies`, { headers: this.getAuthHeaders() }).pipe(
+      catchError(error => {
+        console.error('Error in getRepliesByCommentId:', error);
+        return this.handleError(error);
+      })
+    );
+  }
+
   private handleError(error: any) {
     console.error('CommentService Error:', error);
     const errorMessage = error.error?.message || 'Something went wrong';

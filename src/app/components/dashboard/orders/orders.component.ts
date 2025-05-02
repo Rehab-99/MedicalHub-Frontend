@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { OrdersService, Order } from '../../../services/orders.service';
+import { OrdersService, Order, OrderItem } from '../../../services/orders.service';
 
 @Component({
   selector: 'app-orders',
@@ -14,6 +14,7 @@ export class OrdersComponent implements OnInit {
   orders: Order[] = [];
   filteredOrders: Order[] = [];
   searchTerm: string = '';
+  selectedOrder: Order | null = null;
 
   constructor(private ordersService: OrdersService) {}
 
@@ -87,5 +88,23 @@ export class OrdersComponent implements OnInit {
 
   getPaidCount(): number {
     return this.orders.filter(order => order.payment_status.toLowerCase() === 'paid').length;
+  }
+
+  showOrderDetails(order: Order): void {
+    this.selectedOrder = order;
+  }
+
+  closeModal(): void {
+    this.selectedOrder = null;
+  }
+
+  calculateItemTotal(item: OrderItem): number {
+    return parseFloat(item.price) * item.quantity;
+  }
+
+  calculateTotal(order: Order): number {
+    return order.items.reduce((total, item) => {
+      return total + this.calculateItemTotal(item);
+    }, 0);
   }
 } 

@@ -41,15 +41,139 @@
           <div class="comment-header">
             <span class="user-name">{{ comment.user?.name || 'Anonymous' }}</span>
             <span class="comment-date">{{ comment.created_at | date:'mediumDate' }}</span>
-            <button
-              *ngIf="isLoggedIn && currentUserId === comment.user?.id"
-              (click)="deleteComment(comment.id)"
-              class="delete-btn btn btn-danger"
-            >
-              Delete
-            </button>
+            <div class="comment-actions" *ngIf="isLoggedIn && currentUserId === comment.user?.id">
+              <button
+                (click)="editComment(comment)"
+                class="edit-btn btn btn-primary"
+                *ngIf="editingCommentId !== comment.id"
+              >
+                Edit
+              </button>
+              <button
+                (click)="deleteComment(comment.id)"
+                class="delete-btn btn btn-danger"
+              >
+                Delete
+              </button>
+            </div>
           </div>
-          <p class="comment-text">{{ comment.comment }}</p>
+          <div *ngIf="editingCommentId === comment.id; else displayComment">
+            <textarea
+              [(ngModel)]="editedCommentText"
+              class="edit-comment-input input-field"
+              rows="3"
+            ></textarea>
+            <div class="edit-actions">
+              <button
+                (click)="updateComment(comment.id)"
+                [disabled]="!editedCommentText.trim()"
+                class="save-btn btn btn-success"
+              >
+                Save
+              </button>
+              <button
+                (click)="cancelEdit()"
+                class="cancel-btn btn btn-secondary"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <ng-template #displayComment>
+            <p class="comment-text">{{ comment.comment }}</p>
+          </ng-template>
+          <div class="comment-footer">
+            <button
+              *ngIf="isLoggedIn && replyingToCommentId !== comment.id"
+              (click)="replyToComment(comment)"
+              class="reply-btn btn btn-link"
+            >
+              Reply
+            </button>
+            <div *ngIf="replyingToCommentId === comment.id" class="reply-form">
+              <textarea
+                [(ngModel)]="replyText"
+                placeholder="Write your reply..."
+                class="reply-input input-field"
+                rows="2"
+              ></textarea>
+              <div class="reply-actions">
+                <button
+                  (click)="submitReply(comment.id)"
+                  [disabled]="!replyText.trim()"
+                  class="submit-reply-btn btn btn-success"
+                >
+                  Post Reply
+                </button>
+                <button
+                  (click)="cancelReply()"
+                  class="cancel-reply-btn btn btn-secondary"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Replies section -->
+          <div class="replies-section" *ngIf="comment.replies && comment.replies.length > 0">
+            <div *ngFor="let reply of comment.replies" class="reply-item">
+              <div class="user-image-container">
+                <img
+                  *ngIf="reply.user?.image"
+                  [src]="'http://127.0.0.1:8000/storage/' + reply.user.image"
+                  alt="User Image"
+                  class="user-image user-avatar"
+                />
+                <i *ngIf="!reply.user?.image" class="fas fa-user-circle user-icon"></i>
+              </div>
+              <div class="reply-content">
+                <div class="reply-header">
+                  <span class="user-name">{{ reply.user?.name || 'Anonymous' }}</span>
+                  <span class="reply-date">{{ reply.created_at | date:'mediumDate' }}</span>
+                  <div class="reply-actions" *ngIf="isLoggedIn && currentUserId === reply.user?.id">
+                    <button
+                      *ngIf="editingReplyId !== reply.id"
+                      (click)="editReply(reply)"
+                      class="edit-btn btn btn-primary"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      (click)="deleteComment(reply.id)"
+                      class="delete-btn btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+                <div *ngIf="editingReplyId === reply.id; else displayReply">
+                  <textarea
+                    [(ngModel)]="editedReplyText"
+                    class="edit-reply-input input-field"
+                    rows="2"
+                  ></textarea>
+                  <div class="edit-actions">
+                    <button
+                      (click)="updateReply(reply.id)"
+                      [disabled]="!editedReplyText.trim()"
+                      class="save-btn btn btn-success"
+                    >
+                      Save
+                    </button>
+                    <button
+                      (click)="cancelReplyEdit()"
+                      class="cancel-btn btn btn-secondary"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+                <ng-template #displayReply>
+                  <p class="reply-text">{{ reply.comment }}</p>
+                </ng-template>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
