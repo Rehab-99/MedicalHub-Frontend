@@ -7,7 +7,9 @@
       </a>
     </div>
 
-    <button class="navbar-toggler menu-toggle" type="button" (click)="toggleMenu()" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler menu-toggle" type="button" (click)="toggleMenu()" aria-controls="navbarNav" [attr.aria-expanded]="isMenuOpen" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon"></span>
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -44,7 +46,10 @@
           <a routerLink="/pharmacy/vet" routerLinkActive="active" (click)="togglePharmacyDropdown(); toggleMenu()">Vet Pharmacy</a>
         </div>
       </div>
-
+      <button class="search-btn dark-mode-toggle" (click)="toggleDarkMode()">
+        <i class="fas" [ngClass]="isDarkMode ? 'fa-sun' : 'fa-moon'"></i>
+      </button>
+      
       <div class="header-search-container" [ngClass]="{'active': isSearchActive}">
         <input 
           type="text" 

@@ -4,6 +4,7 @@ import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { CartService } from '../../../services/cart.service';
+import { ThemeService } from '../../../services/theme.service';
 import { filter, Subscription } from 'rxjs';
 
 @Component({
@@ -25,27 +26,32 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isMenuOpen: boolean = false;
   isLoggedIn: boolean = false;
   isUserMenuOpen: boolean = false;
+  isDarkMode: boolean = false;
   user: any = null;
   private routerSubscription: Subscription | undefined;
+  private themeSubscription: Subscription | undefined;
 
   @ViewChild('searchInput') searchInput!: ElementRef;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private cartService: CartService
+    private cartService: CartService,
+    private themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
-    // Handle scroll effect for navbar
-    window.addEventListener('scroll', () => {
-      this.isScrolled = window.scrollY > 50;
+    // Subscribe to theme changes
+    this.themeSubscription = this.themeService.isDarkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
     });
+
+    // Handle scroll effect for navbar
+    window.addEventListener('scroll', this.handleScroll);
 
     // Subscribe to login status
     this.authService.isLoggedIn$.subscribe((loggedIn: boolean) => {
       this.isLoggedIn = loggedIn;
-      // Only fetch cart items if user is logged in
       if (loggedIn) {
         this.cartService.getCartItems().subscribe(items => {
           this.cartItemsCount = items.length;
@@ -54,7 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.cartItemsCount = count;
         });
       } else {
-        this.cartItemsCount = 0; // Reset cart count for non-logged-in users
+        this.cartItemsCount = 0;
       }
     });
 
@@ -82,9 +88,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
-    // Clean up scroll event listener
-    window.removeEventListener('scroll', () => {});
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
+    window.removeEventListener('scroll', this.handleScroll);
   }
+
+  private handleScroll = () => {
+    this.isScrolled = window.scrollY > 50;
+  };
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
@@ -95,6 +107,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.isBlogsDropdownOpen = false;
       this.isPharmacyDropdownOpen = false;
     }
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 
   toggleMenu(): void {
@@ -119,7 +135,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.isUserMenuOpen = false;
     this.isMenuOpen = false;
-    this.cartItemsCount = 0; // Reset cart count on logout
+    this.cartItemsCount = 0;
     this.router.navigate(['/login']);
   }
 
@@ -162,7 +178,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
       this.isSearchActive = false;
       this.isMenuOpen = false;
-      this.searchQuery = ''; // Clear search query after navigation
+      this.searchQuery = '';
     }
   }
 }

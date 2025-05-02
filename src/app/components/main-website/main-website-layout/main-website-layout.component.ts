@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, HostListener, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
@@ -25,7 +25,7 @@ import { ChatComponent } from '../chat/chat.component';
     style: 'display: block; height: 100%; overflow-y: auto;'
   }
 })
-export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
+export class MainWebsiteLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   isScrollButtonVisible = false;
   currentSlide = 1;
   private slideInterval: any;
@@ -36,6 +36,11 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
   totalUsers: number = 0;
   totalClinics: number = 0;
   totalAppointments: number = 0;
+  animatedUsers: number = 0;
+  animatedDoctors: number = 0;
+  animatedClinics: number = 0;
+  animatedAppointments: number = 0;
+  private hasAnimated = false; // Flag to ensure animation runs only once
   baseUrl = environment.apiUrl;
 
   private images = [
@@ -75,6 +80,55 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
         this.feedbacks = [];
       }
     });
+  }
+
+  ngAfterViewInit() {
+    // Trigger counting animation once the view is initialized
+    if (!this.hasAnimated) {
+      this.startCountingAnimation();
+      this.hasAnimated = true;
+    }
+  }
+
+  private startCountingAnimation() {
+    const duration = 2000; // Animation duration in milliseconds
+    const steps = 100; // Number of steps for smooth animation
+    const intervalTime = duration / steps;
+
+    // Initialize starting values at 1000
+    const initialValue = 1000;
+    this.animatedUsers = initialValue;
+    this.animatedDoctors = initialValue;
+    this.animatedClinics = initialValue;
+    this.animatedAppointments = initialValue;
+
+    // Calculate decrements per step
+    const userDecrement = (initialValue - this.totalUsers) / steps;
+    const doctorDecrement = (initialValue - this.totalDoctors) / steps;
+    const clinicDecrement = (initialValue - this.totalClinics) / steps;
+    const appointmentDecrement = (initialValue - this.totalAppointments) / steps;
+
+    let currentStep = 0;
+
+    const animationInterval = setInterval(() => {
+      if (currentStep >= steps) {
+        // Ensure final values match the dashboard values
+        this.animatedUsers = this.totalUsers;
+        this.animatedDoctors = this.totalDoctors;
+        this.animatedClinics = this.totalClinics;
+        this.animatedAppointments = this.totalAppointments;
+        clearInterval(animationInterval);
+        return;
+      }
+
+      // Update animated values (counting down)
+      this.animatedUsers = Math.floor(initialValue - userDecrement * currentStep);
+      this.animatedDoctors = Math.floor(initialValue - doctorDecrement * currentStep);
+      this.animatedClinics = Math.floor(initialValue - clinicDecrement * currentStep);
+      this.animatedAppointments = Math.floor(initialValue - appointmentDecrement * currentStep);
+
+      currentStep++;
+    }, intervalTime);
   }
 
   private preloadImages(): Promise<void> {

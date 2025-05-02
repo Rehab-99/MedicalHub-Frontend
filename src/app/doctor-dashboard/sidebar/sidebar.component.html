@@ -1,17 +1,19 @@
 <aside class="sidebar">
-    <div class="logo">
+  <a routerLink="/doctor-dashboard" class="logo">
+    <div class="logo-content">
       <i class="fas fa-stethoscope fa-2x"></i>
       <span>Doctor Panel</span>
     </div>
-    <ul>
-      <li><a routerLink="/doctor-profile"><i class="fas fa-user-md"></i> My Profile</a></li>
-      <li><a routerLink="/doctor-appointments"><i class="fas fa-calendar-check"></i> Appointments</a></li>
-      <li><a routerLink="/doctor-patient"><i class="fas fa-users"></i> Patients</a></li>
-      <li><a routerLink="/doctor-reports"><i class="fas fa-file-medical-alt"></i> Reports</a></li>
-      <li><a routerLink="/add-post"><i class="fas fa-pen-to-square"></i> Add Post</a></li>
-      <li><a routerLink="/doctor-blog"><i class="fas fa-newspaper"></i> Blog Corner</a></li>
-    </ul>
-    <button class="logout-btn" (click)="logout()">
-      <i class="fas fa-sign-out-alt"></i> Logout
-    </button>
-  </aside>
+  </a>
+  <ul>
+    <li><a routerLink="/doctor-profile"><i class="fas fa-user-md"></i> My Profile</a></li>
+    <li><a routerLink="/doctor-appointments"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+    <li><a routerLink="/doctor-patient"><i class="fas fa-users"></i> Patients</a></li>
+    <li><a routerLink="/doctor-reports"><i class="fas fa-file-medical-alt"></i> Reports</a></li>
+    <li><a routerLink="/add-post"><i class="fas fa-pen-to-square"></i> Add Post</a></li>
+    <li><a routerLink="/doctor-blog"><i class="fas fa-newspaper"></i> Blog Corner</a></li>
+  </ul>
+  <button class="logout-btn" (click)="logout()">
+    <i class="fas fa-sign-out-alt"></i> Logout
+  </button>
+</aside>

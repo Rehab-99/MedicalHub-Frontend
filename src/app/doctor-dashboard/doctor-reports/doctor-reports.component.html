@@ -25,8 +25,8 @@
         <li [class.active]="activeTab === 'notes'" (click)="activeTab = 'notes'">
           <i class="fas fa-sticky-note"></i> Notes
         </li>
-        <li [class.active]="activeTab === 'demographics'" (click)="activeTab = 'demographics'">
-          <i class="fas fa-chart-pie"></i> Demographics
+        <li [class.active]="activeTab === 'blog'" (click)="activeTab = 'blog'">
+          <i class="fas fa-blog"></i> Blog Posts
         </li>
         <li [class.active]="activeTab === 'satisfaction'" (click)="activeTab = 'satisfaction'">
           <i class="fas fa-star"></i> Satisfaction
@@ -204,50 +204,43 @@
         </div>
       </div>
 
-      <!-- Demographics Tab -->
-      <div *ngIf="activeTab === 'demographics' && !isLoading" class="tab-content">
+      <!-- Blog Posts Tab -->
+      <div *ngIf="activeTab === 'blog' && !isLoading" class="tab-content">
         <div class="stats-grid">
-          <!-- Age Groups Card -->
+          <!-- Blog Posts Stats Card -->
           <div class="stats-card">
             <div class="stats-card-header">
-              <h3>Age Distribution</h3>
+              <h3>Blog Posts Overview</h3>
             </div>
             <div class="stats-card-body">
-              <div *ngFor="let ageGroup of ageGroups" class="progress-item">
-                <div class="progress-info">
-                  <span>{{ ageGroup }}: {{ demographicStats.ageGroups[ageGroup] }}</span>
-                  <span>{{ patientStats.total ? (demographicStats.ageGroups[ageGroup] / patientStats.total * 100).toFixed(1) : 0 }}%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill age-group" [style.width]="patientStats.total ? (demographicStats.ageGroups[ageGroup] / patientStats.total * 100) + '%' : '0%'"></div>
-                </div>
+              <div class="stat-item">
+                <span class="stat-label">Total Posts</span>
+                <span class="stat-value">{{ posts.length }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Total Comments</span>
+                <span class="stat-value">{{ totalComments }}</span>
               </div>
             </div>
           </div>
-
-          <!-- Gender Card -->
+          <!-- Recent Blog Posts Card -->
           <div class="stats-card">
             <div class="stats-card-header">
-              <h3>Gender Distribution</h3>
+              <h3>Recent Blog Posts</h3>
             </div>
             <div class="stats-card-body">
-              <div class="progress-item">
-                <div class="progress-info">
-                  <span>Male: {{ demographicStats.gender.male }}</span>
-                  <span>{{ patientStats.total ? (demographicStats.gender.male / patientStats.total * 100).toFixed(1) : 0 }}%</span>
+              <div class="posts-list">
+                <div *ngFor="let post of posts.slice(0, 5)" class="post-item">
+                  <div class="post-header">
+                    <a [routerLink]="getPostLink(post.id)" class="post-title">{{ post.title }}</a>
+                    <div class="post-meta">
+                      <span class="post-date">{{ post.created_at | date:'mediumDate' }}</span>
+                      <span class="post-comments">{{ post.comments_count || 0 }} Comments</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="progress-bar">
-                  <div class="progress-fill male" [style.width]="patientStats.total ? (demographicStats.gender.male / patientStats.total * 100) + '%' : '0%'"></div>
-                </div>
-              </div>
-              
-              <div class="progress-item">
-                <div class="progress-info">
-                  <span>Female: {{ demographicStats.gender.female }}</span>
-                  <span>{{ patientStats.total ? (demographicStats.gender.female / patientStats.total * 100).toFixed(1) : 0 }}%</span>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress-fill female" [style.width]="patientStats.total ? (demographicStats.gender.female / patientStats.total * 100) + '%' : '0%'"></div>
+                <div *ngIf="posts.length === 0" class="no-data">
+                  No posts available
                 </div>
               </div>
             </div>
@@ -302,10 +295,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Back Button -->
-     
-    
     </div>
   </main>
 </div>
