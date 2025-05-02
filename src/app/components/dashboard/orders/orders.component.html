@@ -133,18 +133,9 @@
         <div class="items-list">
           <div *ngFor="let item of selectedOrder.items" class="item-card">
             <div class="item-info">
-              <h5 class="item-name">{{ item.product?.name || 'Product' }}</h5>
-              <div class="item-details">
-                <span class="detail-label">Quantity:</span>
-                <span class="detail-value">{{ item.quantity }}</span>
-              </div>
-              <div class="item-details">
-                <span class="detail-label">Price:</span>
-                <span class="detail-value">{{ item.price | currency }}</span>
-              </div>
-              <div class="item-details">
-                <span class="detail-label">Total:</span>
-                <span class="detail-value">{{ calculateItemTotal(item) | currency }}</span>
+              <h5 class="item-name">{{ item.product_name }}</h5>
+              <div class="item-price">
+                <span class="price-value">{{ item.price | currency }}</span>
               </div>
             </div>
           </div>

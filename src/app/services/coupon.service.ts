@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { timeout, retry, catchError } from 'rxjs/operators';
+import { timeout, retry, catchError, map } from 'rxjs/operators';
 
 export interface Coupon {
-  id?: number;
+  id: number;
   code: string;
-  discount_type: 'percentage' | 'fixed';
+  discount_type: string;
   discount_value: number;
   usage_limit: number;
+  used_times: number;
   expires_at: string;
-  message?: string;
+  is_active: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class CouponService {
-  private apiUrl = 'http://localhost:8000/api/coupons';
+  private apiUrl = 'http://localhost:8000/api/getcoupons';
   private timeoutDuration = 10000; // 10 seconds timeout
   private maxRetries = 2;
 
@@ -39,15 +40,13 @@ export class CouponService {
   }
 
   getCoupons(): Observable<Coupon[]> {
-    return this.http.get<Coupon[]>(this.apiUrl).pipe(
-      timeout(this.timeoutDuration),
-      retry(this.maxRetries),
-      catchError(this.handleError)
+    return this.http.get<{ coupons: Coupon[] }>(this.apiUrl).pipe(
+      map(response => response.coupons)
     );
   }
 
   createCoupon(coupon: Coupon): Observable<Coupon> {
-    return this.http.post<Coupon>(this.apiUrl, coupon).pipe(
+    return this.http.post<Coupon>(`${this.apiUrl}/create`, coupon).pipe(
       timeout(this.timeoutDuration),
       retry(this.maxRetries),
       catchError(this.handleError)
@@ -55,7 +54,7 @@ export class CouponService {
   }
 
   updateCoupon(id: number, coupon: Coupon): Observable<Coupon> {
-    return this.http.put<Coupon>(`${this.apiUrl}/${id}`, coupon).pipe(
+    return this.http.put<Coupon>(`${this.apiUrl}/update/${id}`, coupon).pipe(
       timeout(this.timeoutDuration),
       retry(this.maxRetries),
       catchError(this.handleError)
@@ -63,7 +62,7 @@ export class CouponService {
   }
 
   deleteCoupon(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`).pipe(
       timeout(this.timeoutDuration),
       retry(this.maxRetries),
       catchError(this.handleError)

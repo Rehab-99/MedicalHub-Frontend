@@ -27,9 +27,25 @@ export class OrdersComponent implements OnInit {
       next: (response) => {
         this.orders = response.data;
         this.filteredOrders = [...this.orders];
+        console.log('All Orders:', this.orders);
       },
       error: (error) => {
         console.error('Error loading orders:', error);
+      }
+    });
+  }
+
+  loadOrderById(id: number): void {
+    this.ordersService.getOrderById(id).subscribe({
+      next: (order) => {
+        this.selectedOrder = order;
+        console.log('Order Data from API:', order);
+        console.log('Order Items:', order.items);
+        this.orders = [order];
+        this.filteredOrders = [order];
+      },
+      error: (error) => {
+        console.error('Error loading order:', error);
       }
     });
   }
@@ -91,7 +107,15 @@ export class OrdersComponent implements OnInit {
   }
 
   showOrderDetails(order: Order): void {
-    this.selectedOrder = order;
+    this.ordersService.getOrderById(order.id).subscribe({
+      next: (orderDetails) => {
+        this.selectedOrder = orderDetails;
+        console.log('Order Details:', orderDetails);
+      },
+      error: (error) => {
+        console.error('Error loading order details:', error);
+      }
+    });
   }
 
   closeModal(): void {

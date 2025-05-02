@@ -1,0 +1,110 @@
+.coupon-section {
+    margin-top: 20px;
+    padding: 15px;
+    perspective: 1000px;
+}
+
+.coupon-card {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.coupon-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FFD700, #FFA500);
+}
+
+.coupon-card:hover {
+    transform: translateY(-5px) rotateX(5deg);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.coupon-card h4 {
+    margin: 0 0 15px 0;
+    font-size: 1.2em;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.coupon-code {
+    background: rgba(255,255,255,0.15);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px dashed rgba(255,255,255,0.3);
+    transition: background 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+.coupon-code:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+.coupon-code i {
+    font-size: 1.4em;
+    color: #FFD700;
+}
+
+.coupon-code span {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.coupon-details {
+    font-size: 0.95em;
+    text-align: center;
+}
+
+.coupon-details p {
+    margin: 8px 0;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #FFD700;
+}
+
+.coupon-details small {
+    opacity: 0.9;
+    display: block;
+    margin-top: 10px;
+    font-size: 0.85em;
+}
+
+/* Animation for the coupon code */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .coupon-card {
+        padding: 15px;
+    }
+    
+    .coupon-code {
+        padding: 10px;
+    }
+    
+    .coupon-card h4 {
+        font-size: 1.1em;
+    }
+} 

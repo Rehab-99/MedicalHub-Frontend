@@ -112,8 +112,8 @@
           <div class="testimonials-slider">
             <div class="testimonial-card" *ngFor="let feedback of feedbacks | slice:0:6">
 
-              <div class="avatar">Client</div>
-      
+              
+                <h4>{{ feedback.user?.name || 'Anonymous' }}</h4>
               <p class="quote">
                 <i class="fas fa-quote-left"></i>
                 {{ feedback.comment || 'No comment provided.' }}
@@ -129,7 +129,7 @@
                 </ng-container>
               </div>
       
-              <h4>{{ feedback.user?.name || 'Anonymous' }}</h4>
+              
             </div>
           </div>
         </div>
