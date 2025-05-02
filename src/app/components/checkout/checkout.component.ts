@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CheckoutService, CheckoutRequest, CheckoutItem } from '../../services/checkout.service';
 import { CartService, CartItem } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
@@ -13,7 +13,7 @@ import { PaymentService } from '../../services/payment.service';
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
@@ -46,13 +46,41 @@ export class CheckoutComponent implements OnInit {
   // Stripe public key from backend
   private readonly stripePublicKey = 'pk_test_51REdqh4G94LRAOydMDcGvERRCV7snk6EdwN5g217aIF7ULYL1nLwiYb1Xgnu5aR2nTbT1osbmS60J6XnNgGLoZOj00Z24z4TCv';
 
+  billingForm: FormGroup;
+  shippingForm: FormGroup;
+
   constructor(
     private checkoutService: CheckoutService,
     private cartService: CartService,
     private authService: AuthService,
     private router: Router,
-    private paymentService: PaymentService
-  ) {}
+    private paymentService: PaymentService,
+    private fb: FormBuilder
+  ) {
+    this.billingForm = this.fb.group({
+      first_name: ['', [Validators.required, Validators.minLength(2)]],
+      last_name: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone_number: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
+      address: ['', [Validators.required, Validators.minLength(5)]],
+      city: ['', [Validators.required, Validators.minLength(2)]],
+      post_code: ['', [Validators.required, Validators.pattern('^[0-9]{5,10}$')]],
+      country: ['', [Validators.required, Validators.minLength(2)]],
+      state: ['', [Validators.required, Validators.minLength(2)]]
+    });
+
+    this.shippingForm = this.fb.group({
+      first_name: ['', [Validators.required, Validators.minLength(2)]],
+      last_name: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone_number: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
+      address: ['', [Validators.required, Validators.minLength(5)]],
+      city: ['', [Validators.required, Validators.minLength(2)]],
+      post_code: ['', [Validators.required, Validators.pattern('^[0-9]{5,10}$')]],
+      country: ['', [Validators.required, Validators.minLength(2)]],
+      state: ['', [Validators.required, Validators.minLength(2)]]
+    });
+  }
 
   ngOnInit() {
     this.loadCartItems();
@@ -206,8 +234,21 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
+    // Validate both forms before proceeding
+    if (this.billingForm.invalid) {
+      this.billingForm.markAllAsTouched();
+      this.showMessage('Please fill all billing address fields correctly', 'error');
+      return;
+    }
+
+    if (this.shippingForm.invalid) {
+      this.shippingForm.markAllAsTouched();
+      this.showMessage('Please fill all shipping address fields correctly', 'error');
+      return;
+    }
+
     if (!this.checkoutData.payment_method) {
-      this.showMessage('Please select a payment method.', 'error');
+      this.showMessage('Please select a payment method', 'error');
       return;
     }
 
@@ -287,5 +328,42 @@ export class CheckoutComponent implements OnInit {
         }
       });
     }
+  }
+
+  get billingFormControls() {
+    return this.billingForm.controls;
+  }
+
+  get shippingFormControls() {
+    return this.shippingForm.controls;
+  }
+
+  isFieldInvalid(form: FormGroup, field: string): boolean {
+    const control = form.get(field);
+    return control ? control.invalid && (control.dirty || control.touched) : false;
+  }
+
+  getErrorMessage(form: FormGroup, field: string): string {
+    const control = form.get(field);
+    if (!control) return '';
+    
+    if (control.hasError('required')) {
+      return 'This field is required';
+    }
+    if (control.hasError('minlength')) {
+      return `Minimum length is ${control.errors?.['minlength'].requiredLength} characters`;
+    }
+    if (control.hasError('email')) {
+      return 'Please enter a valid email address';
+    }
+    if (control.hasError('pattern')) {
+      if (field === 'phone_number') {
+        return 'Please enter a valid phone number (10-15 digits)';
+      }
+      if (field === 'post_code') {
+        return 'Please enter a valid post code (5-10 digits)';
+      }
+    }
+    return '';
   }
 } 

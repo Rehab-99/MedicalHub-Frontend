@@ -17,30 +17,73 @@
     <input type="checkbox" id="billing-toggle" class="accordion-toggle" required>
     <label for="billing-toggle" class="accordion-header">Billing Address</label>
     <div class="accordion-body">
-      <form>
+      <form [formGroup]="billingForm">
         <div class="form-grid">
           <div class="form-row two-columns">
-            <input type="text" name="addr[billing][first_name]" placeholder="First Name" />
-            <input type="text" name="addr[billing][last_name]" placeholder="Last Name" />
+            <div class="form-field">
+              <input type="text" formControlName="first_name" placeholder="First Name" />
+              <div class="error-message" *ngIf="isFieldInvalid(billingForm, 'first_name')">
+                {{ getErrorMessage(billingForm, 'first_name') }}
+              </div>
+            </div>
+            <div class="form-field">
+              <input type="text" formControlName="last_name" placeholder="Last Name" />
+              <div class="error-message" *ngIf="isFieldInvalid(billingForm, 'last_name')">
+                {{ getErrorMessage(billingForm, 'last_name') }}
+              </div>
+            </div>
           </div>
           <div class="form-row">
-            <input type="email" name="addr[billing][email]" placeholder="Email Address" />
+            <div class="form-field">
+              <input type="email" formControlName="email" placeholder="Email Address" />
+              <div class="error-message" *ngIf="isFieldInvalid(billingForm, 'email')">
+                {{ getErrorMessage(billingForm, 'email') }}
+              </div>
+            </div>
           </div>
           <div class="form-row">
-            <input type="text" name="addr[billing][phone_number]" placeholder="Phone Number" />
+            <div class="form-field">
+              <input type="text" formControlName="phone_number" placeholder="Phone Number" />
+              <div class="error-message" *ngIf="isFieldInvalid(billingForm, 'phone_number')">
+                {{ getErrorMessage(billingForm, 'phone_number') }}
+              </div>
+            </div>
           </div>
           <div class="form-row">
-            <input type="text" name="addr[billing][address]" placeholder="Mailing Address" />
+            <div class="form-field">
+              <input type="text" formControlName="address" placeholder="Mailing Address" />
+              <div class="error-message" *ngIf="isFieldInvalid(billingForm, 'address')">
+                {{ getErrorMessage(billingForm, 'address') }}
+              </div>
+            </div>
           </div>
           <div class="form-row two-columns">
-            <input type="text" name="addr[billing][city]" placeholder="City" />
-            <input type="text" name="addr[billing][post_code]" placeholder="Post Code" />
+            <div class="form-field">
+              <input type="text" formControlName="city" placeholder="City" />
+              <div class="error-message" *ngIf="isFieldInvalid(billingForm, 'city')">
+                {{ getErrorMessage(billingForm, 'city') }}
+              </div>
+            </div>
+            <div class="form-field">
+              <input type="text" formControlName="post_code" placeholder="Post Code" />
+              <div class="error-message" *ngIf="isFieldInvalid(billingForm, 'post_code')">
+                {{ getErrorMessage(billingForm, 'post_code') }}
+              </div>
+            </div>
           </div>
           <div class="form-row two-columns">
-            <select name="addr[billing][country]">
-              <option value="">Select Country</option>
-            </select>
-            <input type="text" name="addr[billing][state]" placeholder="State" />
+            <div class="form-field">
+              <input type="text" formControlName="country" placeholder="Country" />
+              <div class="error-message" *ngIf="isFieldInvalid(billingForm, 'country')">
+                {{ getErrorMessage(billingForm, 'country') }}
+              </div>
+            </div>
+            <div class="form-field">
+              <input type="text" formControlName="state" placeholder="State" />
+              <div class="error-message" *ngIf="isFieldInvalid(billingForm, 'state')">
+                {{ getErrorMessage(billingForm, 'state') }}
+              </div>
+            </div>
           </div>
         </div>
       </form>
@@ -52,30 +95,73 @@
     <input type="checkbox" id="shipping-toggle" class="accordion-toggle">
     <label for="shipping-toggle" class="accordion-header">Shipping Address</label>
     <div class="accordion-body">
-      <form>
+      <form [formGroup]="shippingForm">
         <div class="form-grid">
           <div class="form-row two-columns">
-            <input type="text" name="addr[shipping][first_name]" placeholder="First Name" />
-            <input type="text" name="addr[shipping][last_name]" placeholder="Last Name" />
+            <div class="form-field">
+              <input type="text" formControlName="first_name" placeholder="First Name" />
+              <div class="error-message" *ngIf="isFieldInvalid(shippingForm, 'first_name')">
+                {{ getErrorMessage(shippingForm, 'first_name') }}
+              </div>
+            </div>
+            <div class="form-field">
+              <input type="text" formControlName="last_name" placeholder="Last Name" />
+              <div class="error-message" *ngIf="isFieldInvalid(shippingForm, 'last_name')">
+                {{ getErrorMessage(shippingForm, 'last_name') }}
+              </div>
+            </div>
           </div>
           <div class="form-row">
-            <input type="email" name="addr[shipping][email]" placeholder="Email Address" />
+            <div class="form-field">
+              <input type="email" formControlName="email" placeholder="Email Address" />
+              <div class="error-message" *ngIf="isFieldInvalid(shippingForm, 'email')">
+                {{ getErrorMessage(shippingForm, 'email') }}
+              </div>
+            </div>
           </div>
           <div class="form-row">
-            <input type="text" name="addr[shipping][phone_number]" placeholder="Phone Number" />
+            <div class="form-field">
+              <input type="text" formControlName="phone_number" placeholder="Phone Number" />
+              <div class="error-message" *ngIf="isFieldInvalid(shippingForm, 'phone_number')">
+                {{ getErrorMessage(shippingForm, 'phone_number') }}
+              </div>
+            </div>
           </div>
           <div class="form-row">
-            <input type="text" name="addr[shipping][address]" placeholder="Mailing Address" />
+            <div class="form-field">
+              <input type="text" formControlName="address" placeholder="Mailing Address" />
+              <div class="error-message" *ngIf="isFieldInvalid(shippingForm, 'address')">
+                {{ getErrorMessage(shippingForm, 'address') }}
+              </div>
+            </div>
           </div>
           <div class="form-row two-columns">
-            <input type="text" name="addr[shipping][city]" placeholder="City" />
-            <input type="text" name="addr[shipping][post_code]" placeholder="Post Code" />
+            <div class="form-field">
+              <input type="text" formControlName="city" placeholder="City" />
+              <div class="error-message" *ngIf="isFieldInvalid(shippingForm, 'city')">
+                {{ getErrorMessage(shippingForm, 'city') }}
+              </div>
+            </div>
+            <div class="form-field">
+              <input type="text" formControlName="post_code" placeholder="Post Code" />
+              <div class="error-message" *ngIf="isFieldInvalid(shippingForm, 'post_code')">
+                {{ getErrorMessage(shippingForm, 'post_code') }}
+              </div>
+            </div>
           </div>
           <div class="form-row two-columns">
-            <select name="addr[shipping][country]">
-              <option value="">Select Country</option>
-            </select>
-            <input type="text" name="addr[shipping][state]" placeholder="State" />
+            <div class="form-field">
+              <input type="text" formControlName="country" placeholder="Country" />
+              <div class="error-message" *ngIf="isFieldInvalid(shippingForm, 'country')">
+                {{ getErrorMessage(shippingForm, 'country') }}
+              </div>
+            </div>
+            <div class="form-field">
+              <input type="text" formControlName="state" placeholder="State" />
+              <div class="error-message" *ngIf="isFieldInvalid(shippingForm, 'state')">
+                {{ getErrorMessage(shippingForm, 'state') }}
+              </div>
+            </div>
           </div>
         </div>
       </form>
@@ -141,7 +227,9 @@
 
   <!-- Checkout Button -->
   <div class="checkout-button-container">
-    <button class="checkout-button" (click)="processCheckout()" [disabled]="isLoading || cartItems.length === 0">
+    <button class="checkout-button" 
+            (click)="processCheckout()" 
+            [disabled]="isLoading || cartItems.length === 0 || billingForm.invalid || shippingForm.invalid">
       <span *ngIf="!isLoading">Complete Checkout</span>
       <span *ngIf="isLoading" class="loading-spinner"></span>
     </button>

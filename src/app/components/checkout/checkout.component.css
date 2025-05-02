@@ -74,6 +74,28 @@
   gap: 20px;
 }
 
+.form-field {
+  position: relative;
+  width: 100%;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  position: absolute;
+  bottom: -1.25rem;
+  left: 0;
+}
+
+input.ng-invalid.ng-touched {
+  border-color: #dc3545;
+}
+
+input.ng-valid.ng-touched {
+  border-color: #28a745;
+}
+
 input,
 select {
   padding: 14px;
