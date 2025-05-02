@@ -38,7 +38,25 @@
         </ul>
     </nav>
 
-
+    <!-- Random Coupon Display -->
+    <div class="coupon-section" *ngIf="randomCoupon">
+        <div class="coupon-card">
+            <h4>Special Offer!</h4>
+            <div class="coupon-code">
+                <i class="fas fa-tag"></i>
+                <span>{{ randomCoupon.code }}</span>
+            </div>
+            <div class="coupon-details">
+                <p *ngIf="randomCoupon.discount_type === 'percentage'">
+                    {{ randomCoupon.discount_value }}% OFF
+                </p>
+                <p *ngIf="randomCoupon.discount_type === 'fixed'">
+                    {{ randomCoupon.discount_value }} EGP OFF
+                </p>
+                <small>Valid until {{ randomCoupon.expires_at | date:'mediumDate' }}</small>
+            </div>
+        </div>
+    </div>
 </aside>
 
 <!-- Chat windows for each doctor -->
