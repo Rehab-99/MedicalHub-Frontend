@@ -8,13 +8,14 @@ import { AuthService } from '../../../services/auth.service';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ChatWindowComponent } from '../../chat/chat-window.component';
+import { CouponService, Coupon } from '../../../services/coupon.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterModule, ChatWindowComponent],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss'
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
   currentRoute: string = '';
@@ -23,13 +24,15 @@ export class SidebarComponent implements OnInit {
   appointments: any[] = [];
   doctors: any[] = [];
   activeChats: { [key: number]: boolean } = {};
+  randomCoupon: Coupon | null = null;
 
   constructor(
     private router: Router,
     private doctorService: DoctorService,
     private appointmentService: AppointmentService,
     private authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private couponService: CouponService
   ) {}
 
   ngOnInit() {
@@ -46,6 +49,8 @@ export class SidebarComponent implements OnInit {
         this.loadAllAppointments();
       }
     });
+
+    this.loadRandomCoupon();
   }
 
   loadAllAppointments() {
@@ -79,6 +84,15 @@ export class SidebarComponent implements OnInit {
         }
       });
     }
+  }
+
+  loadRandomCoupon() {
+    this.couponService.getCoupons().subscribe(coupons => {
+      if (coupons && coupons.length > 0) {
+        const randomIndex = Math.floor(Math.random() * coupons.length);
+        this.randomCoupon = coupons[randomIndex];
+      }
+    });
   }
 
   getImageUrl(imagePath: string | null): string {
