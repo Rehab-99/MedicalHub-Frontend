@@ -137,6 +137,10 @@ export const routes: Routes = [
     path: 'clinics/:id/doctors',
     component: ClinicDoctorsComponent 
   },
+  {
+    path: 'vets/:id/doctors',
+    component: ClinicDoctorsComponent
+  },
   
   {
     path: 'services',

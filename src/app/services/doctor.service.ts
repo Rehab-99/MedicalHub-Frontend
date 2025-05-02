@@ -29,11 +29,11 @@ export class DoctorService {
   }
 
   getVetDoctors(): Observable<any> {
-    return this.http.get(`${this.apiUrl}?role=vet`);
+    return this.http.get(`${this.apiUrl}?clinic_type=App\\Models\\Vet`);
   }
   
   getHumanDoctors(): Observable<any> {
-    return this.http.get(`${this.apiUrl}?role=human`);
+    return this.http.get(`${this.apiUrl}?clinic_type=App\\Models\\Clinic`);
   }
   
   getLatestDoctors(limit: number = 4): Observable<any> {

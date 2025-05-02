@@ -63,6 +63,11 @@ export class ClinicsComponent implements OnInit {
 
   goToClinicDoctors(clinicId: number) {
     const route = this.clinicType === 'human' ? 'clinics' : 'vets';
-    this.router.navigate([`/${route}`, clinicId, 'doctors']);
+    console.log('Navigating to doctors page:', {
+      route,
+      clinicId,
+      clinicType: this.clinicType
+    });
+    this.router.navigate([`/${route}/${clinicId}/doctors`]);
   }
 }

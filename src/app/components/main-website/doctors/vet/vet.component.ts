@@ -51,8 +51,16 @@ export class VetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.doctorService.getVetDoctors().subscribe(response => {  // Changed from vetService to doctorService
-      this.doctors = response.data;
+    console.log('Fetching veterinary doctors...');
+    this.doctorService.getVetDoctors().subscribe({
+      next: (response) => {
+        console.log('Veterinary doctors response:', response);
+        this.doctors = response.data;
+        console.log('Veterinary doctors:', this.doctors);
+      },
+      error: (error) => {
+        console.error('Error fetching veterinary doctors:', error);
+      }
     });
   }
 
