@@ -141,7 +141,7 @@
 }
 
 .btn-appointment {
-  background-color: #2ecc71;
+  background-color: #3498db;
   color: white;
 }
 
@@ -151,7 +151,7 @@
 }
 
 .btn-appointment:hover {
-  background-color: #27ae60;
+  background-color: #3498db;
   transform: translateY(-2px);
 }
 
