@@ -479,7 +479,7 @@ input, select {
 .avatar {
     width: 70px;
     height: 70px;
-    
+    background-color: #E0E0E0;
     border-radius: 8px; /* Unified radius */
     margin: 0 auto 1rem;
 }

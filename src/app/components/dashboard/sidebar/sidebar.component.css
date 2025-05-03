@@ -33,6 +33,7 @@
   font-weight: 600;
   color: var(--text-light);
   letter-spacing: 0.5px;
+
 }
 
 @keyframes pulse {
@@ -235,3 +236,6 @@
     z-index: 1000;
   }
 } 
+.logo a{
+  text-decoration: none;
+}

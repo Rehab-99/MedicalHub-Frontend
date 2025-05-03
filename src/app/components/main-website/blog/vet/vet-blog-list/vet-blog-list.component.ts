@@ -56,9 +56,14 @@ export class VetBlogListComponent implements OnInit, OnDestroy {
 
   getAllVetPosts() {
     this.postService.getAllPosts('vet').subscribe({
-      next: (res) => {
-        this.vetBlogPosts = res.data || [];
+      next: (res: { data: { id: number; [key: string]: any }[] }) => {
+        // فلترة التكرارات بناءً على post.id
+        const uniquePosts = Array.from(
+          new Map((res.data || []).map((post: { id: number }) => [post.id, post])).values()
+        );
+        this.vetBlogPosts = uniquePosts;
         console.log('Fetched vet posts:', this.vetBlogPosts);
+
         // ترتيب البوستات من الأحدث للأقدم
         this.vetBlogPosts.sort((a, b) => {
           const dateA = new Date(a.created_at);
@@ -66,6 +71,7 @@ export class VetBlogListComponent implements OnInit, OnDestroy {
           return dateB.getTime() - dateA.getTime(); // من الأحدث للأقدم
         });
         console.log('Sorted vet posts:', this.vetBlogPosts);
+
         this.errorMessage = null;
         this.fetchDoctorNames();
       },

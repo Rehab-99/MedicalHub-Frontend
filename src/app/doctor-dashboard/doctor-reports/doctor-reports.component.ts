@@ -4,16 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { AppointmentService } from '../../services/appointment.service';
 import { LoginDoctorService } from '../../services/login-doctor.service';
 import { FeedbackService } from '../../services/feedback.service';
-import { Router } from '@angular/router';
+import { PostService } from '../../services/blog/post.service';
+import { BlogService } from '../../services/blog/blog.service';
+import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { SidebarComponent } from '../sidebar/sidebar.component';
+import { RelativeTimePipe } from '../add-post/pipe/relative-time.pipe';
 
 @Component({
   selector: 'app-doctor-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule,SidebarComponent],
+  imports: [CommonModule, FormsModule, SidebarComponent, RouterModule, RelativeTimePipe],
   templateUrl: './doctor-reports.component.html',
-  styleUrls: ['./doctor-reports.component.css']
+  styleUrls: ['./doctor-reports.component.css'],
+  providers: [PostService, BlogService]
 })
 export class DoctorReportsComponent implements OnInit {
   activeTab: string = 'appointments';
@@ -22,6 +26,11 @@ export class DoctorReportsComponent implements OnInit {
   patients: any[] = [];
   appointments: any[] = [];
   feedback: any[] = [];
+  posts: any[] = [];
+  totalComments: number = 0;
+  doctorId: number | null = null;
+  role: 'human' | 'vet' | null = null;
+  errorMessage: string | null = null;
   ageGroups: ('0-18' | '19-30' | '31-50' | '51+')[] = ['0-18', '19-30', '31-50', '51+'];
   
   appointmentStats: {
@@ -62,6 +71,8 @@ export class DoctorReportsComponent implements OnInit {
     private appointmentService: AppointmentService,
     private loginDoctorService: LoginDoctorService,
     private feedbackService: FeedbackService,
+    private postService: PostService,
+    private blogService: BlogService,
     public router: Router
   ) {}
 
@@ -72,7 +83,18 @@ export class DoctorReportsComponent implements OnInit {
       this.router.navigate(['/doctor-login']);
       return;
     }
+    this.doctorId = doctor.id;
+    this.role = doctor.type === 'vet' ? 'vet' : 'human';
     this.fetchData(doctor.id);
+    if (this.doctorId && this.role) {
+      this.loadPosts();
+    } else {
+      this.errorMessage = 'Doctor not logged in or role not specified';
+    }
+
+    this.blogService.postsUpdated$.subscribe(() => {
+      this.loadPosts();
+    });
   }
 
   async fetchData(doctorId: number) {
@@ -108,6 +130,27 @@ export class DoctorReportsComponent implements OnInit {
     } finally {
       this.isLoading = false;
     }
+  }
+
+  loadPosts(): void {
+    this.postService.getAllPosts(this.role!).subscribe({
+      next: (res) => {
+        this.posts = res.data
+          .filter((post: any) => post.doctor_id === this.doctorId)
+          .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        this.totalComments = this.posts.reduce((sum, post) => sum + (post.comments_count || 0), 0);
+        this.errorMessage = null;
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Failed to load posts';
+      }
+    });
+  }
+
+  getPostLink(postId: number): string[] {
+    const basePath = this.role === 'vet' ? '/blog/vet' : '/blog/human';
+    return [basePath, postId.toString()];
   }
 
   calculateAppointmentStats() {

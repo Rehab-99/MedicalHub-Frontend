@@ -59,7 +59,7 @@
 .nav-links a:hover, .nav-links .dropdown-toggle:hover {
     background: rgba(52, 152, 219, 0.1);
     color: #3498db;
-    transform: scale(1.05);
+    transform: scale(1);
 }
 
 /* Search Icon */
@@ -193,7 +193,7 @@
 }
 
 .user-profile:hover {
-    transform: scale(1.05);
+    transform: scale(1);
 }
 
 .profile-image {

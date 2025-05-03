@@ -56,14 +56,25 @@ export class HumanBlogListComponent implements OnInit, OnDestroy {
   getAllHumanPosts() {
     this.postService.getAllPosts('human').subscribe({
       next: (res) => {
+        // تخزين البوستات الـ human
         this.humanBlogPosts = res.data || [];
         console.log('Fetched human posts:', this.humanBlogPosts);
-        // إضافة البوستات اللي role: null
+
+        // جلب البوستات اللي role: null
         this.postService.getAllPosts().subscribe({
           next: (nullRes) => {
+            // فلترة البوستات اللي role: null
             const nullRolePosts = (nullRes.data || []).filter((post: any) => post.role === null);
-            this.humanBlogPosts = [...this.humanBlogPosts, ...nullRolePosts];
             console.log('Fetched posts with role: null:', nullRolePosts);
+
+            // إزالة التكرارات بناءً على post.id
+            const existingPostIds = new Set(this.humanBlogPosts.map(post => post.id));
+            const uniqueNullRolePosts = nullRolePosts.filter((post: { id: number }) => !existingPostIds.has(post.id));
+
+            // دمج البوستات بدون تكرار
+            this.humanBlogPosts = [...this.humanBlogPosts, ...uniqueNullRolePosts];
+            console.log('Merged posts without duplicates:', this.humanBlogPosts);
+
             // ترتيب البوستات من الأحدث للأقدم
             this.humanBlogPosts.sort((a, b) => {
               const dateA = new Date(a.created_at);
@@ -71,6 +82,7 @@ export class HumanBlogListComponent implements OnInit, OnDestroy {
               return dateB.getTime() - dateA.getTime(); // من الأحدث للأقدم
             });
             console.log('Sorted human posts:', this.humanBlogPosts);
+
             this.fetchDoctorNames();
           },
           error: (err) => {

@@ -39,7 +39,7 @@ export class MainWebsiteLayoutComponent implements OnInit, OnDestroy {
   baseUrl = environment.apiUrl;
 
   private images = [
-    'https://images.ctfassets.net/szez98lehkfm/3aFXjISnNZfF0MkUX6Z5rZ/af19d4cd2183c340fde85ef620db9d81/MyIC_Inline_79497',
+    'https://img.freepik.com/free-photo/patient-telling-doctor-about-symptoms-disease_1098-19324.jpg?t=st=1746249397~exp=1746252997~hmac=27e5d49ec1e22739f9395b7747dc7e9922245a9d7121121741f5335c10fb13ce&w=996',
     'https://img.freepik.com/free-photo/close-up-veterinarian-taking-care-pet_23-2149143884.jpg'
   ];
 

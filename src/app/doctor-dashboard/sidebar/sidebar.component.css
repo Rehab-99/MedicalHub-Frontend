@@ -8,7 +8,9 @@
     --text-secondary: #7f8c8d;
     --card-shadow: rgba(0, 0, 0, 0.1);
   }
-  
+   a{
+    text-decoration: none;
+   }             
   .sidebar {
     width: 250px;
     height: 100%;
