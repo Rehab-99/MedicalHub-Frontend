@@ -206,7 +206,7 @@
             <span class="item-name">{{item.name || 'Product ' + item.productId}}</span>
             <span class="item-quantity">x{{item.quantity}}</span>
           </div>
-          <span class="item-price">${{item.price * item.quantity}}</span>
+          <span class="item-price">EGP {{item.price * item.quantity}}</span>
         </div>
         
         <!-- عرض الخصم إذا كان موجودًا -->
@@ -214,12 +214,12 @@
           <div class="item-details">
             <span class="item-name">Discount</span>
           </div>
-          <span class="item-price discount">-${{discount}}</span>
+          <span class="item-price discount">-EGP {{discount}}</span>
         </div>
         
         <div class="summary-total">
           <span>Total:</span>
-          <span>${{totalPrice}}</span>
+          <span>EGP {{totalPrice}}</span>
         </div>
       </div>
     </div>

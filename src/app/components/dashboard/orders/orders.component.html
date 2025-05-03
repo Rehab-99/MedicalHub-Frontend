@@ -135,14 +135,14 @@
             <div class="item-info">
               <h5 class="item-name">{{ item.product_name }}</h5>
               <div class="item-price">
-                <span class="price-value">{{ item.price | currency }}</span>
+                <span class="price-value">EGP {{ item.price }}</span>
               </div>
             </div>
           </div>
         </div>
         <div class="order-total">
           <span class="total-label">Total Amount:</span>
-          <span class="total-value">{{ calculateTotal(selectedOrder) | currency }}</span>
+          <span class="total-value">EGP {{ calculateTotal(selectedOrder) }}</span>
         </div>
       </div>
     </div>
