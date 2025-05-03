@@ -18,7 +18,7 @@ export class ChatComponent {
     'What types of doctors are available?',
     'How can I find a clinic?',
     'What medical services do you offer?',
-    'How do I contact a doctor?'
+    'How can I join as a doctor?'
   ];
 
   // Font Awesome icons
@@ -46,7 +46,20 @@ export class ChatComponent {
       'What types of doctors are available?': 'We have two main categories of doctors: 1) Human Doctors - Specialists in various medical fields 2) Veterinary Doctors - For your pets. You can browse all doctors by clicking "Doctors" in the main menu and selecting your preferred category.',
       'How can I find a clinic?': 'You can find clinics in two ways: 1) Visit the "Clinics" page from the main menu 2) Browse clinics through doctor profiles. We have both human clinics and veterinary clinics available. Each clinic has its own team of specialized doctors.',
       'What medical services do you offer?': 'We offer a wide range of medical services including: 1) General check-ups 2) Specialized treatments 3) Emergency care 4) Dental services 5) Veterinary services. You can view all services and their prices on our Services page.',
-      'How do I contact a doctor?': 'You can contact doctors in several ways: 1) Book an appointment through their profile 2) Visit their clinic directly 3) Call the clinic phone number listed on their profile. Each doctor\'s contact information is available on their profile page.'
+      'How can I join as a doctor?': 'Join our platform to start your medical career with us! Here\'s how to get started:\n\n' +
+                  '1. Click on "Join as Doctor" in the website header\n' +
+                  '2. Fill out the registration form with your personal and professional details\n' +
+                  '3. Upload your medical license and other required documents\n' +
+                  '4. Provide your clinic information and working hours\n' +
+                  '5. Submit your application\n\n' +
+                  'Benefits of joining our platform:\n' +
+                  '- Access to a large patient base\n' +
+                  '- Flexible working hours\n' +
+                  '- Competitive compensation\n' +
+                  '- Professional development opportunities\n' +
+                  '- Modern clinic facilities\n' +
+                  '- Supportive administrative team\n\n' +
+                  'Our team will review your application within 3-5 business days. Once approved, you\'ll receive login credentials to access your doctor dashboard where you can manage appointments, update your profile, and start working with patients.'
     };
     return responses[message] || 'I apologize, but I don\'t have information about that. Please contact our support team for assistance.';
   }
