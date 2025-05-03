@@ -10,7 +10,6 @@ import { VetPharmacyComponent } from './components/dashboard/vet-pharmacy/vet-ph
 import { VetBlogComponent } from './components/dashboard/vet-blog/vet-blog.component';
 import { DoctorsComponent } from './components/dashboard/doctors/doctors.component';
 import { AppointmentsComponent } from './components/dashboard/appointments/appointments.component';
-import { ConsultationsComponent } from './components/dashboard/consultations/consultations.component';
 import { UsersComponent } from './components/dashboard/users/users.component';
 import { SettingsComponent as AdminSettingsComponent } from './components/dashboard/settings/settings.component';
 import { AddDoctorComponent } from './components/dashboard/add-doctor/add-doctor.component';
@@ -271,10 +270,7 @@ export const routes: Routes = [
         path: 'appointments',
         component: AppointmentsComponent
       },
-      {
-        path: 'consultations',
-        component: ConsultationsComponent
-      },
+     
       {
         path:'services',
         component: ServicesComponent
